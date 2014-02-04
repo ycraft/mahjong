@@ -1,0 +1,89 @@
+syntax = "proto2";
+
+enum TileType {
+  UNKNOWN = 0;
+
+  WANZU = 0x1;
+    WANZU_1 = 0x11;
+    WANZU_2 = 0x12;
+    WANZU_3 = 0x13;
+    WANZU_4 = 0x14;
+    WANZU_5 = 0x15;
+    WANZU_6 = 0x16;
+    WANZU_7 = 0x17;
+    WANZU_8 = 0x18;
+    WANZU_9 = 0x19;
+
+  SOUZU = 0x2;
+    SOUZU_1 = 0x21;
+    SOUZU_2 = 0x22;
+    SOUZU_3 = 0x23;
+    SOUZU_4 = 0x24;
+    SOUZU_5 = 0x25;
+    SOUZU_6 = 0x26;
+    SOUZU_7 = 0x27;
+    SOUZU_8 = 0x28;
+    SOUZU_9 = 0x29;
+
+  PINZU = 0x3;
+    PINZU_1 = 0x31;
+    PINZU_2 = 0x32;
+    PINZU_3 = 0x33;
+    PINZU_4 = 0x34;
+    PINZU_5 = 0x35;
+    PINZU_6 = 0x36;
+    PINZU_7 = 0x37;
+    PINZU_8 = 0x38;
+    PINZU_9 = 0x39;
+
+  WIND = 0x4;
+    WIND_TON = 0x41;
+    WIND_NAN = 0x42;
+    WIND_SHA = 0x43;
+    WIND_PE = 0x44;
+
+  YAKU = 0x5;
+    YAKU_HAKU = 0x51;
+    YAKU_HATSU = 0x52;
+    YAKU_CHUN = 0x53;
+}
+
+message Hand {
+  repeated TileType closed_tiles = 1;  // not includes Agari-tile
+
+  message Pon {
+    optional TileType tile = 1;
+    optional bool is_closed = 2;
+  }
+
+  repeated Pon ponned_tiles = 2;
+
+  message Kan {
+    optional TileType tile = 1;
+    optional bool is_closed = 2;
+  }
+
+  repeated Kan Kanned_tiles = 3;
+
+  optional bool is_tsumo = 4;
+
+  optional bool is_reached = 5;
+
+  optional TileType agari_tile = 6;
+}
+
+message Player {
+  optional TileType my_wind = 1;
+  optional Hand my_hand = 2;
+}
+
+message Field {
+  optional TileType wind = 1; // Ton-ba, Nan-ba
+  repeated TileType doras = 2; // Not dora hyouji hai
+  optional int32 honba = 3;
+}
+
+message ScoreCalculationResponse {
+  optional int32 fu = 1;
+  optional int32 fan = 2;
+}

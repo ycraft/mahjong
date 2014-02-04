@@ -1,0 +1,6 @@
+compiler.compileProtoFiles=true
+compiler.cppCodeGenerationEnabled=true
+compiler.cppOutputDirectory=src/proto
+compiler.enableProjectSettings=true
+eclipse.preferences.version=1
+general.enableProjectSettings=true
