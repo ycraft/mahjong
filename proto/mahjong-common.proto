@@ -1,0 +1,95 @@
+syntax = "proto2";
+
+package mahjong;
+
+enum TileType {
+
+  // 0x00 00 00 00 00 00 00 00
+  //      G  F  E  D  C  B  A
+  //
+  // A: [1, 9] number of a tile. Or 0 means any.
+  //
+  // B: [1, 5] tile type. Or 0 means any.
+  //
+  // C: [1, 2] sequential or not. Or 0 means any.
+
+  MASK_NUMBER = 0xff;
+  MASK_TYPE = 0xff00;
+  MASK_SEQUENTIAL = 0xff0000;
+
+  ANY_TILE = 0;
+
+  WIND_TILE   = 0x0100;
+  SANGEN_TILE = 0x0200;
+  WANZU_TILE  = 0x0300;
+  SOUZU_TILE  = 0x0400;
+  PINZU_TILE  = 0x0500;
+
+  UNSEQUENTIAL_TILE = 0x010000;
+  SEQUENTIAL_TILE   = 0x020000;
+
+  WIND_TON = 0x010101;
+  WIND_NAN = 0x010102;
+  WIND_SHA = 0x010103;
+  WIND_PE  = 0x010104;
+
+  SANGEN_HAKU  = 0x010201;
+  SANGEN_HATSU = 0x010202;
+  SANGEN_CHUN  = 0x010203;
+
+  TILE_1 = 0x020001;
+  TILE_2 = 0x020002;
+  TILE_3 = 0x020003;
+  TILE_4 = 0x020004;
+  TILE_5 = 0x020005;
+  TILE_6 = 0x020006;
+  TILE_7 = 0x020007;
+  TILE_8 = 0x020008;
+  TILE_9 = 0x020009;
+
+  WANZU_1 = 0x020301;
+  WANZU_2 = 0x020302;
+  WANZU_3 = 0x020303;
+  WANZU_4 = 0x020304;
+  WANZU_5 = 0x020305;
+  WANZU_6 = 0x020306;
+  WANZU_7 = 0x020307;
+  WANZU_8 = 0x020308;
+  WANZU_9 = 0x020309;
+
+  SOUZU_1 = 0x020401;
+  SOUZU_2 = 0x020402;
+  SOUZU_3 = 0x020403;
+  SOUZU_4 = 0x020404;
+  SOUZU_5 = 0x020405;
+  SOUZU_6 = 0x020406;
+  SOUZU_7 = 0x020407;
+  SOUZU_8 = 0x020408;
+  SOUZU_9 = 0x020409;
+
+  PINZU_1 = 0x020501;
+  PINZU_2 = 0x020502;
+  PINZU_3 = 0x020503;
+  PINZU_4 = 0x020504;
+  PINZU_5 = 0x020505;
+  PINZU_6 = 0x020506;
+  PINZU_7 = 0x020507;
+  PINZU_8 = 0x020508;
+  PINZU_9 = 0x020509;
+}
+
+enum MentsuType {
+  SHUNTSU = 0x1;
+    SHUNTSU_OPENED = 0x10;
+    SHUNTSU_CLOSED = 0x11;
+
+  KOUTSU = 0x2;
+    KOUTSU_OPENED = 0x20;
+    KOUTSU_CLOSED = 0x21;
+
+  KANTSU = 0x3;
+    KANTSU_OPENED = 0x30;
+    KANTSU_CLOSED = 0x31;
+
+  TOITSU = 0x4;
+}

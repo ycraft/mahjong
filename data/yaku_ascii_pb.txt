@@ -1,0 +1,6 @@
+yaku {
+  name: "平和"
+  menzen_fan: 1
+  naki_fan: 0
+}
+

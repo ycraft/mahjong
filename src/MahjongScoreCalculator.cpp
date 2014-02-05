@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "src-gen/mahjong.pb.h"
+#include "src-gen/mahjong-scorecalculator.pb.h"
 
 using namespace std;
 using namespace mahjong;
@@ -52,9 +52,9 @@ Hand* createHand2() {
   hand->add_closed_tiles(WIND_PE);
   hand->add_closed_tiles(WIND_PE);
   hand->add_closed_tiles(WIND_PE);
-  hand->add_closed_tiles(YAKU_HAKU);
+  hand->add_closed_tiles(SANGEN_HAKU);
 
-  hand->set_agari_tile(YAKU_HAKU);
+  hand->set_agari_tile(SANGEN_HAKU);
 
   hand->set_is_reached(true);
   hand->set_is_tsumo(true);
@@ -64,15 +64,13 @@ Hand* createHand2() {
 
 Player* createPlayer() {
   Player* player = new Player();
-  player->set_allocated_my_hand(createHand2());
+  player->set_allocated_my_hand(createHand());
   player->set_my_wind(WIND_TON);
   return player;
 }
 
 bool isSequentialTileType(TileType tile) {
-  unsigned int type = tile;
-  while (type && type != SEQUENTIAL) type >>= 4;
-  return type == SEQUENTIAL;
+  return (tile & MASK_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
 
 class ScoreCalculator {

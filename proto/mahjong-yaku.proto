@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+package mahjong;
+
+import "mahjong-common.proto";
+
+message Rule {
+  repeated Yaku yaku = 1;
+}
+
+message Yaku {
+  optional string name = 1;
+  optional int32 menzen_fan = 2;
+  optional int32 naki_fan = 3;
+  optional Condition condition = 4;
+  repeated string upper_version_yaku_name = 5;
+}
+
+message MentsuCondition {
+  optional MentsuType required_mentsu_type = 1;
+  repeated TileType required_tile_type = 2;
+}
+
+message Condition {
+  repeated TileType allowed_tile = 1;
+  repeated TileType required_tile = 2;
+  repeated MentsuType required_mentsu_type = 3;
+  optional bool required_ryanmen = 4 [default = false];
+  optional bool allow_yakuhai = 5 [default = true];
+}
