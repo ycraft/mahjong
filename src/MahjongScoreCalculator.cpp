@@ -1,9 +1,10 @@
 #include <iostream>
 #include <algorithm>
 
-#include "proto/mahjong.pb.h"
+#include "src-gen/mahjong.pb.h"
 
 using namespace std;
+using namespace mahjong;
 
 Field* createField() {
   Field* field = new Field();
