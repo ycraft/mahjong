@@ -3,49 +3,51 @@ syntax = "proto2";
 enum TileType {
   UNKNOWN = 0;
 
-  WANZU = 0x1;
-    WANZU_1 = 0x11;
-    WANZU_2 = 0x12;
-    WANZU_3 = 0x13;
-    WANZU_4 = 0x14;
-    WANZU_5 = 0x15;
-    WANZU_6 = 0x16;
-    WANZU_7 = 0x17;
-    WANZU_8 = 0x18;
-    WANZU_9 = 0x19;
+  SEQUENTIAL = 0x1;
+    WANZU = 0x10;
+      WANZU_1 = 0x100;
+      WANZU_2 = 0x101;
+      WANZU_3 = 0x102;
+      WANZU_4 = 0x103;
+      WANZU_5 = 0x104;
+      WANZU_6 = 0x105;
+      WANZU_7 = 0x106;
+      WANZU_8 = 0x107;
+      WANZU_9 = 0x108;
 
-  SOUZU = 0x2;
-    SOUZU_1 = 0x21;
-    SOUZU_2 = 0x22;
-    SOUZU_3 = 0x23;
-    SOUZU_4 = 0x24;
-    SOUZU_5 = 0x25;
-    SOUZU_6 = 0x26;
-    SOUZU_7 = 0x27;
-    SOUZU_8 = 0x28;
-    SOUZU_9 = 0x29;
+    SOUZU = 0x11;
+      SOUZU_1 = 0x110;
+      SOUZU_2 = 0x111;
+      SOUZU_3 = 0x112;
+      SOUZU_4 = 0x113;
+      SOUZU_5 = 0x114;
+      SOUZU_6 = 0x115;
+      SOUZU_7 = 0x116;
+      SOUZU_8 = 0x117;
+      SOUZU_9 = 0x118;
 
-  PINZU = 0x3;
-    PINZU_1 = 0x31;
-    PINZU_2 = 0x32;
-    PINZU_3 = 0x33;
-    PINZU_4 = 0x34;
-    PINZU_5 = 0x35;
-    PINZU_6 = 0x36;
-    PINZU_7 = 0x37;
-    PINZU_8 = 0x38;
-    PINZU_9 = 0x39;
+    PINZU = 0x12;
+      PINZU_1 = 0x120;
+      PINZU_2 = 0x121;
+      PINZU_3 = 0x122;
+      PINZU_4 = 0x123;
+      PINZU_5 = 0x124;
+      PINZU_6 = 0x125;
+      PINZU_7 = 0x126;
+      PINZU_8 = 0x127;
+      PINZU_9 = 0x128;
 
-  WIND = 0x4;
-    WIND_TON = 0x41;
-    WIND_NAN = 0x42;
-    WIND_SHA = 0x43;
-    WIND_PE = 0x44;
+  UNSEQUENTIAL = 0x2;
+    WIND = 0x20;
+      WIND_TON = 0x200;
+      WIND_NAN = 0x201;
+      WIND_SHA = 0x202;
+      WIND_PE = 0x203;
 
-  YAKU = 0x5;
-    YAKU_HAKU = 0x51;
-    YAKU_HATSU = 0x52;
-    YAKU_CHUN = 0x53;
+    YAKU = 0x21;
+      YAKU_HAKU = 0x210;
+      YAKU_HATSU = 0x211;
+      YAKU_CHUN = 0x212;
 }
 
 message Hand {

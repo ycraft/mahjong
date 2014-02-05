@@ -211,20 +211,22 @@ void protobuf_AddDesc_mahjong_2eproto() {
     "Field\022\027\n\004wind\030\001 \001(\0162\t.TileType\022\030\n\005doras\030"
     "\002 \003(\0162\t.TileType\022\r\n\005honba\030\003 \001(\005\"3\n\030Score"
     "CalculationResponse\022\n\n\002fu\030\001 \001(\005\022\013\n\003fan\030\002"
-    " \001(\005*\220\004\n\010TileType\022\013\n\007UNKNOWN\020\000\022\t\n\005WANZU\020"
-    "\001\022\013\n\007WANZU_1\020\021\022\013\n\007WANZU_2\020\022\022\013\n\007WANZU_3\020\023"
-    "\022\013\n\007WANZU_4\020\024\022\013\n\007WANZU_5\020\025\022\013\n\007WANZU_6\020\026\022"
-    "\013\n\007WANZU_7\020\027\022\013\n\007WANZU_8\020\030\022\013\n\007WANZU_9\020\031\022\t"
-    "\n\005SOUZU\020\002\022\013\n\007SOUZU_1\020!\022\013\n\007SOUZU_2\020\"\022\013\n\007S"
-    "OUZU_3\020#\022\013\n\007SOUZU_4\020$\022\013\n\007SOUZU_5\020%\022\013\n\007SO"
-    "UZU_6\020&\022\013\n\007SOUZU_7\020\'\022\013\n\007SOUZU_8\020(\022\013\n\007SOU"
-    "ZU_9\020)\022\t\n\005PINZU\020\003\022\013\n\007PINZU_1\0201\022\013\n\007PINZU_"
-    "2\0202\022\013\n\007PINZU_3\0203\022\013\n\007PINZU_4\0204\022\013\n\007PINZU_5"
-    "\0205\022\013\n\007PINZU_6\0206\022\013\n\007PINZU_7\0207\022\013\n\007PINZU_8\020"
-    "8\022\013\n\007PINZU_9\0209\022\010\n\004WIND\020\004\022\014\n\010WIND_TON\020A\022\014"
-    "\n\010WIND_NAN\020B\022\014\n\010WIND_SHA\020C\022\013\n\007WIND_PE\020D\022"
-    "\010\n\004YAKU\020\005\022\r\n\tYAKU_HAKU\020Q\022\016\n\nYAKU_HATSU\020R"
-    "\022\r\n\tYAKU_CHUN\020S", 1015);
+    " \001(\005*\324\004\n\010TileType\022\013\n\007UNKNOWN\020\000\022\016\n\nSEQUEN"
+    "TIAL\020\001\022\t\n\005WANZU\020\020\022\014\n\007WANZU_1\020\200\002\022\014\n\007WANZU"
+    "_2\020\201\002\022\014\n\007WANZU_3\020\202\002\022\014\n\007WANZU_4\020\203\002\022\014\n\007WAN"
+    "ZU_5\020\204\002\022\014\n\007WANZU_6\020\205\002\022\014\n\007WANZU_7\020\206\002\022\014\n\007W"
+    "ANZU_8\020\207\002\022\014\n\007WANZU_9\020\210\002\022\t\n\005SOUZU\020\021\022\014\n\007SO"
+    "UZU_1\020\220\002\022\014\n\007SOUZU_2\020\221\002\022\014\n\007SOUZU_3\020\222\002\022\014\n\007"
+    "SOUZU_4\020\223\002\022\014\n\007SOUZU_5\020\224\002\022\014\n\007SOUZU_6\020\225\002\022\014"
+    "\n\007SOUZU_7\020\226\002\022\014\n\007SOUZU_8\020\227\002\022\014\n\007SOUZU_9\020\230\002"
+    "\022\t\n\005PINZU\020\022\022\014\n\007PINZU_1\020\240\002\022\014\n\007PINZU_2\020\241\002\022"
+    "\014\n\007PINZU_3\020\242\002\022\014\n\007PINZU_4\020\243\002\022\014\n\007PINZU_5\020\244"
+    "\002\022\014\n\007PINZU_6\020\245\002\022\014\n\007PINZU_7\020\246\002\022\014\n\007PINZU_8"
+    "\020\247\002\022\014\n\007PINZU_9\020\250\002\022\020\n\014UNSEQUENTIAL\020\002\022\010\n\004W"
+    "IND\020 \022\r\n\010WIND_TON\020\200\004\022\r\n\010WIND_NAN\020\201\004\022\r\n\010W"
+    "IND_SHA\020\202\004\022\014\n\007WIND_PE\020\203\004\022\010\n\004YAKU\020!\022\016\n\tYA"
+    "KU_HAKU\020\220\004\022\017\n\nYAKU_HATSU\020\221\004\022\016\n\tYAKU_CHUN"
+    "\020\222\004", 1083);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "mahjong.proto", &protobuf_RegisterTypes);
   Hand::default_instance_ = new Hand();
@@ -257,43 +259,45 @@ bool TileType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
-    case 3:
-    case 4:
-    case 5:
+    case 16:
     case 17:
     case 18:
-    case 19:
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-    case 24:
-    case 25:
+    case 32:
     case 33:
-    case 34:
-    case 35:
-    case 36:
-    case 37:
-    case 38:
-    case 39:
-    case 40:
-    case 41:
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
-    case 55:
-    case 56:
-    case 57:
-    case 65:
-    case 66:
-    case 67:
-    case 68:
-    case 81:
-    case 82:
-    case 83:
+    case 256:
+    case 257:
+    case 258:
+    case 259:
+    case 260:
+    case 261:
+    case 262:
+    case 263:
+    case 264:
+    case 272:
+    case 273:
+    case 274:
+    case 275:
+    case 276:
+    case 277:
+    case 278:
+    case 279:
+    case 280:
+    case 288:
+    case 289:
+    case 290:
+    case 291:
+    case 292:
+    case 293:
+    case 294:
+    case 295:
+    case 296:
+    case 512:
+    case 513:
+    case 514:
+    case 515:
+    case 528:
+    case 529:
+    case 530:
       return true;
     default:
       return false;

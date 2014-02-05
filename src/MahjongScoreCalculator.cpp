@@ -37,16 +37,41 @@ Hand* createHand() {
   return hand;
 }
 
+Hand* createHand2() {
+  Hand* hand = new Hand();
+  hand->add_closed_tiles(WIND_TON);
+  hand->add_closed_tiles(WIND_TON);
+  hand->add_closed_tiles(WIND_TON);
+  hand->add_closed_tiles(WIND_NAN);
+  hand->add_closed_tiles(WIND_NAN);
+  hand->add_closed_tiles(WIND_NAN);
+  hand->add_closed_tiles(WIND_SHA);
+  hand->add_closed_tiles(WIND_SHA);
+  hand->add_closed_tiles(WIND_SHA);
+  hand->add_closed_tiles(WIND_PE);
+  hand->add_closed_tiles(WIND_PE);
+  hand->add_closed_tiles(WIND_PE);
+  hand->add_closed_tiles(YAKU_HAKU);
+
+  hand->set_agari_tile(YAKU_HAKU);
+
+  hand->set_is_reached(true);
+  hand->set_is_tsumo(true);
+
+  return hand;
+}
+
 Player* createPlayer() {
   Player* player = new Player();
-  player->set_allocated_my_hand(createHand());
+  player->set_allocated_my_hand(createHand2());
   player->set_my_wind(WIND_TON);
   return player;
 }
 
 bool isSequentialTileType(TileType tile) {
-  unsigned int type = tile >> 4;
-  return type == SOUZU || type == WANZU || type == PINZU;
+  unsigned int type = tile;
+  while (type && type != SEQUENTIAL) type >>= 4;
+  return type == SEQUENTIAL;
 }
 
 class ScoreCalculator {
