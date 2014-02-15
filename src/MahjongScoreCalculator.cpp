@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "src-gen/mahjong-scorecalculator.pb.h"
+#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
 
 using namespace std;
 using namespace mahjong;
@@ -70,7 +70,7 @@ Player* createPlayer() {
 }
 
 bool isSequentialTileType(TileType tile) {
-  return (tile & MASK_SEQUENTIAL) == SEQUENTIAL_TILE;
+  return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
 
 class ScoreCalculator {

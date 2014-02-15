@@ -1,7 +1,7 @@
 yaku {
   name: "立直"
   menzen_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_richi_type: RICHI
   }
 }
@@ -9,7 +9,7 @@ yaku {
 yaku {
   name: "一発"
   menzen_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       is_soku: true
     }
@@ -20,7 +20,7 @@ yaku {
   name: "嶺上開花"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       is_rinshan: true
     }
@@ -31,7 +31,7 @@ yaku {
   name: "槍槓"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       is_chankan: true
     }
@@ -42,7 +42,7 @@ yaku {
   name: "海底摸月"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       required_agari_type: TSUMO
       is_haitei: true
@@ -54,7 +54,7 @@ yaku {
   name: "河底撈魚"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       required_agari_type: RON
       is_haitei: true
@@ -65,7 +65,7 @@ yaku {
 yaku {
   name: "門前清自摸和"
   menzen_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
       required_agari_type: TSUMO
     }
@@ -76,7 +76,7 @@ yaku {
   name: "断么九"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_tile: TILE_2
     }
@@ -104,7 +104,7 @@ yaku {
 yaku {
   name: "平和"
   menzen_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     disallowed_tile_condition {
       required_tile: SANGEN_TILE
     }
@@ -137,7 +137,7 @@ yaku {
 yaku {
   name: "一盃口"
   menzen_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: SHUNTSU
       is_naki_allowed: false
@@ -171,7 +171,7 @@ yaku {
   name: "役牌 白"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
@@ -186,7 +186,7 @@ yaku {
   name: "役牌 發"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
@@ -201,7 +201,7 @@ yaku {
   name: "役牌 中"
   menzen_fan: 1
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
@@ -216,7 +216,7 @@ yaku {
   name: "三色同順"
   menzen_fan: 2
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
@@ -269,7 +269,7 @@ yaku {
   name: "一気通貫"
   menzen_fan: 2
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
@@ -322,7 +322,7 @@ yaku {
   name: "混全帯么九"
   menzen_fan: 2
   naki_fan: 1
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
@@ -390,7 +390,7 @@ yaku {
   name: "七対子"
   menzen_fan: 2
   force_fu: 25
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
@@ -440,7 +440,7 @@ yaku {
   name: "対々和"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
     }
@@ -460,7 +460,7 @@ yaku {
   name: "三暗刻"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       is_naki_allowed: false
@@ -483,7 +483,7 @@ yaku {
   name: "混老頭"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_tile: TILE_1
     }
@@ -500,7 +500,7 @@ yaku {
   name: "三色同刻"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_tile_condition {
@@ -529,7 +529,7 @@ yaku {
   name: "三槓子"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KANTSU
     }
@@ -546,7 +546,7 @@ yaku {
   name: "小三元"
   menzen_fan: 2
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
       required_tile_condition {
@@ -574,7 +574,7 @@ yaku {
 yaku {
   name: "ダブル立直"
   menzen_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_richi_type: DOUBLE_RICHI
   }
 }
@@ -583,7 +583,7 @@ yaku {
   name: "混一色"
   menzen_fan: 3
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI
     }
@@ -594,7 +594,7 @@ yaku {
   name: "純全帯么九"
   menzen_fan: 3
   naki_fan: 2
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
@@ -646,7 +646,7 @@ yaku {
 yaku {
   name: "二盃口"
   menzen_fan: 3
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: SHUNTSU
       is_naki_allowed: false
@@ -706,7 +706,7 @@ yaku {
   name: "清一色"
   menzen_fan: 6
   naki_fan: 5
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A
     }
@@ -716,7 +716,7 @@ yaku {
 yaku {
   name: "国士無双"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_tile_condition {
       required_tile: WIND_TON
     }
@@ -771,7 +771,7 @@ yaku {
 yaku {
   name: "四暗刻"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       is_naki_allowed: false
@@ -799,7 +799,7 @@ yaku {
   name: "大三元"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       required_tile_condition {
@@ -825,7 +825,7 @@ yaku {
   name: "字一色"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_tile: JIHAI_TILE
     }
@@ -836,7 +836,7 @@ yaku {
   name: "小四喜"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
       required_tile_condition {
@@ -872,7 +872,7 @@ yaku {
   name: "緑一色"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_tile: SOUZU_2
     }
@@ -898,7 +898,7 @@ yaku {
   name: "清老頭"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     allowed_tile_condition {
       required_tile: TILE_1
     }
@@ -912,7 +912,7 @@ yaku {
   name: "四槓子"
   menzen_fan: 13
   naki_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KANTSU
     }
@@ -931,7 +931,7 @@ yaku {
 yaku {
   name: "九蓮宝燈"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_tile_condition {
       required_tile: TILE_1
       required_variable_tile: VARIABLE_COLOR_A
@@ -993,7 +993,7 @@ yaku {
 yaku {
   name: "天和"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_player_type: DEALER
     required_agari_condition {
       required_agari_type: TSUMO
@@ -1005,10 +1005,10 @@ yaku {
 yaku {
   name: "地和"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_player_type: NON_DEALER
     required_agari_condition {
-      requried_agari_type: TSUMO
+      required_agari_type: TSUMO
       is_beginning: true
     }
   }
@@ -1017,9 +1017,9 @@ yaku {
 yaku {
   name: "人和"
   menzen_fan: 13
-  allowed_yaku_condition {
+  yaku_condition {
     required_agari_condition {
-      requried_agari_type: RON
+      required_agari_type: RON
       is_beginning: true
     }
   }
@@ -1029,15 +1029,15 @@ yaku {
   name: "国士無双十三面待ち"
   menzen_fan: 26
   naki_fan: 26
-  allowed_yaku_condition {
-    required_machi_type: JUSANMEM
+  yaku_condition {
+    required_machi_type: JUSANMEN
   }
 }
 
 yaku {
   name: "四暗刻単騎待ち"
   menzen_fan: 26
-  allowed_yaku_condition {
+  yaku_condition {
     required_machi_type: TANKI
     required_element_condition {
       allowed_element_type: KOUTSU
@@ -1066,7 +1066,7 @@ yaku {
   name: "大四喜"
   menzen_fan: 26
   naki_fan: 26
-  allowed_yaku_condition {
+  yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
       required_tile_condition {
@@ -1101,7 +1101,7 @@ yaku {
 yaku {
   name: "純正九蓮宝燈"
   menzen_fan: 26
-  allowed_yaku_condition {
+  yaku_condition {
     required_machi_type: KYUMEN
     required_tile_condition {
       required_tile: TILE_1

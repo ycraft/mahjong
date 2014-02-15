@@ -14,7 +14,7 @@ message Yaku {
   optional int32 menzen_fan = 3;
   optional int32 naki_fan = 4;
   optional int32 force_fu = 5;
-  repeated YakuCondition allowed_yaku_condition = 6;
+  optional YakuCondition yaku_condition = 6;
   repeated string upper_version_yaku_name = 7;
 }
 
