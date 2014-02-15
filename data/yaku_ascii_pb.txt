@@ -1,6 +1,1162 @@
 yaku {
-  name: "平和"
+  name: "立直"
   menzen_fan: 1
-  naki_fan: 0
+  allowed_yaku_condition {
+    required_richi_type: RICHI
+  }
 }
 
+yaku {
+  name: "一発"
+  menzen_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      is_soku: true
+    }
+  }
+}
+
+yaku {
+  name: "嶺上開花"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      is_rinshan: true
+    }
+  }
+}
+
+yaku {
+  name: "槍槓"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      is_chankan: true
+    }
+  }
+}
+
+yaku {
+  name: "海底摸月"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      required_agari_type: TSUMO
+      is_haitei: true
+    }
+  }
+}
+
+yaku {
+  name: "河底撈魚"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      required_agari_type: RON
+      is_haitei: true
+    }
+  }
+}
+
+yaku {
+  name: "門前清自摸和"
+  menzen_fan: 1
+  allowed_yaku_condition {
+    required_agari_condition {
+      required_agari_type: TSUMO
+    }
+  }
+}
+
+yaku {
+  name: "断么九"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_tile: TILE_2
+    }
+    allowed_tile_condition {
+      required_tile: TILE_3
+    }
+    allowed_tile_condition {
+      required_tile: TILE_4
+    }
+    allowed_tile_condition {
+      required_tile: TILE_5
+    }
+    allowed_tile_condition {
+      required_tile: TILE_6
+    }
+    allowed_tile_condition {
+      required_tile: TILE_7
+    }
+    allowed_tile_condition {
+      required_tile: TILE_8
+    }
+  }
+}
+
+yaku {
+  name: "平和"
+  menzen_fan: 1
+  allowed_yaku_condition {
+    disallowed_tile_condition {
+      required_tile: SANGEN_TILE
+    }
+    disallowed_tile_condition {
+      is_jikaze_tile: true
+    }
+    disallowed_tile_condition {
+      is_bakaze_tile: true
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+    }
+    required_machi_type: MACHI_0FU
+  }
+}
+
+yaku {
+  name: "一盃口"
+  menzen_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+  }
+}
+
+yaku {
+  name: "役牌 白"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: SANGEN_HAKU
+      }
+    }
+  }
+}
+
+yaku {
+  name: "役牌 發"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: SANGEN_HATSU
+      }
+    }
+  }
+}
+
+yaku {
+  name: "役牌 中"
+  menzen_fan: 1
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: SANGEN_CHUN
+      }
+    }
+  }
+}
+
+yaku {
+  name: "三色同順"
+  menzen_fan: 2
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_tile: WANZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+      required_tile_condition {
+        required_tile: WANZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_B
+      }
+      required_tile_condition {
+        required_tile: WANZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_tile: SOUZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+      required_tile_condition {
+        required_tile: SOUZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_B
+      }
+      required_tile_condition {
+        required_tile: SOUZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_tile: PINZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+      required_tile_condition {
+        required_tile: PINZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_B
+      }
+      required_tile_condition {
+        required_tile: PINZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_C
+      }
+    }
+  }
+}
+
+yaku {
+  name: "一気通貫"
+  menzen_fan: 2
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_1
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_2
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_3
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_4
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_5
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_6
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_7
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_8
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_COLOR_A
+        required_tile: TILE_9
+      }
+    }
+  }
+}
+
+yaku {
+  name: "混全帯么九"
+  menzen_fan: 2
+  naki_fan: 1
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_tile: TILE_1
+      }
+      allowed_tile_condition {
+        required_tile: TILE_9
+      }
+      allowed_tile_condition {
+        required_tile: JIHAI_TILE
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+      either_tile_condition {
+        required_tile: JIHAI_TILE
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+      either_tile_condition {
+        required_tile: JIHAI_TILE
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+      either_tile_condition {
+        required_tile: JIHAI_TILE
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+      either_tile_condition {
+        required_tile: JIHAI_TILE
+      }
+    }
+  }
+}
+
+yaku {
+  name: "七対子"
+  menzen_fan: 2
+  force_fu: 25
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_B
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_D
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_E
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_F
+      }
+    }
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_variable_tile: VARIABLE_TILE_G
+      }
+    }
+  }
+}
+
+yaku {
+  name: "対々和"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+    }
+  }
+}
+
+yaku {
+  name: "三暗刻"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+  }
+}
+
+yaku {
+  name: "混老頭"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_tile: TILE_1
+    }
+    allowed_tile_condition {
+      required_tile: TILE_9
+    }
+    allowed_tile_condition {
+      required_tile: JIHAI_TILE
+    }
+  }
+}
+
+yaku {
+  name: "三色同刻"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_tile_condition {
+        required_tile: WANZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_tile_condition {
+        required_tile: PINZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_tile_condition {
+        required_tile: SOUZU_TILE
+        required_variable_tile: VARIABLE_NUMBER_A
+      }
+    }
+  }
+}
+
+yaku {
+  name: "三槓子"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+  }
+}
+
+yaku {
+  name: "小三元"
+  menzen_fan: 2
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: TOITSU
+      required_tile_condition {
+        required_tile: SANGEN_TILE
+        required_variable_tile: VARIABLE_TILE_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: SANGEN_TILE
+        required_variable_tile: VARIABLE_TILE_B
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: SANGEN_TILE
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+  }
+}
+
+yaku {
+  name: "ダブル立直"
+  menzen_fan: 2
+  allowed_yaku_condition {
+    required_richi_type: DOUBLE_RICHI
+  }
+}
+
+yaku {
+  name: "混一色"
+  menzen_fan: 3
+  naki_fan: 2
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI
+    }
+  }
+}
+
+yaku {
+  name: "純全帯么九"
+  menzen_fan: 3
+  naki_fan: 2
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: TOITSU
+      allowed_tile_condition {
+        required_tile: TILE_1
+      }
+      allowed_tile_condition {
+        required_tile: TILE_9
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile: TILE_1
+      }
+      either_tile_condition {
+        required_tile: TILE_9
+      }
+    }
+  }
+}
+
+yaku {
+  name: "二盃口"
+  menzen_fan: 3
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      is_naki_allowed: false
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_A
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_B
+      }
+      required_tile_condition {
+        required_variable_tile: VARIABLE_TILE2_C
+      }
+    }
+  }
+}
+
+yaku {
+  name: "清一色"
+  menzen_fan: 6
+  naki_fan: 5
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+  }
+}
+
+yaku {
+  name: "国士無双"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_tile_condition {
+      required_tile: WIND_TON
+    }
+    required_tile_condition {
+      required_tile: WIND_NAN
+    }
+    required_tile_condition {
+      required_tile: WIND_SHA
+    }
+    required_tile_condition {
+      required_tile: WIND_PE
+    }
+    required_tile_condition {
+      required_tile: SANGEN_HAKU
+    }
+    required_tile_condition {
+      required_tile: SANGEN_HATSU
+    }
+    required_tile_condition {
+      required_tile: SANGEN_CHUN
+    }
+    required_tile_condition {
+      required_tile: WANZU_1
+    }
+    required_tile_condition {
+      required_tile: WANZU_9
+    }
+    required_tile_condition {
+      required_tile: SOUZU_1
+    }
+    required_tile_condition {
+      required_tile: SOUZU_9
+    }
+    required_tile_condition {
+      required_tile: PINZU_1
+    }
+    required_tile_condition {
+      required_tile: PINZU_9
+    }
+    allowed_tile_condition {
+      required_tile: JIHAI_TILE
+    }
+    allowed_tile_condition {
+      required_tile: TILE_1
+    }
+    allowed_tile_condition {
+      required_tile: TILE_9
+    }
+  }
+}
+
+yaku {
+  name: "四暗刻"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+  }
+}
+
+yaku {
+  name: "大三元"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: SANGEN_HAKU
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: SANGEN_HATSU
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: SANGEN_CHUN
+      }
+    }
+  }
+}
+
+yaku {
+  name: "字一色"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_tile: JIHAI_TILE
+    }
+  }
+}
+
+yaku {
+  name: "小四喜"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: TOITSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_B
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_D
+      }
+    }
+  }
+}
+
+yaku {
+  name: "緑一色"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_tile: SOUZU_2
+    }
+    allowed_tile_condition {
+      required_tile: SOUZU_3
+    }
+    allowed_tile_condition {
+      required_tile: SOUZU_4
+    }
+    allowed_tile_condition {
+      required_tile: SOUZU_6
+    }
+    allowed_tile_condition {
+      required_tile: SOUZU_8
+    }
+    allowed_tile_condition {
+      required_tile: SANGEN_HATSU
+    }
+  }
+}
+
+yaku {
+  name: "清老頭"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    allowed_tile_condition {
+      required_tile: TILE_1
+    }
+    allowed_tile_condition {
+      required_tile: TILE_9
+    }
+  }
+}
+
+yaku {
+  name: "四槓子"
+  menzen_fan: 13
+  naki_fan: 13
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+    required_element_condition {
+      allowed_element_type: KANTSU
+    }
+  }
+}
+
+yaku {
+  name: "九蓮宝燈"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_2
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_3
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_4
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_5
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_6
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_7
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_8
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+  }
+}
+
+yaku {
+  name: "天和"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_player_type: DEALER
+    required_agari_condition {
+      required_agari_type: TSUMO
+      is_beginning: true
+    }
+  }
+}
+
+yaku {
+  name: "地和"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_player_type: NON_DEALER
+    required_agari_condition {
+      requried_agari_type: TSUMO
+      is_beginning: true
+    }
+  }
+}
+
+yaku {
+  name: "人和"
+  menzen_fan: 13
+  allowed_yaku_condition {
+    required_agari_condition {
+      requried_agari_type: RON
+      is_beginning: true
+    }
+  }
+}
+
+yaku {
+  name: "国士無双十三面待ち"
+  menzen_fan: 26
+  naki_fan: 26
+  allowed_yaku_condition {
+    required_machi_type: JUSANMEM
+  }
+}
+
+yaku {
+  name: "四暗刻単騎待ち"
+  menzen_fan: 26
+  allowed_yaku_condition {
+    required_machi_type: TANKI
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      is_naki_allowed: false
+      is_ron_allowed: false
+    }
+  }
+}
+
+yaku {
+  name: "大四喜"
+  menzen_fan: 26
+  naki_fan: 26
+  allowed_yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_A
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_B
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      required_tile_condition {
+        required_tile: WIND_TILE
+        required_variable_tile: VARIABLE_TILE_D
+      }
+    }
+  }
+}
+
+yaku {
+  name: "純正九蓮宝燈"
+  menzen_fan: 26
+  allowed_yaku_condition {
+    required_machi_type: KYUMEN
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_1
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_2
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_3
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_4
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_5
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_6
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_7
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_8
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_tile: TILE_9
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+    required_tile_condition {
+      required_variable_tile: VARIABLE_COLOR_A
+    }
+  }
+}

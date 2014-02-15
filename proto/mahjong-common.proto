@@ -3,7 +3,6 @@ syntax = "proto2";
 package mahjong;
 
 enum TileType {
-
   // 0x00 00 00 00 00 00 00 00
   //      G  F  E  D  C  B  A
   //
@@ -12,12 +11,9 @@ enum TileType {
   // B: [1, 5] tile type. Or 0 means any.
   //
   // C: [1, 2] sequential or not. Or 0 means any.
-
-  MASK_NUMBER = 0xff;
-  MASK_TYPE = 0xff00;
-  MASK_SEQUENTIAL = 0xff0000;
-
-  ANY_TILE = 0;
+  MASK_TILE_NUMBER = 0xff;
+  MASK_TILE_KIND = 0xff00;
+  MASK_TILE_SEQUENTIAL = 0xff0000;
 
   WIND_TILE   = 0x0100;
   SANGEN_TILE = 0x0200;
@@ -27,6 +23,8 @@ enum TileType {
 
   UNSEQUENTIAL_TILE = 0x010000;
   SEQUENTIAL_TILE   = 0x020000;
+
+  JIHAI_TILE = 0x010000;
 
   WIND_TON = 0x010101;
   WIND_NAN = 0x010102;
@@ -78,18 +76,49 @@ enum TileType {
   PINZU_9 = 0x020509;
 }
 
-enum MentsuType {
-  SHUNTSU = 0x1;
-    SHUNTSU_OPENED = 0x10;
-    SHUNTSU_CLOSED = 0x11;
+enum HandElementType {
+  MENTSU = 0x1;
+    SHUNTSU = 0x11;
+    KOUTSU = 0x12;
+      KANTSU = 0x121;
 
-  KOUTSU = 0x2;
-    KOUTSU_OPENED = 0x20;
-    KOUTSU_CLOSED = 0x21;
+  TOITSU = 0x2;
+}
 
-  KANTSU = 0x3;
-    KANTSU_OPENED = 0x30;
-    KANTSU_CLOSED = 0x31;
+enum AgariType {
+  RON = 0;
+  TSUMO = 1;
+}
 
-  TOITSU = 0x4;
+enum RichiType {
+  RICHI = 0;
+  OPENED_RICHI = 1;
+  DOUBLE_RICHI = 2;
+}
+
+enum MachiType {
+  // 0x00 00 00 00 00 00 00 00
+  //      G  F  E  D  C  B  A
+  //
+  // A: type
+  // B: 0: any, 1: 2fu, 2: 0fu
+
+  MASK_MACHI_KIND = 0xff;
+  MASK_MACHI_FU = 0xff00;
+
+  MACHI_2FU = 0x0100;
+  MACHI_0FU = 0x0200;
+
+  TANKI    = 0x0101;
+  KANCHAN  = 0x0102;
+  PENCHAN  = 0x0103;
+  SHABO    = 0x0204;
+  RYANMEN  = 0x0205;
+  KYUMEN   = 0x0206;
+  JUSANMEN = 0x0207;
+}
+
+enum PlayerType {
+  DEALER = 0;
+  NON_DEALER = 1;
 }

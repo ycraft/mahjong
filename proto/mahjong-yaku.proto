@@ -10,21 +10,72 @@ message Rule {
 
 message Yaku {
   optional string name = 1;
-  optional int32 menzen_fan = 2;
-  optional int32 naki_fan = 3;
-  optional Condition condition = 4;
-  repeated string upper_version_yaku_name = 5;
+  optional string description = 2;
+  optional int32 menzen_fan = 3;
+  optional int32 naki_fan = 4;
+  optional int32 force_fu = 5;
+  repeated YakuCondition allowed_yaku_condition = 6;
+  repeated string upper_version_yaku_name = 7;
 }
 
-message MentsuCondition {
-  optional MentsuType required_mentsu_type = 1;
-  repeated TileType required_tile_type = 2;
+message TileCondition {
+  enum VariableTileType {
+    VARIABLE_TILE = 0x10;
+      VARIABLE_TILE_A = 0x11;
+      VARIABLE_TILE_B = 0x12;
+      VARIABLE_TILE_C = 0x13;
+      VARIABLE_TILE_D = 0x14;
+      VARIABLE_TILE_E = 0x15;
+      VARIABLE_TILE_F = 0x16;
+      VARIABLE_TILE_G = 0x17;
+
+    VARIABLE_TILE2 = 0x20;
+      VARIABLE_TILE2_A = 0x21;
+      VARIABLE_TILE2_B = 0x22;
+      VARIABLE_TILE2_C = 0x23;
+
+    VARIABLE_NUMBER = 0x30;
+      VARIABLE_NUMBER_A = 0x31;
+      VARIABLE_NUMBER_B = 0x32;
+      VARIABLE_NUMBER_C = 0x33;
+
+    VARIABLE_COLOR = 0x40;
+      VARIABLE_COLOR_A = 0x41;  // Doesn't include Jihai.
+      VARIABLE_COLOR_A_OR_JIHAI = 0x42;
+  }
+  optional TileType required_tile = 1;
+  optional VariableTileType required_variable_tile = 2;
+  optional bool is_jikaze_tile = 3;
+  optional bool is_bakaze_tile = 4;
 }
 
-message Condition {
-  repeated TileType allowed_tile = 1;
-  repeated TileType required_tile = 2;
-  repeated MentsuType required_mentsu_type = 3;
-  optional bool required_ryanmen = 4 [default = false];
-  optional bool allow_yakuhai = 5 [default = true];
+message ElementCondition {
+  repeated HandElementType allowed_element_type = 1;
+  repeated TileCondition allowed_tile_condition = 2;
+  repeated TileCondition required_tile_condition = 3;
+  // At least one of given conditions must be satisfied.
+  repeated TileCondition either_tile_condition = 4;
+  optional bool is_naki_allowed = 5 [default = true];
+  // Allow to use a ron tile as part of this element.
+  optional bool is_ron_allowed = 6 [default = true];
+}
+
+message AgariCondition {
+  optional AgariType required_agari_type = 1;
+  optional bool is_soku = 2;
+  optional bool is_haitei = 3;
+  optional bool is_chankan = 4;
+  optional bool is_beginning = 5;
+  optional bool is_rinshan = 6;
+}
+
+message YakuCondition {
+  repeated TileCondition allowed_tile_condition = 1;
+  repeated TileCondition disallowed_tile_condition = 2;
+  repeated TileCondition required_tile_condition = 3;
+  repeated ElementCondition required_element_condition = 4;
+  optional MachiType required_machi_type = 5;
+  optional PlayerType required_player_type = 6;
+  optional AgariCondition required_agari_condition = 7;
+  optional RichiType required_richi_type = 8;
 }
