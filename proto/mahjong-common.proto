@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-package mahjong;
+package ydec.mahjong;
 
 enum TileType {
   // 0x00 00 00 00 00 00 00 00
@@ -91,9 +91,10 @@ enum AgariType {
 }
 
 enum RichiType {
-  RICHI = 0;
-  OPENED_RICHI = 1;
-  DOUBLE_RICHI = 2;
+  NONE = 0;
+  RICHI = 1;
+  OPENED_RICHI = 2;
+  DOUBLE_RICHI = 3;
 }
 
 enum MachiType {
@@ -121,4 +122,40 @@ enum MachiType {
 enum PlayerType {
   DEALER = 0;
   NON_DEALER = 1;
+}
+
+message Hand {
+  repeated TileType closed_tile = 1;  // not includes Agari-tile
+  optional TileType agari_tile = 2;
+
+  message Chii {
+    repeated TileType tile = 1;
+  }
+  repeated Chii chiied_tile = 3;
+
+  message Pon {
+    optional TileType tile = 1;
+  }
+  repeated Pon ponned_tile = 4;
+
+  message Kan {
+    optional TileType tile = 1;
+    optional bool is_closed = 2;
+  }
+  repeated Kan Kanned_tile = 5;
+
+  optional AgariType agari_type = 6;
+  optional RichiType richi_type = 7;
+}
+
+message Player {
+  optional PlayerType player_type = 1;
+  optional TileType wind = 2;
+  optional Hand hand = 3;
+}
+
+message Field {
+  optional TileType wind = 1; // Ton-ba, Nan-ba
+  repeated TileType dora = 2; // Not dora hyouji hai
+  optional int32 honba = 3;
 }
