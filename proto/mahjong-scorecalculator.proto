@@ -14,24 +14,22 @@ message HandParserResult {
 }
 
 message ParsedHand {
-  message Element {
-    optional mahjong.HandElementType type = 1;
-
-    message ElementTile {
-      optional mahjong.TileType tile = 1;
-
-      enum AcquireMethod {
-        TSUMO = 0;
-        NAKI = 1;
-        RON_AGARI = 2;
-        TSUMO_AGARI = 3;
-      }
-
-      optional AcquireMethod acquire_method = 2;
-    }
-
-    repeated ElementTile element_tile = 2;
-  }
-
   repeated Element element = 1;
+}
+
+message Element {
+  optional mahjong.HandElementType type = 1;
+  repeated ElementTile element_tile = 2;
+}
+
+message ElementTile {
+  optional mahjong.TileType tile = 1;
+  optional AcquireMethod acquire_method = 2;
+}
+
+enum AcquireMethod {
+  TSUMO = 0;
+  NAKI = 1;
+  RON_AGARI = 2;
+  TSUMO_AGARI = 3;
 }

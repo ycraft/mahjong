@@ -129,7 +129,7 @@ void HandParser::addResult(int last_id) {
 
     // Parse closed tiles
     for (int id = 1; id <= last_id; ++id) {
-      ParsedHand_Element* element = parsed_hand->add_element();
+      Element* element = parsed_hand->add_element();
 
       // Set element type
       for (int i = _num_free_tiles - 1; i >= 0; --i) {
@@ -143,17 +143,15 @@ void HandParser::addResult(int last_id) {
       bool has_set_agari_tile = false;
       for (int i = 0; i < _num_free_tiles; ++i) {
         if (_free_tile_group_ids[i] == id) {
-          ParsedHand_Element_ElementTile* element_tile = element->add_element_tile();
+          ElementTile* element_tile = element->add_element_tile();
           element_tile->set_tile(_free_tiles[i]);
 
           if (!has_set_agari_tile && _free_tiles[i] == _hand.agari_tile() && id == agari_tile_id) {
             has_set_agari_tile = true;
             element_tile->set_acquire_method(
-                _hand.agari_type() == TSUMO ?
-                    ParsedHand_Element_ElementTile_AcquireMethod_TSUMO_AGARI
-                    : ParsedHand_Element_ElementTile_AcquireMethod_RON_AGARI);
+                _hand.agari_type() == TSUMO ? TSUMO_AGARI : RON_AGARI);
           } else {
-            element_tile->set_acquire_method(ParsedHand_Element_ElementTile_AcquireMethod_TSUMO);
+            element_tile->set_acquire_method(TSUMO);
           }
         }
       }
@@ -161,39 +159,37 @@ void HandParser::addResult(int last_id) {
 
     // Parse Naki tiles
     for (int i = 0; i < _hand.chiied_tile_size(); ++i) {
-      ParsedHand_Element* element = parsed_hand->add_element();
+      Element* element = parsed_hand->add_element();
       element->set_type(SHUNTSU);
 
       const Hand_Chii& chiied_tile = _hand.chiied_tile(i);
       for (int j = 0; j < chiied_tile.tile_size(); ++j) {
-        ParsedHand_Element_ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(ParsedHand_Element_ElementTile_AcquireMethod_NAKI);
+        ElementTile* element_tile = element->add_element_tile();
+        element_tile->set_acquire_method(NAKI);
         element_tile->set_tile(chiied_tile.tile(j));
       }
     }
 
     for (int i = 0; i < _hand.ponned_tile_size(); ++i) {
-      ParsedHand_Element* element = parsed_hand->add_element();
+      Element* element = parsed_hand->add_element();
       element->set_type(KOUTSU);
 
       const Hand_Pon& ponned_tile = _hand.ponned_tile(i);
       for (int j = 0; j < 3; ++j) {
-        ParsedHand_Element_ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(ParsedHand_Element_ElementTile_AcquireMethod_NAKI);
+        ElementTile* element_tile = element->add_element_tile();
+        element_tile->set_acquire_method(NAKI);
         element_tile->set_tile(ponned_tile.tile());
       }
     }
 
     for (int i = 0; i < _hand.kanned_tile_size(); ++i) {
-      ParsedHand_Element* element = parsed_hand->add_element();
+      Element* element = parsed_hand->add_element();
       element->set_type(KANTSU);
 
       const Hand_Kan& kanned_tile = _hand.kanned_tile(i);
       for (int j = 0; j < 4; ++j) {
-        ParsedHand_Element_ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(kanned_tile.is_closed() ?
-            ParsedHand_Element_ElementTile_AcquireMethod_TSUMO
-            : ParsedHand_Element_ElementTile_AcquireMethod_NAKI);
+        ElementTile* element_tile = element->add_element_tile();
+        element_tile->set_acquire_method(kanned_tile.is_closed() ? TSUMO : NAKI);
         element_tile->set_tile(kanned_tile.tile());
       }
     }
