@@ -717,6 +717,7 @@ yaku {
   name: "国士無双"
   menzen_fan: 13
   yaku_condition {
+    required_agarikei: false
     required_tile_condition {
       required_tile: WIND_TON
     }
@@ -1030,7 +1031,9 @@ yaku {
   menzen_fan: 26
   naki_fan: 26
   yaku_condition {
-    required_machi_type: JUSANMEN
+    required_yaku: "国士無双"
+    required_agarikei: false
+    required_num_of_waiting_kinds: 13
   }
 }
 
@@ -1039,26 +1042,7 @@ yaku {
   menzen_fan: 26
   yaku_condition {
     required_machi_type: TANKI
-    required_element_condition {
-      allowed_element_type: KOUTSU
-      is_naki_allowed: false
-      is_ron_allowed: false
-    }
-    required_element_condition {
-      allowed_element_type: KOUTSU
-      is_naki_allowed: false
-      is_ron_allowed: false
-    }
-    required_element_condition {
-      allowed_element_type: KOUTSU
-      is_naki_allowed: false
-      is_ron_allowed: false
-    }
-    required_element_condition {
-      allowed_element_type: KOUTSU
-      is_naki_allowed: false
-      is_ron_allowed: false
-    }
+    required_yaku: "四暗刻"
   }
 }
 
@@ -1102,61 +1086,7 @@ yaku {
   name: "純正九蓮宝燈"
   menzen_fan: 26
   yaku_condition {
-    required_machi_type: KYUMEN
-    required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_2
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_3
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_4
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_5
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_6
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_7
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_8
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
-    }
-    required_tile_condition {
-      required_variable_tile: VARIABLE_COLOR_A
-    }
+    required_yaku: "九蓮宝燈"
+    required_num_of_waiting_kinds: 9
   }
 }

@@ -115,8 +115,6 @@ enum MachiType {
   PENCHAN  = 0x0103;
   SHABO    = 0x0204;
   RYANMEN  = 0x0205;
-  KYUMEN   = 0x0206;
-  JUSANMEN = 0x0207;
 }
 
 enum PlayerType {

@@ -32,6 +32,7 @@ class HandParser {
   void setup(const mahjong::Hand& hand, HandParserResult* result);
   void startDfs();
   void dfs(int i, int id, bool has_jantou);
+  void checkChiiToitsu();
   void addResult(int last_id);
 };
 

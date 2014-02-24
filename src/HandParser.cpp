@@ -7,6 +7,7 @@
 #include "src/HandParser.h"
 
 #include <algorithm>
+#include <unordered_set>
 
 #include "MahjongCommonUtils.h"
 
@@ -110,6 +111,38 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
   }
 }
 
+void HandParser::checkChiiToitsu() {
+  if (_hand.chiied_tile_size() != 0
+      || _hand.ponned_tile_size() != 0
+      || _hand.kanned_tile_size() != 0) {
+    return;
+  }
+
+  unordered_set<TileType> used_tiles;
+  for (int i = 1; i < _num_free_tiles; i += 2) {
+    if (_free_tiles[i - 1] != _free_tiles[i]) {
+      return;
+    }
+    if (!used_tiles.insert(_free_tiles[i]).second) {
+      return;
+    }
+  }
+  if (used_tiles.size() != 7) {
+    return;
+  }
+
+  for (int i = 1; i < _num_free_tiles; i += 2) {
+    _free_tile_group_ids[i - 1] = _free_tile_group_ids[i] = 1 + i / 2;
+    _free_tile_element_types[i] = TOITSU;
+  }
+
+  addResult(7);
+
+  // reset state
+  memset(_free_tile_group_ids, 0, _num_free_tiles * sizeof(_free_tile_group_ids[0]));
+  memset(_free_tile_element_types, 0, _num_free_tiles * sizeof(_free_tile_element_types[0]));
+}
+
 void HandParser::addResult(int last_id) {
   for (int agari_tile_id = 1; agari_tile_id <= last_id; ++agari_tile_id) {
     bool valid_agari_tile_id = false;
@@ -132,6 +165,8 @@ void HandParser::addResult(int last_id) {
       Element* element = parsed_hand->add_element();
 
       // Set element type
+      // Search element type from the last to the first.
+      // You need to element type only to the last one for each group.
       for (int i = _num_free_tiles - 1; i >= 0; --i) {
         if (_free_tile_group_ids[i] == id) {
           element->set_type(_free_tile_element_types[i]);
