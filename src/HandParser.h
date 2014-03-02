@@ -21,8 +21,8 @@ class HandParser {
   void parse(const mahjong::Hand& hand, HandParserResult* result);
 
  private:
-  const mahjong::Hand& _hand;
-  const unsigned int _num_free_tiles;
+  const mahjong::Hand* _hand;
+  unsigned int _num_free_tiles;
   unsigned int _free_tile_group_ids[14];
   mahjong::TileType _free_tiles[14];
   mahjong::HandElementType _free_tile_element_types[14];

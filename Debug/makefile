@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include tests/subdir.mk
 -include src-gen/cpp/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
@@ -45,7 +46,7 @@ all: MahjongScoreCalculator
 MahjongScoreCalculator: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MacOS X C++ Linker'
-	g++ `pkg-config --cflags --libs protobuf` -o "MahjongScoreCalculator" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/Users/yuuki/gtest/mybuild `pkg-config --cflags --libs protobuf` -o "MahjongScoreCalculator" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

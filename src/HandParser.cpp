@@ -7,7 +7,7 @@
 #include "src/HandParser.h"
 
 #include <algorithm>
-#include <unordered_set>
+#include <set>
 
 #include "MahjongCommonUtils.h"
 
@@ -17,7 +17,7 @@ using namespace ydec::mahjong;
 namespace ydec {
 namespace msc {
 
-HandParser::HandParser() :_result(nullptr), _hand(nullptr) {
+HandParser::HandParser() : _hand(nullptr), _num_free_tiles(0), _result(nullptr) {
 }
 
 HandParser::~HandParser() {
@@ -40,7 +40,7 @@ void HandParser::setup(const Hand& hand, HandParserResult* result) {
 
   memset(_free_tile_group_ids, 0, _num_free_tiles * sizeof(_free_tile_group_ids[0]));
 
-  _hand = hand;
+  _hand = &hand;
   _result = result;
 }
 
@@ -112,13 +112,13 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
 }
 
 void HandParser::checkChiiToitsu() {
-  if (_hand.chiied_tile_size() != 0
-      || _hand.ponned_tile_size() != 0
-      || _hand.kanned_tile_size() != 0) {
+  if (_hand->chiied_tile_size() != 0
+      || _hand->ponned_tile_size() != 0
+      || _hand->kanned_tile_size() != 0) {
     return;
   }
 
-  unordered_set<TileType> used_tiles;
+  set<TileType> used_tiles;
   for (int i = 1; i < _num_free_tiles; i += 2) {
     if (_free_tiles[i - 1] != _free_tiles[i]) {
       return;
@@ -148,7 +148,7 @@ void HandParser::addResult(int last_id) {
     bool valid_agari_tile_id = false;
     for (int i = 0; i < _num_free_tiles; ++i) {
       if (_free_tile_group_ids[i] == agari_tile_id
-          && _free_tiles[i] == _hand.agari_tile()) {
+          && _free_tiles[i] == _hand->agari_tile()) {
         valid_agari_tile_id = true;
         break;
       }
@@ -181,10 +181,11 @@ void HandParser::addResult(int last_id) {
           ElementTile* element_tile = element->add_element_tile();
           element_tile->set_tile(_free_tiles[i]);
 
-          if (!has_set_agari_tile && _free_tiles[i] == _hand.agari_tile() && id == agari_tile_id) {
+          if (!has_set_agari_tile && _free_tiles[i] == _hand->agari_tile() && id == agari_tile_id) {
             has_set_agari_tile = true;
             element_tile->set_acquire_method(
-                _hand.agari_type() == TSUMO ? TSUMO_AGARI : RON_AGARI);
+                _hand->agari_type() == AgariType::TSUMO ?
+                    TSUMO_AGARI : RON_AGARI);
           } else {
             element_tile->set_acquire_method(TSUMO);
           }
@@ -193,11 +194,11 @@ void HandParser::addResult(int last_id) {
     }
 
     // Parse Naki tiles
-    for (int i = 0; i < _hand.chiied_tile_size(); ++i) {
+    for (int i = 0; i < _hand->chiied_tile_size(); ++i) {
       Element* element = parsed_hand->add_element();
       element->set_type(SHUNTSU);
 
-      const Hand_Chii& chiied_tile = _hand.chiied_tile(i);
+      const Hand_Chii& chiied_tile = _hand->chiied_tile(i);
       for (int j = 0; j < chiied_tile.tile_size(); ++j) {
         ElementTile* element_tile = element->add_element_tile();
         element_tile->set_acquire_method(NAKI);
@@ -205,11 +206,11 @@ void HandParser::addResult(int last_id) {
       }
     }
 
-    for (int i = 0; i < _hand.ponned_tile_size(); ++i) {
+    for (int i = 0; i < _hand->ponned_tile_size(); ++i) {
       Element* element = parsed_hand->add_element();
       element->set_type(KOUTSU);
 
-      const Hand_Pon& ponned_tile = _hand.ponned_tile(i);
+      const Hand_Pon& ponned_tile = _hand->ponned_tile(i);
       for (int j = 0; j < 3; ++j) {
         ElementTile* element_tile = element->add_element_tile();
         element_tile->set_acquire_method(NAKI);
@@ -217,11 +218,11 @@ void HandParser::addResult(int last_id) {
       }
     }
 
-    for (int i = 0; i < _hand.kanned_tile_size(); ++i) {
+    for (int i = 0; i < _hand->kanned_tile_size(); ++i) {
       Element* element = parsed_hand->add_element();
       element->set_type(KANTSU);
 
-      const Hand_Kan& kanned_tile = _hand.kanned_tile(i);
+      const Hand_Kan& kanned_tile = _hand->kanned_tile(i);
       for (int j = 0; j < 4; ++j) {
         ElementTile* element_tile = element->add_element_tile();
         element_tile->set_acquire_method(kanned_tile.is_closed() ? TSUMO : NAKI);
