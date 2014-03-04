@@ -10,8 +10,15 @@
 
 #include "src-gen/cpp/mahjong-scorecalculator.pb.h"
 
+#include <string>
+
 namespace ydec {
 namespace msc {
+
+class HandParserResultUtil {
+ public:
+  static std::string getDebugString(const HandParserResult& result);
+};
 
 class HandParser {
  public:

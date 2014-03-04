@@ -17,6 +17,34 @@ using namespace ydec::mahjong;
 namespace ydec {
 namespace msc {
 
+string HandParserResultUtil::getDebugString(const HandParserResult& result) {
+  string str;
+  for (const ParsedHand& parsedHand : result.parsed_hand()) {
+    for (const Element& element : parsedHand.element()) {
+      for (const ElementTile &elementTile : element.element_tile()) {
+        str += " ";
+        switch (elementTile.acquire_method()) {
+          case AcquireMethod::TSUMO:
+            str += TileType_Name(elementTile.tile());
+            break;
+          case AcquireMethod::NAKI:
+            str += "(" + TileType_Name(elementTile.tile()) + ")";
+            break;
+          case AcquireMethod::RON_AGARI:
+            str += "[(" + TileType_Name(elementTile.tile()) + ")]";
+            break;
+          case AcquireMethod::TSUMO_AGARI:
+            str += "[" + TileType_Name(elementTile.tile()) + "]";
+            break;
+        }
+      }
+      str += ",";
+    }
+    str += "\n";
+  }
+  return str;
+}
+
 HandParser::HandParser() : _hand(nullptr), _num_free_tiles(0), _result(nullptr) {
 }
 
