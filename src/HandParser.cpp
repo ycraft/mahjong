@@ -25,7 +25,9 @@ HandParser::~HandParser() {
 
 void HandParser::parse(const Hand& hand, HandParserResult* result) {
   setup(hand, result);
-  startDfs();
+  runDfs();
+  checkChiiToitsu();
+  deduplicateResult();
 }
 
 void HandParser::setup(const Hand& hand, HandParserResult* result) {
@@ -44,7 +46,7 @@ void HandParser::setup(const Hand& hand, HandParserResult* result) {
   _result = result;
 }
 
-void HandParser::startDfs() {
+void HandParser::runDfs() {
   dfs(0, 1, false);
 }
 
@@ -230,6 +232,69 @@ void HandParser::addResult(int last_id) {
       }
     }
   }
+}
+
+inline bool checkSame(const ElementTile& lhs, const ElementTile& rhs) {
+  return lhs.acquire_method() == rhs.acquire_method() &&
+         lhs.tile() == rhs.tile();
+}
+
+inline bool checkSame(const Element& lhs, const Element& rhs) {
+  static bool is_used[10];
+
+  if (lhs.type() != rhs.type()) return false;
+  if (lhs.element_tile_size() != rhs.element_tile_size()) return false;
+
+  memset(is_used, 0, sizeof(is_used));
+  for (const ElementTile& element_tile : lhs.element_tile()) {
+    bool found = false;
+    for (int i = 0; i < rhs.element_tile_size(); ++i) {
+      if (is_used[i]) continue;
+      if (!checkSame(element_tile, rhs.element_tile(i))) continue;
+      is_used[i] = true;
+      found = true;
+      break;
+    }
+    if (!found) return false;
+  }
+
+  return true;
+}
+
+inline bool checkSame(const ParsedHand& lhs, const ParsedHand& rhs) {
+  static bool is_used[10];
+
+  if (lhs.element_size() != rhs.element_size()) {
+    return false;
+  }
+
+  memset(is_used, 0, sizeof(is_used));
+  for (const Element& element : lhs.element()) {
+    bool found = false;
+    for (int i = 0; i < rhs.element_size(); ++i) {
+      if (is_used[i]) continue;
+      if (!checkSame(element, rhs.element(i))) continue;
+      is_used[i] = true;
+      found = true;
+      break;
+    }
+    if (!found) return false;
+  }
+
+  return true;
+}
+
+void HandParser::deduplicateResult() {
+  HandParserResult dedupedResult;
+  for (const ParsedHand& parsed_hand : _result->parsed_hand()) {
+    bool duplicated = false;
+    for (const ParsedHand& entry : dedupedResult.parsed_hand()) {
+      duplicated |= checkSame(parsed_hand, entry);
+      if (duplicated) break;
+    }
+    if (!duplicated) dedupedResult.add_parsed_hand()->CopyFrom(parsed_hand);
+  }
+  _result->Swap(&dedupedResult);
 }
 
 } // msc
