@@ -171,6 +171,31 @@ TEST_F(HandParserTest, ParseTest_6) {
   EXPECT_EQ(0, result.parsed_hand_size());
 }
 
+TEST_F(HandParserTest, ParseTest_7) {
+  Hand hand;
+  hand.add_closed_tile(TileType::PINZU_3);
+  hand.add_closed_tile(TileType::PINZU_3);
+  hand.add_closed_tile(TileType::PINZU_3);
+  hand.add_closed_tile(TileType::PINZU_4);
+  Hand::Pon* pon = hand.add_ponned_tile();
+  pon->set_tile(TileType::PINZU_2);
+  Hand::Kan* kan = hand.add_kanned_tile();
+  kan->set_is_closed(true);
+  kan->set_tile(TileType::PINZU_1);
+  Hand::Chii* chii = hand.add_chiied_tile();
+  chii->add_tile(TileType::PINZU_2);
+  chii->add_tile(TileType::PINZU_3);
+  chii->add_tile(TileType::PINZU_4);
+  hand.set_agari_tile(TileType::PINZU_4);
+  hand.set_richi_type(RichiType::RICHI);
+  hand.set_agari_type(AgariType::TSUMO);
+
+  HandParserResult result;
+  _handParser.parse(hand, &result);
+
+  EXPECT_EQ(1, result.parsed_hand_size());
+}
+
 TEST_F(HandParserTest, ParseTest_Churen) {
   Hand hand;
   hand.add_closed_tile(TileType::PINZU_1);
