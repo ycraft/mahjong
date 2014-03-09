@@ -40,7 +40,8 @@ class HandParser {
   void runDfs();
   void dfs(int i, int id, bool has_jantou);
   void checkChiiToitsu();
-  void addResult(int last_id);
+  void checkIrregular();
+  void addAgarikeiResult(int last_id);
   void deduplicateResult();
 };
 

@@ -1,12 +1,18 @@
 syntax = "proto2";
 
 import "mahjong-common.proto";
+import "mahjong-rule.proto";
 
 package ydec.msc;
 
 message ScoreCalculationResponse {
   optional int32 fu = 1;
   optional int32 fan = 2;
+  repeated mahjong.Yaku yaku = 3;
+}
+
+message YakuApplierResult {
+  repeated mahjong.Yaku applicable_yaku = 1;
 }
 
 message HandParserResult {
@@ -15,6 +21,7 @@ message HandParserResult {
 
 message ParsedHand {
   repeated Element element = 1;
+  optional bool is_agarikei = 2;
 }
 
 message Element {

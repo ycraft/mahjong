@@ -55,6 +55,7 @@ void HandParser::parse(const Hand& hand, HandParserResult* result) {
   setup(hand, result);
   runDfs();
   checkChiiToitsu();
+  checkIrregular();
   deduplicateResult();
 }
 
@@ -80,7 +81,7 @@ void HandParser::runDfs() {
 
 void HandParser::dfs(int i, int id, bool has_jantou) {
   if (i == _num_free_tiles && has_jantou) {
-    addResult(id - 1);
+    addAgarikeiResult(id - 1);
     return;
   }
 
@@ -166,14 +167,36 @@ void HandParser::checkChiiToitsu() {
     _free_tile_element_types[i] = TOITSU;
   }
 
-  addResult(7);
+  addAgarikeiResult(7);
 
   // reset state
   memset(_free_tile_group_ids, 0, _num_free_tiles * sizeof(_free_tile_group_ids[0]));
   memset(_free_tile_element_types, 0, _num_free_tiles * sizeof(_free_tile_element_types[0]));
 }
 
-void HandParser::addResult(int last_id) {
+void HandParser::checkIrregular() {
+  if (_num_free_tiles != 14) {
+    return;
+  }
+
+  ParsedHand* parsed_hand = _result->add_parsed_hand();
+  parsed_hand->set_is_agarikei(false);
+
+  Element* element = parsed_hand->add_element();
+  element->set_type(HandElementType::IRREGULAR);
+  for (const int tile : _hand->closed_tile()) {
+    ElementTile* element_tile = element->add_element_tile();
+    element_tile->set_tile(static_cast<TileType>(tile));
+    element_tile->set_acquire_method(AcquireMethod::TSUMO);
+  }
+  ElementTile* element_tile = element->add_element_tile();
+  element_tile->set_tile(_hand->agari_tile());
+  element_tile->set_acquire_method(
+      _hand->agari_type() == AgariType::TSUMO ?
+          TSUMO_AGARI : RON_AGARI);
+}
+
+void HandParser::addAgarikeiResult(int last_id) {
   for (int agari_tile_id = 1; agari_tile_id <= last_id; ++agari_tile_id) {
     bool valid_agari_tile_id = false;
     for (int i = 0; i < _num_free_tiles; ++i) {
@@ -189,6 +212,7 @@ void HandParser::addResult(int last_id) {
     }
 
     ParsedHand* parsed_hand = _result->add_parsed_hand();
+    parsed_hand->set_is_agarikei(true);
 
     // Parse closed tiles
     for (int id = 1; id <= last_id; ++id) {

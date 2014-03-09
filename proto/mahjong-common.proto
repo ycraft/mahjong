@@ -81,6 +81,8 @@ enum HandElementType {
       KANTSU = 0x121;
 
   TOITSU = 0x2;
+
+  IRREGULAR = 0x3;
 }
 
 enum AgariType {

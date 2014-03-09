@@ -53,7 +53,7 @@ message ElementCondition {
   repeated HandElementType allowed_element_type = 1;
   repeated TileCondition allowed_tile_condition = 2;
   repeated TileCondition required_tile_condition = 3;
-  // At least one of given conditions must be satisfied.
+  // At least one of the given conditions must be satisfied.
   repeated TileCondition either_tile_condition = 4;
   optional bool is_naki_allowed = 5 [default = true];
   // Allow to use a ron tile as part of this element.
@@ -78,6 +78,7 @@ message YakuCondition {
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;
+  // If true, 4 mentsu and 1 jantou, or 7 toitsu are needed.
   optional bool required_agarikei = 9 [default = true];
   repeated string required_yaku = 10;
   optional int32 required_num_of_waiting_kinds = 11;

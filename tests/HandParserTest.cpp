@@ -43,7 +43,9 @@ TEST_F(HandParserTest, ParseTest_1) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(3, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(4, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_2) {
@@ -68,7 +70,9 @@ TEST_F(HandParserTest, ParseTest_2) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(5, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(6, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_3) {
@@ -93,7 +97,9 @@ TEST_F(HandParserTest, ParseTest_3) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(1, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(2, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_4) {
@@ -118,7 +124,9 @@ TEST_F(HandParserTest, ParseTest_4) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(0, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(1, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_5) {
@@ -143,7 +151,9 @@ TEST_F(HandParserTest, ParseTest_5) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(0, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(1, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_6) {
@@ -168,7 +178,9 @@ TEST_F(HandParserTest, ParseTest_6) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(0, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(1, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_7) {
@@ -192,6 +204,8 @@ TEST_F(HandParserTest, ParseTest_7) {
 
   HandParserResult result;
   _handParser.parse(hand, &result);
+
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
 }
@@ -218,7 +232,9 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(2, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(3, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_Chitoitsu) {
@@ -243,7 +259,9 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(4, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(5, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
@@ -268,7 +286,9 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(1, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(2, result.parsed_hand_size());
 }
 
 TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
@@ -293,5 +313,7 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   HandParserResult result;
   _handParser.parse(hand, &result);
 
-  EXPECT_EQ(0, result.parsed_hand_size());
+  // cout << HandParserResultUtil::getDebugString(result) << endl;
+
+  EXPECT_EQ(1, result.parsed_hand_size());
 }
