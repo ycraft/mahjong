@@ -117,7 +117,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
   }
 
   // shuntsu
-  if (isSequentialTileType(_free_tiles[i])) {
+  if (MahjongCommonUtils::isSequentialTileType(_free_tiles[i])) {
     TileType prev = _free_tiles[i];
     for (int j = i + 1, counter = 0; j < _num_free_tiles && _free_tiles[j] - prev <= 1; ++j) {
       if (_free_tile_group_ids[j] == 0 && _free_tiles[j] - prev == 1) {

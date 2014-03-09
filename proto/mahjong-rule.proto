@@ -20,6 +20,8 @@ message Yaku {
 
 message TileCondition {
   enum VariableTileType {
+    MASK_VARIABLE_TYPE = 0xf0;
+
     VARIABLE_TILE = 0x10;
       VARIABLE_TILE_A = 0x11;
       VARIABLE_TILE_B = 0x12;
@@ -40,7 +42,8 @@ message TileCondition {
       VARIABLE_NUMBER_C = 0x33;
 
     VARIABLE_COLOR = 0x40;
-      VARIABLE_COLOR_A = 0x41;  // Doesn't include Jihai.
+      // Doesn't include Jihai. (Jihai-tile doesn't have any color.)
+      VARIABLE_COLOR_A = 0x41;
       VARIABLE_COLOR_A_OR_JIHAI = 0x42;
   }
   optional TileType required_tile = 1;
@@ -51,10 +54,16 @@ message TileCondition {
 
 message ElementCondition {
   repeated HandElementType allowed_element_type = 1;
+
+  // You may *not* use two or more variable_tiles.
   repeated TileCondition allowed_tile_condition = 2;
+
   repeated TileCondition required_tile_condition = 3;
+
   // At least one of the given conditions must be satisfied.
+  // You may *not* use variable_tile.
   repeated TileCondition either_tile_condition = 4;
+
   optional bool is_naki_allowed = 5 [default = true];
   // Allow to use a ron tile as part of this element.
   optional bool is_ron_allowed = 6 [default = true];
@@ -70,16 +79,22 @@ message AgariCondition {
 }
 
 message YakuCondition {
+  // You may *not* use two or more variable_tiles.
   repeated TileCondition allowed_tile_condition = 1;
+
+  // You may *not* use variable_tile.
   repeated TileCondition disallowed_tile_condition = 2;
+
   repeated TileCondition required_tile_condition = 3;
   repeated ElementCondition required_element_condition = 4;
   optional MachiType required_machi_type = 5;
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;
+
   // If true, 4 mentsu and 1 jantou, or 7 toitsu are needed.
   optional bool required_agarikei = 9 [default = true];
+
   repeated string required_yaku = 10;
   optional int32 required_num_of_waiting_kinds = 11;
 }

@@ -7,7 +7,13 @@
 namespace ydec {
 namespace msc {
 
-  bool isSequentialTileType(mahjong::TileType tile);
+class MahjongCommonUtils {
+ public:
+  static bool isSequentialTileType(mahjong::TileType tile);
+  static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile);
+  static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile,
+                                mahjong::TileType mask);
+};
 
 }
 }
