@@ -33,6 +33,7 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
       parsed_hand_(parsed_hand){
+
   for (const Element& element : parsed_hand_.element()) {
     for (const ElementTile element_tile : element.element_tile()) {
       hand_tiles_.push_back(element_tile.tile());
@@ -41,10 +42,6 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
 }
 
 bool YakuConditionValidator::validate() {
-  return validateHand();
-}
-
-bool YakuConditionValidator::validateHand() {
   // Validate agarikei.
   if (condition_.required_agarikei()) {
     if (!parsed_hand_.is_agarikei()) {
@@ -70,12 +67,59 @@ bool YakuConditionValidator::validateHand() {
     return false;
   }
 
+  // Validate element conditions
+  if (!validateRequiredElementCondition(condition_.required_element_condition(),
+                                        parsed_hand_.element())) {
+    return false;
+  }
+
   return true;
+}
+
+bool YakuConditionValidator::validateRequiredElementCondition(
+    const RepeatedPtrField<ElementCondition>& conditions,
+    const RepeatedPtrField<Element>& elements) {
+  unique_ptr<bool[]> used(new bool[elements.size()]);
+  memset(used.get(), 0, sizeof(used[0]) * elements.size());
+  return false;
+}
+
+bool YakuConditionValidator::validateRequiredElementCondition(
+    const ElementCondition& condition,
+    const Element& element) {
+  // Copy TileTypes from element.
+  vector<TileType> tiles(element.element_tile_size());
+  for (int i = 0; i < tiles.size(); ++i) {
+    tiles[i] = element.element_tile(i).tile();
+  }
+
+  // Validate allowed_tile_condition.
+  if (!validateAllowedTileCondition(condition.allowed_tile_condition(), tiles)) {
+    return false;
+  }
+
+  // Validate required_tile_condition.
+  if (!validateRequiredTileCondition(condition.required_tile_condition(), tiles)) {
+    return false;
+  }
+
+  // Validate either_tile_condition.
+  if (!validateEitherTileCondition(condition.either_tile_condition(), tiles)) {
+    return false;
+  }
+
+  return false;
 }
 
 bool YakuConditionValidator::validateAllowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const vector<TileType>& tiles) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (conditions.size() == 0) {
+    return true;
+  }
+
   // Search applicable condition without defining a new variable first.
   // If there are no applicable condition, we will allow to define a new variable.
   for (int allow_defining_new_variable = 0;
@@ -95,6 +139,12 @@ bool YakuConditionValidator::validateAllowedTileCondition(
 bool YakuConditionValidator::validateDisallowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const vector<TileType>& tiles) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (conditions.size() == 0) {
+    return true;
+  }
+
   for (const TileType& tile : tiles) {
     for (const TileCondition& condition : conditions) {
       if (validateTileCondition(condition, tile, false /* allow_defining_new_variable */)) {
@@ -108,6 +158,12 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
 bool YakuConditionValidator::validateRequiredTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const vector<TileType>& tiles) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (conditions.size() == 0) {
+    return true;
+  }
+
   unique_ptr<bool[]> used(new bool[tiles.size()]);
   memset(used.get(), 0, sizeof(used[0]) * tiles.size());
   for (const TileCondition& condition : conditions) {
@@ -130,6 +186,27 @@ bool YakuConditionValidator::validateRequiredTileCondition(
     }
   }
   return true;
+}
+
+bool YakuConditionValidator::validateEitherTileCondition(
+    const RepeatedPtrField<TileCondition >& conditions,
+    const vector<TileType>& tiles) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (conditions.size() == 0) {
+    return true;
+  }
+
+  for (const TileCondition& condition : conditions) {
+    for (const TileType& tile : tiles) {
+      if (validateTileCondition(condition, tile,
+                                false /* allow_defining_new_variable */)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 bool YakuConditionValidator::validateTileCondition(const TileCondition& condition,
