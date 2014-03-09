@@ -22,5 +22,14 @@ bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile,
       || (required & mask) == (tile && mask);
 }
 
+bool MahjongCommonUtils::isHandElementTypeMatched(HandElementType required,
+                                                  HandElementType element_type) {
+  unsigned int type = element_type;
+  while (required < type) {
+    type >>= 4;
+  }
+  return required == type;
+}
+
 }
 }

@@ -40,16 +40,19 @@ class YakuConditionValidator {
   // Element Conditions
   bool validateRequiredElementCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::ElementCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Element >& elements);
+      const ::google::protobuf::RepeatedPtrField<Element >& elements,
+      bool allow_defining_new_variable);
 
-  bool validateRequiredElementCondition(
+  bool validateElementCondition(
       const mahjong::ElementCondition& condition,
-      const Element& element);
+      const Element& element,
+      bool allow_defining_new_variable);
 
   // TileConditions
   bool validateAllowedTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles);
+      const std::vector<mahjong::TileType>& tiles,
+      bool allow_defining_new_variable);
 
   bool validateDisallowedTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
@@ -57,7 +60,8 @@ class YakuConditionValidator {
 
   bool validateRequiredTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles);
+      const std::vector<mahjong::TileType>& tiles,
+      bool allow_defining_new_variable);
 
   bool validateEitherTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,

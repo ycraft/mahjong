@@ -51,7 +51,8 @@ bool YakuConditionValidator::validate() {
 
   // Validate allowed tile condition
   if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
-                                    hand_tiles_)) {
+                                    hand_tiles_,
+                                    true /* allow_defining_new_variable */)) {
     return false;
   }
 
@@ -63,13 +64,15 @@ bool YakuConditionValidator::validate() {
 
   // Validate required tile condition
   if (!validateRequiredTileCondition(condition_.required_tile_condition(),
-                                     hand_tiles_)) {
+                                     hand_tiles_,
+                                     true /* allow_defining_new_variable */)) {
     return false;
   }
 
   // Validate element conditions
   if (!validateRequiredElementCondition(condition_.required_element_condition(),
-                                        parsed_hand_.element())) {
+                                        parsed_hand_.element(),
+                                        true /* allow_defining_new_variable */)) {
     return false;
   }
 
@@ -78,15 +81,54 @@ bool YakuConditionValidator::validate() {
 
 bool YakuConditionValidator::validateRequiredElementCondition(
     const RepeatedPtrField<ElementCondition>& conditions,
-    const RepeatedPtrField<Element>& elements) {
+    const RepeatedPtrField<Element>& elements,
+    bool allow_defining_new_variable) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (conditions.size() == 0) {
+    return true;
+  }
+
   unique_ptr<bool[]> used(new bool[elements.size()]);
   memset(used.get(), 0, sizeof(used[0]) * elements.size());
-  return false;
+
+  // Search applicable condition without defining a new variable first.
+  // If there are no applicable condition, we will allow to define a new variable.
+  for (const ElementCondition& condition : conditions) {
+    bool found = false;
+    for (int new_variable = 0;
+        new_variable <= (allow_defining_new_variable ? 1 : 0);
+        ++new_variable) {
+      for (int i = 0; i < elements.size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
+        if (!validateElementCondition(condition,
+                                      elements.Get(i),
+                                      new_variable)) {
+          continue;
+        }
+
+        found = true;
+        used[i] = true;
+        break;
+      }
+      if (found) {
+        break;
+      }
+    }
+    if (!found) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
-bool YakuConditionValidator::validateRequiredElementCondition(
+bool YakuConditionValidator::validateElementCondition(
     const ElementCondition& condition,
-    const Element& element) {
+    const Element& element,
+    bool allow_defining_new_variable) {
   // Copy TileTypes from element.
   vector<TileType> tiles(element.element_tile_size());
   for (int i = 0; i < tiles.size(); ++i) {
@@ -94,26 +136,32 @@ bool YakuConditionValidator::validateRequiredElementCondition(
   }
 
   // Validate allowed_tile_condition.
-  if (!validateAllowedTileCondition(condition.allowed_tile_condition(), tiles)) {
+  if (!validateAllowedTileCondition(condition.allowed_tile_condition(),
+                                    tiles,
+                                    allow_defining_new_variable)) {
     return false;
   }
 
   // Validate required_tile_condition.
-  if (!validateRequiredTileCondition(condition.required_tile_condition(), tiles)) {
+  if (!validateRequiredTileCondition(condition.required_tile_condition(),
+                                     tiles,
+                                     allow_defining_new_variable)) {
     return false;
   }
 
   // Validate either_tile_condition.
-  if (!validateEitherTileCondition(condition.either_tile_condition(), tiles)) {
+  if (!validateEitherTileCondition(condition.either_tile_condition(),
+                                   tiles)) {
     return false;
   }
 
-  return false;
+  return true;
 }
 
 bool YakuConditionValidator::validateAllowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
-    const vector<TileType>& tiles) {
+    const vector<TileType>& tiles,
+    bool allow_defining_new_variable) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -122,12 +170,12 @@ bool YakuConditionValidator::validateAllowedTileCondition(
 
   // Search applicable condition without defining a new variable first.
   // If there are no applicable condition, we will allow to define a new variable.
-  for (int allow_defining_new_variable = 0;
-      allow_defining_new_variable <= 1;
-      ++allow_defining_new_variable) {
+  for (int new_variable = 0;
+      new_variable <= (allow_defining_new_variable ? 1 : 0);
+      ++new_variable) {
     for (const TileType& tile : tiles) {
       for (const TileCondition& condition : conditions) {
-        if (validateTileCondition(condition, tile, allow_defining_new_variable)) {
+        if (validateTileCondition(condition, tile, new_variable)) {
           return true;
         }
       }
@@ -157,7 +205,8 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
 
 bool YakuConditionValidator::validateRequiredTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
-    const vector<TileType>& tiles) {
+    const vector<TileType>& tiles,
+    bool allow_defining_new_variable) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -166,20 +215,30 @@ bool YakuConditionValidator::validateRequiredTileCondition(
 
   unique_ptr<bool[]> used(new bool[tiles.size()]);
   memset(used.get(), 0, sizeof(used[0]) * tiles.size());
+
+  // Search applicable condition without defining a new variable first.
+  // If there are no applicable condition, we will allow to define a new variable.
   for (const TileCondition& condition : conditions) {
     bool found = false;
-    for (int i = 0; i < tiles.size(); ++i) {
-      if (used[i]) {
-        continue;
-      }
-      if (!validateTileCondition(condition, tiles[i],
-                                 true /* allow_defining_new_variable */)) {
-        continue;
-      }
+    for (int new_variable = 0;
+      new_variable <= (allow_defining_new_variable ? 1 : 0);
+      ++new_variable) {
+      for (int i = 0; i < tiles.size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
+        if (!validateTileCondition(condition, tiles[i],
+                                   new_variable)) {
+          continue;
+        }
 
-      found = true;
-      used[i] = true;
-      break;
+        found = true;
+        used[i] = true;
+        break;
+      }
+      if (found) {
+        break;
+      }
     }
     if (!found) {
       return false;

@@ -77,7 +77,7 @@ enum TileType {
 enum HandElementType {
   MENTSU = 0x1;
     SHUNTSU = 0x11;
-    KOUTSU = 0x12;
+    KOUTSU  = 0x12;
       KANTSU = 0x121;
 
   TOITSU = 0x2;
