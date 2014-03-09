@@ -1,6 +1,7 @@
 #ifndef YAKUAPPLIER_H_
 #define YAKUAPPLIER_H_
 
+#include <vector>
 #include <map>
 
 #include "src-gen/cpp/mahjong-common.pb.h"
@@ -32,11 +33,23 @@ class YakuConditionValidator {
   const mahjong::YakuCondition& condition_;
   const ParsedHand& parsed_hand_;
 
+  std::vector<mahjong::TileType> hand_tiles_;
+
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;
+
+  bool validateHand();
 
   bool validateAllowedTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& condition,
-      const mahjong::TileType& tile);
+      const std::vector<mahjong::TileType>& tiles);
+
+  bool validateDisallowedTileCondition(
+      const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& condition,
+      const std::vector<mahjong::TileType>& tiles);
+
+  bool validateRequiredTileCondition(
+      const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& condition,
+      const std::vector<mahjong::TileType>& tiles);
 
   bool validateTileCondition(
       const mahjong::TileCondition& condition,

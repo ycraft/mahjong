@@ -1,11 +1,14 @@
 #include "YakuApplier.h"
 
+#include <memory>
 #include <utility>
 
 #include "MahjongCommonUtils.h"
 
 using google::protobuf::RepeatedPtrField;
 using std::make_pair;
+using std::vector;
+using std::unique_ptr;
 
 namespace ydec {
 
@@ -30,28 +33,103 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
       parsed_hand_(parsed_hand){
+  for (const Element& element : parsed_hand_.element()) {
+    for (const ElementTile element_tile : element.element_tile()) {
+      hand_tiles_.push_back(element_tile.tile());
+    }
+  }
 }
 
 bool YakuConditionValidator::validate() {
+  return validateHand();
+}
+
+bool YakuConditionValidator::validateHand() {
+  // Validate agarikei.
+  if (condition_.required_agarikei()) {
+    if (!parsed_hand_.is_agarikei()) {
+      return false;
+    }
+  }
+
+  // Validate allowed tile condition
+  if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
+                                    hand_tiles_)) {
+    return false;
+  }
+
+  // Validate disallowed tile condition
+  if (!validateDisallowedTileCondition(condition_.disallowed_tile_condition(),
+                                       hand_tiles_)) {
+    return false;
+  }
+
+  // Validate required tile condition
+  if (!validateRequiredTileCondition(condition_.required_tile_condition(),
+                                     hand_tiles_)) {
+    return false;
+  }
+
   return true;
 }
 
 bool YakuConditionValidator::validateAllowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
-    const TileType& tile) {
+    const vector<TileType>& tiles) {
   // Search applicable condition without defining a new variable first.
   // If there are no applicable condition, we will allow to define a new variable.
   for (int allow_defining_new_variable = 0;
       allow_defining_new_variable <= 1;
       ++allow_defining_new_variable) {
-    for (const TileCondition& condition : conditions) {
-      if (validateTileCondition(condition, tile, allow_defining_new_variable)) {
-        return true;
+    for (const TileType& tile : tiles) {
+      for (const TileCondition& condition : conditions) {
+        if (validateTileCondition(condition, tile, allow_defining_new_variable)) {
+          return true;
+        }
       }
     }
   }
-
   return false;
+}
+
+bool YakuConditionValidator::validateDisallowedTileCondition(
+    const RepeatedPtrField<TileCondition >& conditions,
+    const vector<TileType>& tiles) {
+  for (const TileType& tile : tiles) {
+    for (const TileCondition& condition : conditions) {
+      if (validateTileCondition(condition, tile, false /* allow_defining_new_variable */)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool YakuConditionValidator::validateRequiredTileCondition(
+    const RepeatedPtrField<TileCondition >& conditions,
+    const vector<TileType>& tiles) {
+  unique_ptr<bool[]> used(new bool[tiles.size()]);
+  memset(used.get(), 0, sizeof(used[0]) * tiles.size());
+  for (const TileCondition& condition : conditions) {
+    bool found = false;
+    for (int i = 0; i < tiles.size(); ++i) {
+      if (used[i]) {
+        continue;
+      }
+      if (!validateTileCondition(condition, tiles[i],
+                                 true /* allow_defining_new_variable */)) {
+        continue;
+      }
+
+      found = true;
+      used[i] = true;
+      break;
+    }
+    if (!found) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool YakuConditionValidator::validateTileCondition(const TileCondition& condition,
