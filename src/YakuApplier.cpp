@@ -5,7 +5,9 @@
 
 #include "MahjongCommonUtils.h"
 
+using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
+
 using std::make_pair;
 using std::vector;
 using std::unique_ptr;
@@ -25,6 +27,11 @@ YakuApplier::~YakuApplier() {
 
 void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const {
   for (const Yaku& yaku : rule_->yaku()) {
+    YakuConditionValidator validator(yaku.yaku_condition(),
+                                     parsed_hand);
+    if (validator.validate()) {
+      // ok
+    }
   }
 }
 
@@ -79,6 +86,26 @@ bool YakuConditionValidator::validate() {
   return true;
 }
 
+bool YakuConditionValidator::validateAllowedHandElementType(
+    const RepeatedField<int>& allowed_types,
+    const mahjong::HandElementType& type) {
+  // If the number of the given conditions is zero, this method construes as
+  // there's no restrictions. So it will always return true.
+  if (allowed_types.size() == 0) {
+    return true;
+  }
+
+  for (const int& allowed_type : allowed_types) {
+    if (MahjongCommonUtils::isHandElementTypeMatched(
+        (HandElementType) allowed_type,
+        type)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool YakuConditionValidator::validateRequiredElementCondition(
     const RepeatedPtrField<ElementCondition>& conditions,
     const RepeatedPtrField<Element>& elements,
@@ -129,6 +156,12 @@ bool YakuConditionValidator::validateElementCondition(
     const ElementCondition& condition,
     const Element& element,
     bool allow_defining_new_variable) {
+  // Check Hand Element Type
+  if (!validateAllowedHandElementType(condition.allowed_element_type(),
+                                      element.type())) {
+    return false;
+  }
+
   // Copy TileTypes from element.
   vector<TileType> tiles(element.element_tile_size());
   for (int i = 0; i < tiles.size(); ++i) {

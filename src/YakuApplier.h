@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "src-gen/cpp/mahjong-common.pb.h"
 #include "src-gen/cpp/mahjong-rule.pb.h"
@@ -20,7 +21,7 @@ class YakuApplier {
   void apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const;
 
  private:
-  mahjong::Rule* rule_;
+  std::unique_ptr<mahjong::Rule> rule_;
 };
 
 class YakuConditionValidator {
@@ -36,6 +37,11 @@ class YakuConditionValidator {
   std::vector<mahjong::TileType> hand_tiles_;
 
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;
+
+  // Hand Element Type
+  bool validateAllowedHandElementType(
+      const ::google::protobuf::RepeatedField<int>& allowed_types,
+      const mahjong::HandElementType& type);
 
   // Element Conditions
   bool validateRequiredElementCondition(
