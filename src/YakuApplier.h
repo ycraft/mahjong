@@ -46,12 +46,12 @@ class YakuConditionValidator {
   // Element Conditions
   bool validateRequiredElementCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::ElementCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Element >& elements,
+      const ::google::protobuf::RepeatedPtrField<mahjong::Element >& elements,
       bool allow_defining_new_variable);
 
   bool validateElementCondition(
       const mahjong::ElementCondition& condition,
-      const Element& element,
+      const mahjong::Element& element,
       bool allow_defining_new_variable);
 
   // TileConditions

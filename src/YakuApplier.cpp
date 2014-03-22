@@ -42,8 +42,8 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
       parsed_hand_(parsed_hand){
 
   for (const Element& element : parsed_hand_.element()) {
-    for (const ElementTile element_tile : element.element_tile()) {
-      hand_tiles_.push_back(element_tile.tile());
+    for (const Tile tile : element.tile()) {
+      hand_tiles_.push_back(tile.type());
     }
   }
 }
@@ -163,9 +163,9 @@ bool YakuConditionValidator::validateElementCondition(
   }
 
   // Copy TileTypes from element.
-  vector<TileType> tiles(element.element_tile_size());
+  vector<TileType> tiles(element.tile_size());
   for (int i = 0; i < tiles.size(); ++i) {
-    tiles[i] = element.element_tile(i).tile();
+    tiles[i] = element.tile(i).type();
   }
 
   // Validate allowed_tile_condition.

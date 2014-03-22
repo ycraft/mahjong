@@ -74,6 +74,15 @@ enum TileType {
   PINZU_9 = 0x020509;
 }
 
+message Tile {
+  optional TileType type = 1;
+
+  // Examples:
+  //  RON_AGARI: is_tsumo = false, is_agari_hai = true
+  optional bool is_tsumo = 2;
+  optional bool is_agari_hai = 3;
+}
+
 enum HandElementType {
   MENTSU = 0x1;
     SHUNTSU = 0x11;
@@ -83,6 +92,11 @@ enum HandElementType {
   TOITSU = 0x2;
 
   IRREGULAR = 0x3;
+}
+
+message Element {
+  optional HandElementType type = 1;
+  repeated Tile tile = 2;
 }
 
 enum AgariType {

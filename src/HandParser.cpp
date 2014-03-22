@@ -20,23 +20,20 @@ namespace msc {
 string HandParserResultUtil::getDebugString(const HandParserResult& result) {
   string str;
   for (const ParsedHand& parsedHand : result.parsed_hand()) {
+    if (!(str.empty() || str.back() == '\r' || str.back() == '\n')) {
+      str += " ";
+    }
+    str += (parsedHand.is_agarikei() ? "YES: " : " NO: ");
     for (const Element& element : parsedHand.element()) {
-      for (const ElementTile &elementTile : element.element_tile()) {
-        str += " ";
-        switch (elementTile.acquire_method()) {
-          case AcquireMethod::TSUMO:
-            str += TileType_Name(elementTile.tile());
-            break;
-          case AcquireMethod::NAKI:
-            str += "(" + TileType_Name(elementTile.tile()) + ")";
-            break;
-          case AcquireMethod::RON_AGARI:
-            str += "[(" + TileType_Name(elementTile.tile()) + ")]";
-            break;
-          case AcquireMethod::TSUMO_AGARI:
-            str += "[" + TileType_Name(elementTile.tile()) + "]";
-            break;
+      for (const Tile &tile : element.tile()) {
+        string tile_string = TileType_Name(tile.type());
+        if (!tile.is_tsumo()) {
+          tile_string = "(" + tile_string + ")";
         }
+        if (tile.is_agari_hai()) {
+          tile_string = "[" + tile_string + "]";
+        }
+        str += " " + tile_string;
       }
       str += ",";
     }
@@ -184,16 +181,16 @@ void HandParser::checkIrregular() {
 
   Element* element = parsed_hand->add_element();
   element->set_type(HandElementType::IRREGULAR);
-  for (const int tile : _hand->closed_tile()) {
-    ElementTile* element_tile = element->add_element_tile();
-    element_tile->set_tile(static_cast<TileType>(tile));
-    element_tile->set_acquire_method(AcquireMethod::TSUMO);
+  for (const int closed_tile : _hand->closed_tile()) {
+    Tile* tile = element->add_tile();
+    tile->set_type(static_cast<TileType>(closed_tile));
+    tile->set_is_tsumo(true);
+    tile->set_is_agari_hai(false);
   }
-  ElementTile* element_tile = element->add_element_tile();
-  element_tile->set_tile(_hand->agari_tile());
-  element_tile->set_acquire_method(
-      _hand->agari_type() == AgariType::TSUMO ?
-          TSUMO_AGARI : RON_AGARI);
+  Tile* tile = element->add_tile();
+  tile->set_type(_hand->agari_tile());
+  tile->set_is_tsumo(_hand->agari_type() == AgariType::TSUMO);
+  tile->set_is_agari_hai(true);
 }
 
 void HandParser::addAgarikeiResult(int last_id) {
@@ -232,16 +229,16 @@ void HandParser::addAgarikeiResult(int last_id) {
       bool has_set_agari_tile = false;
       for (int i = 0; i < _num_free_tiles; ++i) {
         if (_free_tile_group_ids[i] == id) {
-          ElementTile* element_tile = element->add_element_tile();
-          element_tile->set_tile(_free_tiles[i]);
+          Tile* tile = element->add_tile();
+          tile->set_type(_free_tiles[i]);
 
           if (!has_set_agari_tile && _free_tiles[i] == _hand->agari_tile() && id == agari_tile_id) {
             has_set_agari_tile = true;
-            element_tile->set_acquire_method(
-                _hand->agari_type() == AgariType::TSUMO ?
-                    TSUMO_AGARI : RON_AGARI);
+            tile->set_is_tsumo(_hand->agari_type() == AgariType::TSUMO);
+            tile->set_is_agari_hai(true);
           } else {
-            element_tile->set_acquire_method(TSUMO);
+            tile->set_is_tsumo(true);
+            tile->set_is_agari_hai(false);
           }
         }
       }
@@ -254,9 +251,10 @@ void HandParser::addAgarikeiResult(int last_id) {
 
       const Hand_Chii& chiied_tile = _hand->chiied_tile(i);
       for (int j = 0; j < chiied_tile.tile_size(); ++j) {
-        ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(NAKI);
-        element_tile->set_tile(chiied_tile.tile(j));
+        Tile* tile = element->add_tile();
+        tile->set_type(chiied_tile.tile(j));
+        tile->set_is_tsumo(false);
+        tile->set_is_agari_hai(false);
       }
     }
 
@@ -266,9 +264,10 @@ void HandParser::addAgarikeiResult(int last_id) {
 
       const Hand_Pon& ponned_tile = _hand->ponned_tile(i);
       for (int j = 0; j < 3; ++j) {
-        ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(NAKI);
-        element_tile->set_tile(ponned_tile.tile());
+        Tile* tile = element->add_tile();
+        tile->set_type(ponned_tile.tile());
+        tile->set_is_tsumo(false);
+        tile->set_is_agari_hai(false);
       }
     }
 
@@ -278,31 +277,33 @@ void HandParser::addAgarikeiResult(int last_id) {
 
       const Hand_Kan& kanned_tile = _hand->kanned_tile(i);
       for (int j = 0; j < 4; ++j) {
-        ElementTile* element_tile = element->add_element_tile();
-        element_tile->set_acquire_method(kanned_tile.is_closed() ? TSUMO : NAKI);
-        element_tile->set_tile(kanned_tile.tile());
+        Tile* tile = element->add_tile();
+        tile->set_type(kanned_tile.tile());
+        tile->set_is_tsumo(kanned_tile.is_closed());
+        tile->set_is_agari_hai(false);
       }
     }
   }
 }
 
-inline bool checkSame(const ElementTile& lhs, const ElementTile& rhs) {
-  return lhs.acquire_method() == rhs.acquire_method() &&
-         lhs.tile() == rhs.tile();
+inline bool checkSame(const Tile& lhs, const Tile& rhs) {
+  return lhs.type() == rhs.type()
+      && lhs.is_tsumo() == rhs.is_tsumo()
+      && lhs.is_agari_hai() == rhs.is_agari_hai();
 }
 
 inline bool checkSame(const Element& lhs, const Element& rhs) {
   static bool is_used[10];
 
   if (lhs.type() != rhs.type()) return false;
-  if (lhs.element_tile_size() != rhs.element_tile_size()) return false;
+  if (lhs.tile_size() != rhs.tile_size()) return false;
 
   memset(is_used, 0, sizeof(is_used));
-  for (const ElementTile& element_tile : lhs.element_tile()) {
+  for (const Tile& tile : lhs.tile()) {
     bool found = false;
-    for (int i = 0; i < rhs.element_tile_size(); ++i) {
+    for (int i = 0; i < rhs.tile_size(); ++i) {
       if (is_used[i]) continue;
-      if (!checkSame(element_tile, rhs.element_tile(i))) continue;
+      if (!checkSame(tile, rhs.tile(i))) continue;
       is_used[i] = true;
       found = true;
       break;
