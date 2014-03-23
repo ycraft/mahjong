@@ -34,7 +34,7 @@ class YakuConditionValidator {
   const mahjong::YakuCondition& condition_;
   const ParsedHand& parsed_hand_;
 
-  std::vector<mahjong::TileType> hand_tiles_;
+  ::google::protobuf::RepeatedPtrField<mahjong::Tile> hand_tiles_;
 
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;
 
@@ -57,25 +57,25 @@ class YakuConditionValidator {
   // TileConditions
   bool validateAllowedTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles,
+      const ::google::protobuf::RepeatedPtrField<mahjong::Tile>& tiles,
       bool allow_defining_new_variable);
 
   bool validateDisallowedTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles);
+      const ::google::protobuf::RepeatedPtrField<mahjong::Tile>& tiles);
 
   bool validateRequiredTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles,
+      const ::google::protobuf::RepeatedPtrField<mahjong::Tile>& tiles,
       bool allow_defining_new_variable);
 
   bool validateEitherTileCondition(
       const ::google::protobuf::RepeatedPtrField<mahjong::TileCondition >& conditions,
-      const std::vector<mahjong::TileType>& tiles);
+      const ::google::protobuf::RepeatedPtrField<mahjong::Tile>& tiles);
 
   bool validateTileCondition(
       const mahjong::TileCondition& condition,
-      const mahjong::TileType& tile,
+      const mahjong::Tile& tile,
       bool allow_defining_new_variable);
 
   bool setValiableTile(
