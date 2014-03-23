@@ -2,12 +2,14 @@
 
 #include <memory>
 #include <utility>
+#include <string>
 
 #include "MahjongCommonUtils.h"
 
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
 
+using std::string;
 using std::make_pair;
 using std::vector;
 using std::unique_ptr;
@@ -18,6 +20,9 @@ using namespace mahjong;
 
 namespace msc{
 
+/**
+ * Implementations for Yaku Applier.
+ */
 YakuApplier::YakuApplier(Rule* rule)
     : rule_(rule){
 }
@@ -29,13 +34,16 @@ void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result
   for (const Yaku& yaku : rule_->yaku()) {
     YakuConditionValidator validator(yaku.yaku_condition(),
                                      parsed_hand);
-    if (validator.validate()) {
+    if (validator.validate() == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
       // ok
     }
   }
 }
 
 
+/**
+ * Implementations for YakuConditionValidator.
+ */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
@@ -48,11 +56,11 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
   }
 }
 
-bool YakuConditionValidator::validate() {
+YakuConditionValidatorResult YakuConditionValidator::validate() {
   // Validate agarikei.
   if (condition_.required_agarikei()) {
     if (!parsed_hand_.is_agarikei()) {
-      return false;
+      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI;
     }
   }
 
@@ -60,30 +68,49 @@ bool YakuConditionValidator::validate() {
   if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
                                     hand_tiles_,
                                     true /* allow_defining_new_variable */)) {
-    return false;
+    return YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION;
   }
 
   // Validate disallowed tile condition
   if (!validateDisallowedTileCondition(condition_.disallowed_tile_condition(),
                                        hand_tiles_)) {
-    return false;
+    return YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION;
   }
 
   // Validate required tile condition
   if (!validateRequiredTileCondition(condition_.required_tile_condition(),
                                      hand_tiles_,
                                      true /* allow_defining_new_variable */)) {
-    return false;
+    return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION;
   }
 
   // Validate element conditions
   if (!validateRequiredElementCondition(condition_.required_element_condition(),
                                         parsed_hand_.element(),
                                         true /* allow_defining_new_variable */)) {
-    return false;
+    return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION;
   }
 
-  return true;
+  return YAKU_CONDITION_VALIDATOR_RESULT_OK;
+}
+
+string YakuConditionValidator::getErrorMessage(YakuConditionValidatorResult result) {
+  switch (result) {
+    case YAKU_CONDITION_VALIDATOR_RESULT_OK:
+      return "OK";
+    case YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION:
+          return "Allowed Tile Condition couldn't satisfy";
+    case YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION:
+          return "Disallowed Tile Condition couldn't satisfy";
+    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI:
+          return "Required Agarikei Condition couldn't satisfy";
+    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION:
+          return "Required Element Condition couldn't satisfy";
+    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION:
+          return "Required Tile Condition couldn't satisfy";
+    default:
+      return "Unknown";
+  }
 }
 
 bool YakuConditionValidator::validateAllowedHandElementType(

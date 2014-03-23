@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <string>
 
 #include "src-gen/cpp/mahjong-common.pb.h"
 #include "src-gen/cpp/mahjong-rule.pb.h"
@@ -12,6 +13,9 @@
 namespace ydec {
 namespace msc{
 
+/**
+ * Yaku Applier
+ */
 class YakuApplier {
  public:
   // Take rule's ownership
@@ -24,19 +28,33 @@ class YakuApplier {
   std::unique_ptr<mahjong::Rule> rule_;
 };
 
+
+/**
+ * YakuConditionValidator
+ */
+enum YakuConditionValidatorResult {
+  YAKU_CONDITION_VALIDATOR_RESULT_OK = 0,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI = -1,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION = -2,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION = -3,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION = -4,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION = -5,
+};
+
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const mahjong::YakuCondition& condition,
                          const ParsedHand& parsed_hand);
-  bool validate();
+  YakuConditionValidatorResult validate();
+  std::string getErrorMessage(YakuConditionValidatorResult result);
 
  private:
   const mahjong::YakuCondition& condition_;
   const ParsedHand& parsed_hand_;
 
   ::google::protobuf::RepeatedPtrField<mahjong::Tile> hand_tiles_;
-
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;
+
 
   // Hand Element Type
   bool validateAllowedHandElementType(
