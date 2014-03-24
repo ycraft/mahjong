@@ -228,14 +228,20 @@ bool YakuConditionValidator::validateAllowedTileCondition(
       new_variable <= (allow_defining_new_variable ? 1 : 0);
       ++new_variable) {
     for (const Tile& tile : tiles) {
+      bool found = false;
       for (const TileCondition& condition : conditions) {
         if (validateTileCondition(condition, tile, new_variable)) {
-          return true;
+          found = true;
+          break;
         }
+      }
+      if (!found) {
+        return false;
       }
     }
   }
-  return false;
+
+  return true;
 }
 
 bool YakuConditionValidator::validateDisallowedTileCondition(

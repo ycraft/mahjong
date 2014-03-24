@@ -19,7 +19,7 @@ bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile) {
 bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile,
                                            TileType mask) {
   return !(required & mask)
-      || (required & mask) == (tile && mask);
+      || (required & mask) == (tile & mask);
 }
 
 bool MahjongCommonUtils::isHandElementTypeMatched(HandElementType required,
