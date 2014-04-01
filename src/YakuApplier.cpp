@@ -224,20 +224,23 @@ bool YakuConditionValidator::validateAllowedTileCondition(
 
   // Search applicable condition without defining a new variable first.
   // If there are no applicable condition, we will allow to define a new variable.
-  for (int new_variable = 0;
-      new_variable <= (allow_defining_new_variable ? 1 : 0);
-      ++new_variable) {
-    for (const Tile& tile : tiles) {
-      bool found = false;
+  for (const Tile& tile : tiles) {
+    bool found = false;
+    for (int new_variable = 0;
+        new_variable <= (allow_defining_new_variable ? 1 : 0);
+        ++new_variable) {
       for (const TileCondition& condition : conditions) {
         if (validateTileCondition(condition, tile, new_variable)) {
           found = true;
           break;
         }
       }
-      if (!found) {
-        return false;
+      if (found) {
+        break;
       }
+    }
+    if (!found) {
+      return false;
     }
   }
 
