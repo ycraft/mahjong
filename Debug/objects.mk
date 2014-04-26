@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lgtest -lgtest_main
+LIBS := -lgtest -lprotobuf -lgtest_main
 

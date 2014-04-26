@@ -45,8 +45,8 @@ all: MahjongScoreCalculator
 # Tool invocations
 MahjongScoreCalculator: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: MacOS X C++ Linker'
-	g++ -L/Users/yuuki/gtest/mybuild `pkg-config --cflags --libs protobuf` -o "MahjongScoreCalculator" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: Cygwin C++ Linker'
+	g++ -L"C:\gtest\mybuild" -L"C:\cygwin\usr\local\lib" -std=gnu++0x `pkg-config --cflags --libs protobuf` -DGTEST_OS_CYGWIN=1 -o "MahjongScoreCalculator" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
