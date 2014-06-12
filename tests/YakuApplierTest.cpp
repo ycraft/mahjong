@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include <iostream>
+#include <fstream>
 
 #include "src/YakuApplier.h"
 
@@ -18,26 +19,32 @@ using google::protobuf::TextFormat;
  */
 class YakuApplierTest : public ::testing::Test {
  protected:
-  virtual void SetUp() {
-  }
+  static void SetUpTestCase();
 
-  virtual void TearDown() {
-  }
+  YakuApplierTest() : yaku_applier_(unique_ptr<Rule>(new Rule(RULE))) {}
 
-  YakuApplier _yakuApplier;
+  static Rule RULE;
+  YakuApplier yaku_applier_;
 };
+
+Rule YakuApplierTest::RULE;
+
+void YakuApplierTest::SetUpTestCase() {
+  ifstream rule_file;
+  rule_file.open("res/raw/rule.pb", istream::in | istream::binary);
+  RULE.ParseFromIstream(&rule_file);
+  rule_file.close();
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Chitoitsu) {
+  // yaku_applier_.apply()
+}
 
 
 /**
  * Unit tests for YakuConditionValidator
  */
 class YakuConditionValidatorTest : public ::testing::Test {
- protected:
-  virtual void SetUp() {
-  }
-
-  virtual void TearDown() {
-  }
 };
 
 /**

@@ -13,6 +13,7 @@ using std::string;
 using std::make_pair;
 using std::vector;
 using std::unique_ptr;
+using std::move;
 
 namespace ydec {
 
@@ -23,8 +24,8 @@ namespace msc{
 /**
  * Implementations for Yaku Applier.
  */
-YakuApplier::YakuApplier(Rule* rule)
-    : rule_(rule){
+YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
+    : rule_(std::move(rule)) {
 }
 
 YakuApplier::~YakuApplier() {

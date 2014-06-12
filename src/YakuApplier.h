@@ -18,8 +18,7 @@ namespace msc{
  */
 class YakuApplier {
  public:
-  // Take rule's ownership
-  YakuApplier(mahjong::Rule* rule);
+  YakuApplier(std::unique_ptr<mahjong::Rule>&& rule);
   virtual ~YakuApplier();
 
   void apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const;
@@ -45,6 +44,7 @@ class YakuConditionValidator {
  public:
   YakuConditionValidator(const mahjong::YakuCondition& condition,
                          const ParsedHand& parsed_hand);
+
   YakuConditionValidatorResult validate();
   std::string getErrorMessage(YakuConditionValidatorResult result);
 
