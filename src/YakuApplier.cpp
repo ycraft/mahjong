@@ -1,5 +1,6 @@
 #include "YakuApplier.h"
 
+#include <iostream>
 #include <memory>
 #include <utility>
 #include <string>
@@ -32,11 +33,16 @@ YakuApplier::~YakuApplier() {
 }
 
 void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const {
+  std::cout << "try " << parsed_hand.DebugString() << std::endl;
   for (const Yaku& yaku : rule_->yaku()) {
-    YakuConditionValidator validator(yaku.yaku_condition(),
-                                     parsed_hand);
-    if (validator.validate() == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
-      // ok
+    std::cout << yaku.name() << ": ";
+    YakuConditionValidator validator(yaku.yaku_condition(), parsed_hand);
+    YakuConditionValidatorResult validate_result = validator.validate();
+    if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
+      std::cout << "ok" << std::endl;
+      result->add_yaku()->CopyFrom(yaku);
+    } else {
+      std::cout << "failed: " << validator.getErrorMessage(validate_result) << std::endl;
     }
   }
 }
@@ -100,15 +106,15 @@ string YakuConditionValidator::getErrorMessage(YakuConditionValidatorResult resu
     case YAKU_CONDITION_VALIDATOR_RESULT_OK:
       return "OK";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION:
-          return "Allowed Tile Condition couldn't satisfy";
+          return "Allowed tile condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION:
-          return "Disallowed Tile Condition couldn't satisfy";
+          return "Disallowed tile condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI:
-          return "Required Agarikei Condition couldn't satisfy";
+          return "Required agarikei condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION:
-          return "Required Element Condition couldn't satisfy";
+          return "Required element condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION:
-          return "Required Tile Condition couldn't satisfy";
+          return "Required tile condition isn't satisfied.";
     default:
       return "Unknown";
   }

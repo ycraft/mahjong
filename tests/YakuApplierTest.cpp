@@ -19,25 +19,47 @@ using google::protobuf::TextFormat;
  */
 class YakuApplierTest : public ::testing::Test {
  protected:
-  static void SetUpTestCase();
+  static Rule RULE;
+  YakuApplier yaku_applier_;
+
+  static void SetUpTestCase() {
+    ifstream rule_file;
+    rule_file.open("res/raw/rule.pb", istream::in | istream::binary);
+    RULE.ParseFromIstream(&rule_file);
+    rule_file.close();
+  }
 
   YakuApplierTest() : yaku_applier_(unique_ptr<Rule>(new Rule(RULE))) {}
 
-  static Rule RULE;
-  YakuApplier yaku_applier_;
+  void createToitsu(Element* element, const TileType& type, bool is_agari_hai = false) {
+    element->set_type(HandElementType::TOITSU);
+    for (int i = 0; i < 2; ++i) {
+      Tile* tile = element->add_tile();
+      tile->set_is_agari_hai(is_agari_hai && i == 0);
+      tile->set_is_tsumo(true);
+      tile->set_type(type);
+    }
+  }
 };
 
 Rule YakuApplierTest::RULE;
 
-void YakuApplierTest::SetUpTestCase() {
-  ifstream rule_file;
-  rule_file.open("res/raw/rule.pb", istream::in | istream::binary);
-  RULE.ParseFromIstream(&rule_file);
-  rule_file.close();
-}
+// Disabled since YakuApplier is not implemented yet.
+TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
+  ParsedHand parsed_hand;
+  createToitsu(parsed_hand.add_element(), TileType::PINZU_1, true);
+  createToitsu(parsed_hand.add_element(), TileType::PINZU_3);
+  createToitsu(parsed_hand.add_element(), TileType::PINZU_5);
+  createToitsu(parsed_hand.add_element(), TileType::PINZU_7);
+  createToitsu(parsed_hand.add_element(), TileType::PINZU_9);
+  createToitsu(parsed_hand.add_element(), TileType::SOUZU_1);
+  createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.set_is_agarikei(true);
 
-TEST_F(YakuApplierTest, ApplyTest_Chitoitsu) {
-  // yaku_applier_.apply()
+  YakuApplierResult result;
+  yaku_applier_.apply(parsed_hand, &result);
+  ASSERT_EQ(1, result.yaku_size());
+  EXPECT_EQ("七対子", result.yaku(0).name());
 }
 
 
