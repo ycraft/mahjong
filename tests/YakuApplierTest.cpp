@@ -45,8 +45,7 @@ class YakuApplierTest : public ::testing::Test {
 Rule YakuApplierTest::RULE;
 
 // Disabled since YakuApplier is not implemented yet.
-// DISABLED_
-TEST_F(YakuApplierTest, ApplyTest_Chitoitsu) {
+TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
   ParsedHand parsed_hand;
   createToitsu(parsed_hand.add_element(), TileType::PINZU_1, true);
   createToitsu(parsed_hand.add_element(), TileType::PINZU_3);
