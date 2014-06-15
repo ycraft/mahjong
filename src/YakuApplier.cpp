@@ -5,6 +5,8 @@
 #include <utility>
 #include <string>
 
+#include <glog/logging.h>
+
 #include "MahjongCommonUtils.h"
 
 using google::protobuf::RepeatedField;
@@ -33,16 +35,13 @@ YakuApplier::~YakuApplier() {
 }
 
 void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const {
-  std::cout << "try " << parsed_hand.DebugString() << std::endl;
+  DLOG(INFO) << "Apply " << parsed_hand.DebugString();
   for (const Yaku& yaku : rule_->yaku()) {
-    std::cout << yaku.name() << ": ";
     YakuConditionValidator validator(yaku.yaku_condition(), parsed_hand);
     YakuConditionValidatorResult validate_result = validator.validate();
+    DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
     if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
-      std::cout << "ok" << std::endl;
       result->add_yaku()->CopyFrom(yaku);
-    } else {
-      std::cout << "failed: " << validator.getErrorMessage(validate_result) << std::endl;
     }
   }
 }

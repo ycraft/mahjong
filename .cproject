@@ -33,8 +33,9 @@
 									<listOptionValue builtIn="false" value="/Users/yuuki/gtest/mybuild"/>
 								</option>
 								<option id="macosx.cpp.link.option.libs.315464042" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="gtest"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="gtest_main"/>
+									<listOptionValue builtIn="false" value="glog"/>
+									<listOptionValue builtIn="false" value="gflags"/>
+									<listOptionValue builtIn="false" value="gtest"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.693839244" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
