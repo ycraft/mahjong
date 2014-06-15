@@ -118,6 +118,8 @@ enum MachiType {
   // A: type
   // B: 0: any, 1: 2fu, 2: 0fu
 
+  UNKNOWN = 0;
+
   MASK_MACHI_KIND = 0xff;
   MASK_MACHI_FU = 0xff00;
 

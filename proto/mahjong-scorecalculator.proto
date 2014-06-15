@@ -30,4 +30,6 @@ message ParsedHand {
   // only if the given hand satisfies the agarikei. Otherwise, it does
   // nothing except annotation is_agarikei = false.
   optional bool is_agarikei = 2;
+
+  optional mahjong.MachiType machi_type = 3;
 }
