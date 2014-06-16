@@ -70,6 +70,14 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
     }
   }
 
+  // Validate machi type.
+  if (condition_.has_required_machi_type()) {
+    if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
+                                                parsed_hand_.machi_type())) {
+      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE;
+    }
+  }
+
   // Validate allowed tile condition
   if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
                                     hand_tiles_,

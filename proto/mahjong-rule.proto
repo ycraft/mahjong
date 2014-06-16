@@ -90,7 +90,7 @@ message YakuCondition {
 
   repeated TileCondition required_tile_condition = 3;
   repeated ElementCondition required_element_condition = 4;
-  optional MachiType required_machi_type = 5;  // TODO: Implement this.
+  optional MachiType required_machi_type = 5;
   optional PlayerType required_player_type = 6;  // TODO: Implement this.
   optional AgariCondition required_agari_condition = 7;  // TODO: Implement this.
   optional RichiType required_richi_type = 8;  // TODO: Implement this.

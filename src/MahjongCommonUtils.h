@@ -9,12 +9,20 @@ namespace msc {
 
 class MahjongCommonUtils {
  public:
+  // Utilities for TileType.
   static bool isSequentialTileType(mahjong::TileType tile);
   static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile);
   static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile,
                                 mahjong::TileType mask);
+
+  // Utilities for HandElementType
   static bool isHandElementTypeMatched(mahjong::HandElementType required,
                                        mahjong::HandElementType element_type);
+
+  // Utilities for MachiType.
+  static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type);
+  static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type,
+                                 mahjong::MachiType mask);
 };
 
 }

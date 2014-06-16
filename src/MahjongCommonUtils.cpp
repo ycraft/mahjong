@@ -5,6 +5,13 @@ using namespace ydec::mahjong;
 namespace ydec {
 namespace msc {
 
+namespace {
+  bool isMatched(unsigned int required, unsigned int actual, unsigned int mask) {
+    return !(required & mask)
+        || (required & mask) == (actual & mask);
+  }
+}
+
 bool MahjongCommonUtils::isSequentialTileType(TileType tile) {
   return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
@@ -18,8 +25,7 @@ bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile) {
 
 bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile,
                                            TileType mask) {
-  return !(required & mask)
-      || (required & mask) == (tile & mask);
+  return isMatched(required, tile, mask);
 }
 
 bool MahjongCommonUtils::isHandElementTypeMatched(HandElementType required,
@@ -29,6 +35,16 @@ bool MahjongCommonUtils::isHandElementTypeMatched(HandElementType required,
     type >>= 4;
   }
   return required == type;
+}
+
+bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type) {
+  return isMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU)
+      && isMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
+}
+
+bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type,
+                                            MachiType mask) {
+  return isMatched(required, type, mask);
 }
 
 }
