@@ -23,6 +23,9 @@ class MahjongCommonUtils {
   static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type);
   static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type,
                                  mahjong::MachiType mask);
+
+  // Utilities for PlayerType.
+  static bool isPlayerTypeMatched(mahjong::PlayerType required, mahjong::PlayerType type);
 };
 
 }

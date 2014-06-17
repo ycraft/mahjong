@@ -21,7 +21,9 @@ class YakuApplier {
   YakuApplier(std::unique_ptr<mahjong::Rule>&& rule);
   virtual ~YakuApplier();
 
-  void apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const;
+  void apply(const ParsedHand& parsed_hand,
+             const mahjong::PlayerType& playerType,
+             YakuApplierResult* result) const;
 
  private:
   std::unique_ptr<mahjong::Rule> rule_;
@@ -39,12 +41,14 @@ enum YakuConditionValidatorResult {
   YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION = -4,
   YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION = -5,
   YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE = -6,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE = -7,
 };
 
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const mahjong::YakuCondition& condition,
-                         const ParsedHand& parsed_hand);
+                         const ParsedHand& parsed_hand,
+                         const mahjong::PlayerType& playerType = mahjong::PlayerType::UNKNOWN_PLAYER_TYPE);
 
   YakuConditionValidatorResult validate();
   std::string getErrorMessage(YakuConditionValidatorResult result);
@@ -52,6 +56,7 @@ class YakuConditionValidator {
  private:
   const mahjong::YakuCondition& condition_;
   const ParsedHand& parsed_hand_;
+  const mahjong::PlayerType& playerType_;
 
   ::google::protobuf::RepeatedPtrField<mahjong::Tile> hand_tiles_;
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;

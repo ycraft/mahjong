@@ -48,7 +48,7 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
   parsed_hand.set_is_agarikei(true);
 
   YakuApplierResult result;
-  yaku_applier_.apply(parsed_hand, &result);
+  yaku_applier_.apply(parsed_hand, PlayerType::DEALER, &result);
   ASSERT_EQ(1, result.yaku_size());
   EXPECT_EQ("七対子", result.yaku(0).name());
 }
@@ -495,4 +495,19 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
   YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE,
             validator.validate());
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerType_1) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_player_type: DEALER "
+      "required_agarikei: false",
+      &condition));
+
+  ParsedHand hand;
+
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            YakuConditionValidator(condition, hand, PlayerType::DEALER).validate());
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE,
+            YakuConditionValidator(condition, hand, PlayerType::NON_DEALER).validate());
 }

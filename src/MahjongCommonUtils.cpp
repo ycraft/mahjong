@@ -10,6 +10,10 @@ namespace {
     return !(required & mask)
         || (required & mask) == (actual & mask);
   }
+
+  bool isMatched(unsigned int required, unsigned int actual) {
+    return isMatched(required, actual, 0xffffffff);
+  }
 }
 
 bool MahjongCommonUtils::isSequentialTileType(TileType tile) {
@@ -45,6 +49,11 @@ bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type) 
 bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type,
                                             MachiType mask) {
   return isMatched(required, type, mask);
+}
+
+bool MahjongCommonUtils::isPlayerTypeMatched(mahjong::PlayerType required,
+                                             mahjong::PlayerType type) {
+  return isMatched(required, type);
 }
 
 }

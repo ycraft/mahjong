@@ -569,5 +569,5 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   EXPECT_EQ(1, result.parsed_hand_size());
 
   EXPECT_FALSE(result.parsed_hand(0).is_agarikei());
-  EXPECT_EQ(MachiType::UNKNOWN, result.parsed_hand(0).machi_type());
+  EXPECT_EQ(MachiType::UNKNOWN_MACHI_TYPE, result.parsed_hand(0).machi_type());
 }

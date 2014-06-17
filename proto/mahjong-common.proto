@@ -11,6 +11,8 @@ enum TileType {
   // B: [1, 5] tile type. Or 0 means any.
   //
   // C: [1, 2] sequential or not. Or 0 means any.
+  UNKNOWN_TILE = 0;
+
   MASK_TILE_NUMBER = 0xff;
   MASK_TILE_KIND = 0xff00;
   MASK_TILE_SEQUENTIAL = 0xff0000;
@@ -84,6 +86,8 @@ message Tile {
 }
 
 enum HandElementType {
+  UNKNOWN_HAND_ELEMENT_TYPE = 0;
+
   MENTSU = 0x1;
     SHUNTSU = 0x11;
     KOUTSU  = 0x12;
@@ -100,15 +104,17 @@ message Element {
 }
 
 enum AgariType {
-  RON = 0;
-  TSUMO = 1;
+  UNKNOWN_AGARI_TYPE = 0;
+  RON = 1;
+  TSUMO = 2;
 }
 
 enum RichiType {
-  NONE = 0;
-  RICHI = 1;
-  OPENED_RICHI = 2;
-  DOUBLE_RICHI = 3;
+  UNKNOWN_RICHI_TYPE = 0;
+  NONE = 1;
+  RICHI = 2;
+  OPENED_RICHI = 3;
+  DOUBLE_RICHI = 4;
 }
 
 enum MachiType {
@@ -118,7 +124,7 @@ enum MachiType {
   // A: type
   // B: 0: any, 1: 2fu, 2: 0fu
 
-  UNKNOWN = 0;
+  UNKNOWN_MACHI_TYPE = 0;
 
   MASK_MACHI_KIND = 0xff;
   MASK_MACHI_FU = 0xff00;
@@ -134,8 +140,9 @@ enum MachiType {
 }
 
 enum PlayerType {
-  DEALER = 0;
-  NON_DEALER = 1;
+  UNKNOWN_PLAYER_TYPE = 0;
+  DEALER = 1;
+  NON_DEALER = 2;
 }
 
 message Hand {

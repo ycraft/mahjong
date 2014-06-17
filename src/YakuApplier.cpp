@@ -34,10 +34,14 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
 YakuApplier::~YakuApplier() {
 }
 
-void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result) const {
+void YakuApplier::apply(const ParsedHand& parsed_hand,
+                        const mahjong::PlayerType& playerType,
+                        YakuApplierResult* result) const {
   DLOG(INFO) << "Apply " << parsed_hand.DebugString();
   for (const Yaku& yaku : rule_->yaku()) {
-    YakuConditionValidator validator(yaku.yaku_condition(), parsed_hand);
+    YakuConditionValidator validator(yaku.yaku_condition(),
+                                     parsed_hand,
+                                     playerType);
     YakuConditionValidatorResult validate_result = validator.validate();
     DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
     if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
@@ -51,10 +55,11 @@ void YakuApplier::apply(const ParsedHand& parsed_hand, YakuApplierResult* result
  * Implementations for YakuConditionValidator.
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
-                                               const ParsedHand& parsed_hand)
+                                               const ParsedHand& parsed_hand,
+                                               const mahjong::PlayerType& playerType)
     : condition_(condition),
-      parsed_hand_(parsed_hand){
-
+      parsed_hand_(parsed_hand),
+      playerType_(playerType) {
   for (const Element& element : parsed_hand_.element()) {
     for (const Tile& tile : element.tile()) {
       hand_tiles_.Add()->CopyFrom(tile);
@@ -75,6 +80,14 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
     if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
                                                 parsed_hand_.machi_type())) {
       return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE;
+    }
+  }
+
+  // Validate player type.
+  if (condition_.has_required_player_type()) {
+    if (!MahjongCommonUtils::isPlayerTypeMatched(condition_.required_player_type(),
+                                                 playerType_)) {
+      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE;
     }
   }
 
