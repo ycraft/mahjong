@@ -51,9 +51,19 @@ bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type,
   return isMatched(required, type, mask);
 }
 
-bool MahjongCommonUtils::isPlayerTypeMatched(mahjong::PlayerType required,
-                                             mahjong::PlayerType type) {
+bool MahjongCommonUtils::isPlayerTypeMatched(PlayerType required,
+                                             PlayerType type) {
   return isMatched(required, type);
+}
+
+bool MahjongCommonUtils::isAgariTypeMatched(AgariType required,
+                                            AgariType type) {
+  return isMatched(required, type);
+}
+
+bool MahjongCommonUtils::isAgariStateMatched(AgariState required,
+                                             AgariState state) {
+  return isMatched(required, state);
 }
 
 }

@@ -11,7 +11,7 @@ yaku {
   menzen_fan: 1
   yaku_condition {
     required_agari_condition {
-      is_soku: true
+      required_state: SOKU
     }
   }
 }
@@ -22,7 +22,7 @@ yaku {
   kuisagari_fan: 1
   yaku_condition {
     required_agari_condition {
-      is_rinshan: true
+      required_state: RINSHAN
     }
   }
 }
@@ -33,7 +33,7 @@ yaku {
   kuisagari_fan: 1
   yaku_condition {
     required_agari_condition {
-      is_chankan: true
+      required_state: CHANKAN
     }
   }
 }
@@ -44,8 +44,8 @@ yaku {
   kuisagari_fan: 1
   yaku_condition {
     required_agari_condition {
-      required_agari_type: TSUMO
-      is_haitei: true
+      required_type: TSUMO
+      required_state: HAITEI
     }
   }
 }
@@ -56,8 +56,8 @@ yaku {
   kuisagari_fan: 1
   yaku_condition {
     required_agari_condition {
-      required_agari_type: RON
-      is_haitei: true
+      required_type: RON
+      required_state: HAITEI
     }
   }
 }
@@ -67,7 +67,7 @@ yaku {
   menzen_fan: 1
   yaku_condition {
     required_agari_condition {
-      required_agari_type: TSUMO
+      required_type: TSUMO
     }
   }
 }
@@ -997,8 +997,8 @@ yaku {
   yaku_condition {
     required_player_type: DEALER
     required_agari_condition {
-      required_agari_type: TSUMO
-      is_beginning: true
+      required_type: TSUMO
+      required_state: BEGINNING
     }
   }
 }
@@ -1009,8 +1009,8 @@ yaku {
   yaku_condition {
     required_player_type: NON_DEALER
     required_agari_condition {
-      required_agari_type: TSUMO
-      is_beginning: true
+      required_type: TSUMO
+      required_state: BEGINNING
     }
   }
 }
@@ -1020,8 +1020,8 @@ yaku {
   menzen_fan: 13
   yaku_condition {
     required_agari_condition {
-      required_agari_type: RON
-      is_beginning: true
+      required_type: RON
+      required_state: BEGINNING
     }
   }
 }

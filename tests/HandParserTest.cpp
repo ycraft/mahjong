@@ -37,8 +37,6 @@ TEST_F(HandParserTest, ParseTest_1) {
   hand.add_closed_tile(TileType::PINZU_3);
   hand.add_closed_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_4);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -64,8 +62,6 @@ TEST_F(HandParserTest, ParseTest_2) {
   hand.add_closed_tile(TileType::PINZU_4);
   hand.add_closed_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -91,8 +87,6 @@ TEST_F(HandParserTest, ParseTest_3) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -118,8 +112,6 @@ TEST_F(HandParserTest, ParseTest_4) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -145,8 +137,6 @@ TEST_F(HandParserTest, ParseTest_5) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -172,8 +162,6 @@ TEST_F(HandParserTest, ParseTest_6) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -199,8 +187,6 @@ TEST_F(HandParserTest, ParseTest_7) {
   chii->add_tile(TileType::PINZU_3);
   chii->add_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_4);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -226,8 +212,6 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   hand.add_closed_tile(TileType::PINZU_9);
   hand.add_closed_tile(TileType::PINZU_9);
   hand.set_agari_tile(TileType::PINZU_9);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -253,8 +237,6 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   hand.add_closed_tile(TileType::PINZU_6);
   hand.add_closed_tile(TileType::PINZU_7);
   hand.set_agari_tile(TileType::PINZU_7);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -280,8 +262,6 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   hand.add_closed_tile(TileType::WIND_TON);
   hand.add_closed_tile(TileType::WIND_NAN);
   hand.set_agari_tile(TileType::WIND_NAN);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -307,8 +287,6 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   hand.add_closed_tile(TileType::WIND_TON);
   hand.add_closed_tile(TileType::WIND_NAN);
   hand.set_agari_tile(TileType::WIND_NAN);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -334,8 +312,6 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
   hand.set_agari_tile(TileType::SOUZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -366,8 +342,6 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.set_agari_tile(TileType::SOUZU_3);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -398,8 +372,6 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
   hand.add_closed_tile(TileType::SOUZU_8);
   hand.add_closed_tile(TileType::SOUZU_9);
   hand.set_agari_tile(TileType::SOUZU_7);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -430,8 +402,6 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_4);
   hand.set_agari_tile(TileType::SOUZU_3);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -462,8 +432,6 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -494,8 +462,6 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
   hand.add_closed_tile(TileType::SANGEN_CHUN);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -526,8 +492,6 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
   hand.add_closed_tile(TileType::WIND_PE);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -558,8 +522,6 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   hand.add_closed_tile(TileType::SANGEN_HATSU);
   hand.add_closed_tile(TileType::SANGEN_CHUN);
   hand.set_agari_tile(TileType::WANZU_1);
-  hand.set_richi_type(RichiType::RICHI);
-  hand.set_agari_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);

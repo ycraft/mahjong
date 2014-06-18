@@ -216,7 +216,7 @@ void HandParser::checkIrregular() {
   }
   Tile* tile = element->add_tile();
   tile->set_type(_hand->agari_tile());
-  tile->set_is_tsumo(_hand->agari_type() == AgariType::TSUMO);
+  tile->set_is_tsumo(_hand->agari().type() == AgariType::TSUMO);
   tile->set_is_agari_hai(true);
 }
 
@@ -261,7 +261,7 @@ void HandParser::addAgarikeiResult(int last_id) {
               && _free_tiles[i] == _hand->agari_tile()
               && id == agari_group_id) {
             has_set_agari_tile = true;
-            tile->set_is_tsumo(_hand->agari_type() == AgariType::TSUMO);
+            tile->set_is_tsumo(_hand->agari().type() == AgariType::TSUMO);
             tile->set_is_agari_hai(true);
 
             // Set matchi type.

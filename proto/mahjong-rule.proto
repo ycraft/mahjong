@@ -73,12 +73,8 @@ message ElementCondition {
 }
 
 message AgariCondition {
-  optional AgariType required_agari_type = 1;  // TODO: Implement this.
-  optional bool is_soku = 2;  // TODO: Implement this.
-  optional bool is_haitei = 3;  // TODO: Implement this.
-  optional bool is_chankan = 4;  // TODO: Implement this.
-  optional bool is_beginning = 5;  // TODO: Implement this.
-  optional bool is_rinshan = 6;  // TODO: Implement this.
+  optional AgariType required_type = 1;
+  repeated AgariState required_state = 2;
 }
 
 message YakuCondition {
@@ -92,7 +88,7 @@ message YakuCondition {
   repeated ElementCondition required_element_condition = 4;
   optional MachiType required_machi_type = 5;
   optional PlayerType required_player_type = 6;
-  optional AgariCondition required_agari_condition = 7;  // TODO: Implement this.
+  optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;  // TODO: Implement this.
 
   // If true, 4 mentsu and 1 jantou, or 7 toitsu are needed.

@@ -48,7 +48,10 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
   parsed_hand.set_is_agarikei(true);
 
   YakuApplierResult result;
-  yaku_applier_.apply(parsed_hand, PlayerType::DEALER, &result);
+  yaku_applier_.apply(PlayerType::DEALER,
+                      parsed_hand,
+                      Agari::default_instance(),
+                      &result);
   ASSERT_EQ(1, result.yaku_size());
   EXPECT_EQ("七対子", result.yaku(0).name());
 }
@@ -58,6 +61,40 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
  * Unit tests for YakuConditionValidator
  */
 class YakuConditionValidatorTest : public ::testing::Test {
+ protected:
+  YakuConditionValidatorResult validate(const YakuCondition& condition,
+                                        const PlayerType& playerType,
+                                        const ParsedHand& parsed_hand,
+                                        const Agari& agari) {
+    return YakuConditionValidator(condition,
+                                  playerType,
+                                  parsed_hand,
+                                  agari).validate();
+  }
+
+  YakuConditionValidatorResult validate(const YakuCondition& condition,
+                                        const ParsedHand& parsed_hand) {
+    return validate(condition,
+                    PlayerType::DEALER,
+                    parsed_hand,
+                    Agari::default_instance());
+  }
+
+  YakuConditionValidatorResult validate(const YakuCondition& condition,
+                                        const PlayerType& player_type) {
+    return validate(condition,
+                    player_type,
+                    ParsedHand::default_instance(),
+                    Agari::default_instance());
+  }
+
+  YakuConditionValidatorResult validate(const YakuCondition& condition,
+                                        const Agari& agari) {
+    return validate(condition,
+                    PlayerType::DEALER,
+                    ParsedHand::default_instance(),
+                    agari);
+  }
 };
 
 /**
@@ -74,9 +111,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_1) {
       "is_agarikei: false",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_2) {
@@ -90,9 +126,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_2) {
       "is_agarikei: true",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_3) {
@@ -106,9 +141,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_3) {
       "is_agarikei: false",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_4) {
@@ -122,9 +156,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_4) {
       "is_agarikei: true",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 /**
@@ -144,9 +177,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
       "is_agarikei: false",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
@@ -161,9 +193,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
   ParsedHand hand;
   CommonTestUtil::createAnkou(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
@@ -178,9 +209,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
@@ -201,9 +231,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
@@ -221,9 +250,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
@@ -240,9 +268,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::WANZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
@@ -258,9 +285,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_2);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
@@ -276,9 +302,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SANGEN_HAKU);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
@@ -293,9 +318,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
   ParsedHand hand;
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SANGEN_HAKU);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
@@ -311,9 +335,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_2);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
@@ -329,9 +352,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
@@ -347,9 +369,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::WIND_TON);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
@@ -366,9 +387,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
   CommonTestUtil::createToitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createToitsu(hand.add_element(), TileType::SOUZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 /**
@@ -388,9 +408,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
       "is_agarikei: false",
       &hand));
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
@@ -405,9 +424,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
@@ -422,9 +440,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::PINZU_7);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 /**
@@ -442,9 +459,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::SOUZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
@@ -462,9 +478,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
   ParsedHand hand;
   CommonTestUtil::createAnshuntsu(hand.add_element(), TileType::SOUZU_1);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
@@ -477,9 +492,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
   ParsedHand hand;
   hand.set_machi_type(MachiType::KANCHAN);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
@@ -492,9 +506,8 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
   ParsedHand hand;
   hand.set_machi_type(MachiType::RYANMEN);
 
-  YakuConditionValidator validator(condition, hand);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE,
-            validator.validate());
+            validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerType_1) {
@@ -504,10 +517,54 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerType_1) {
       "required_agarikei: false",
       &condition));
 
-  ParsedHand hand;
-
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            YakuConditionValidator(condition, hand, PlayerType::DEALER).validate());
+            validate(condition, PlayerType::DEALER));
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE,
-            YakuConditionValidator(condition, hand, PlayerType::NON_DEALER).validate());
+            validate(condition, PlayerType::NON_DEALER));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_agari_condition {"
+      "  required_type: RON"
+      "}"
+      "required_agarikei: false",
+      &condition));
+
+  Agari agari;
+  agari.set_type(AgariType::RON);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, agari));
+
+  agari.set_type(AgariType::TSUMO);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION,
+            validate(condition, agari));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_agari_condition {"
+      "  required_state: SOKU"
+      "  required_state: HAITEI"
+      "}"
+      "required_agarikei: false",
+      &condition));
+
+  Agari agari;
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION,
+            validate(condition, agari));
+
+  agari.add_state(AgariState::SOKU);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION,
+            validate(condition, agari));
+
+  agari.add_state(AgariState::HAITEI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, agari));
+
+  agari.add_state(AgariState::RINSHAN);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, agari));
 }

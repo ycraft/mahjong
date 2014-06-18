@@ -109,6 +109,20 @@ enum AgariType {
   TSUMO = 2;
 }
 
+enum AgariState {
+  UNKNOWN_AGARI_STATE = 0;
+  SOKU = 1;
+  HAITEI = 2;
+  CHANKAN = 3;
+  RINSHAN = 4;
+  BEGINNING = 5;
+}
+
+message Agari {
+  optional AgariType type = 1;
+  repeated AgariState state = 2;
+}
+
 enum RichiType {
   UNKNOWN_RICHI_TYPE = 0;
   NONE = 1;
@@ -165,7 +179,7 @@ message Hand {
   }
   repeated Kan Kanned_tile = 5;
 
-  optional AgariType agari_type = 6;
+  optional Agari agari = 6;
   optional RichiType richi_type = 7;
 }
 

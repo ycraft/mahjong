@@ -34,14 +34,16 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
 YakuApplier::~YakuApplier() {
 }
 
-void YakuApplier::apply(const ParsedHand& parsed_hand,
-                        const mahjong::PlayerType& playerType,
+void YakuApplier::apply(const mahjong::PlayerType& playerType,
+                        const ParsedHand& parsed_hand,
+                        const mahjong::Agari& agari,
                         YakuApplierResult* result) const {
   DLOG(INFO) << "Apply " << parsed_hand.DebugString();
   for (const Yaku& yaku : rule_->yaku()) {
     YakuConditionValidator validator(yaku.yaku_condition(),
+                                     playerType,
                                      parsed_hand,
-                                     playerType);
+                                     agari);
     YakuConditionValidatorResult validate_result = validator.validate();
     DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
     if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
@@ -55,11 +57,13 @@ void YakuApplier::apply(const ParsedHand& parsed_hand,
  * Implementations for YakuConditionValidator.
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
+                                               const mahjong::PlayerType& playerType,
                                                const ParsedHand& parsed_hand,
-                                               const mahjong::PlayerType& playerType)
+                                               const mahjong::Agari& agari)
     : condition_(condition),
+      playerType_(playerType),
       parsed_hand_(parsed_hand),
-      playerType_(playerType) {
+      agari_(agari) {
   for (const Element& element : parsed_hand_.element()) {
     for (const Tile& tile : element.tile()) {
       hand_tiles_.Add()->CopyFrom(tile);
@@ -88,6 +92,14 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
     if (!MahjongCommonUtils::isPlayerTypeMatched(condition_.required_player_type(),
                                                  playerType_)) {
       return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE;
+    }
+  }
+
+  // Validate agari condition.
+  if (condition_.has_required_agari_condition()) {
+    if (!validateRequiredAgariCondition(condition_.required_agari_condition(),
+                                        agari_)) {
+      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION;
     }
   }
 
@@ -140,9 +152,50 @@ string YakuConditionValidator::getErrorMessage(YakuConditionValidatorResult resu
   }
 }
 
+bool YakuConditionValidator::validateRequiredAgariCondition(
+    const AgariCondition& condition,
+    const Agari& agari) {
+  // Check type.
+  if (condition.has_required_type()) {
+    if (!MahjongCommonUtils::isAgariTypeMatched(condition.required_type(),
+                                                agari.type())) {
+      return false;
+    }
+  }
+
+  // Check state.
+  if (condition.required_state_size() != 0) {
+    unique_ptr<bool[]> used(new bool[agari.state_size()]);
+    memset(used.get(), 0, sizeof(used[0]) * agari.state_size());
+
+    for (const int required_state_int : condition.required_state()) {
+      const AgariState required_state = static_cast<AgariState>(required_state_int);
+      bool found = false;
+      for (int i = 0; i < agari.state_size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
+
+        if (!MahjongCommonUtils::isAgariStateMatched(required_state, agari.state(i))) {
+          continue;
+        }
+
+        used[i] = true;
+        found = true;
+        break;
+      }
+      if (!found) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 bool YakuConditionValidator::validateAllowedHandElementType(
     const RepeatedField<int>& allowed_types,
-    const mahjong::HandElementType& type) {
+    const HandElementType& type) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (allowed_types.size() == 0) {

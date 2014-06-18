@@ -26,6 +26,12 @@ class MahjongCommonUtils {
 
   // Utilities for PlayerType.
   static bool isPlayerTypeMatched(mahjong::PlayerType required, mahjong::PlayerType type);
+
+  // Utilities for AgariType.
+  static bool isAgariTypeMatched(mahjong::AgariType required, mahjong::AgariType type);
+
+  // Utilities for AgariState
+  static bool isAgariStateMatched(mahjong::AgariState required, mahjong::AgariState state);
 };
 
 }
