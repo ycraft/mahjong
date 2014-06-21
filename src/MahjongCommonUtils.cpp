@@ -14,6 +14,13 @@ namespace {
   bool isMatched(unsigned int required, unsigned int actual) {
     return isMatched(required, actual, 0xffffffff);
   }
+
+  bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
+    while (required < actual) {
+      actual >>= 4;
+    }
+    return required == actual;
+  }
 }
 
 bool MahjongCommonUtils::isSequentialTileType(TileType tile) {
@@ -32,13 +39,13 @@ bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile,
   return isMatched(required, tile, mask);
 }
 
+bool MahjongCommonUtils::isTileStateMatched(TileState required, TileState actual) {
+  return isMatchedForHierarchalData(required, actual);
+}
+
 bool MahjongCommonUtils::isHandElementTypeMatched(HandElementType required,
                                                   HandElementType element_type) {
-  unsigned int type = element_type;
-  while (required < type) {
-    type >>= 4;
-  }
-  return required == type;
+  return isMatchedForHierarchalData(required, element_type);
 }
 
 bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type) {

@@ -11,6 +11,21 @@ class MahjongCommonUtilsTest : public ::testing::Test {
  protected:
 };
 
+TEST_F(MahjongCommonUtilsTest, TileStateMatchedTest) {
+  EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI));
+  EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI_RON));
+  EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI_TSUMO));
+  EXPECT_FALSE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::BAKAZE_HAI));
+  EXPECT_FALSE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI_RON, TileState::AGARI_HAI));
+}
+
+TEST_F(MahjongCommonUtilsTest, HandElementTypeMatchedTest) {
+  EXPECT_TRUE(MahjongCommonUtils::isHandElementTypeMatched(HandElementType::SHUNTSU, HandElementType::SHUNTSU));
+  EXPECT_TRUE(MahjongCommonUtils::isHandElementTypeMatched(HandElementType::SHUNTSU, HandElementType::ANSHUNTSU));
+  EXPECT_TRUE(MahjongCommonUtils::isHandElementTypeMatched(HandElementType::SHUNTSU, HandElementType::MINSHUNTSU));
+  EXPECT_FALSE(MahjongCommonUtils::isHandElementTypeMatched(HandElementType::KOUTSU, HandElementType::KANTSU));
+}
+
 TEST_F(MahjongCommonUtilsTest, MachiTypeTest) {
   EXPECT_FALSE(MahjongCommonUtils::isMachiTypeMatched(MachiType::MACHI_0FU, MachiType::KANCHAN));
   EXPECT_FALSE(MahjongCommonUtils::isMachiTypeMatched(MachiType::MACHI_0FU, MachiType::PENCHAN));

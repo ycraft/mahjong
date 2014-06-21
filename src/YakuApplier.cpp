@@ -414,17 +414,43 @@ bool YakuConditionValidator::validateEitherTileCondition(
 bool YakuConditionValidator::validateTileCondition(const TileCondition& condition,
                                                    const Tile& tile,
                                                    bool allow_defining_new_variable) {
-  // Check jikaze and bakaze condition.
-  // TODO: implement these.
+  // Check required tile state.
+  {
+    vector<bool> used(tile.state_size(), false);
+    for (const int required_state_int : condition.required_state()) {
+      TileState required_state = static_cast<TileState>(required_state_int);
+      bool found = false;
+      for (int i = 0; i < tile.state_size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
 
-  // Check whether or not agari_tile.
-  if (condition.has_is_agari_tile()) {
-    if (condition.is_agari_tile() != tile.is_agari_hai()) {
-      return false;
+        if (!MahjongCommonUtils::isTileStateMatched(required_state, tile.state(i))) {
+          continue;
+        }
+
+        used[i] = true;
+        found = true;
+        break;
+      }
+      if (!found) {
+        return false;
+      }
     }
   }
 
-  // Check tile type
+  // Check disallowed tile state.
+  for (const int disallowed_state_int : condition.disallowed_state()) {
+    TileState disallowed_state = static_cast<TileState>(disallowed_state_int);
+    for (const int state_int : tile.state()) {
+      TileState state = static_cast<TileState>(state_int);
+      if (MahjongCommonUtils::isTileStateMatched(disallowed_state, state)) {
+        return false;
+      }
+    }
+  }
+
+  // Check tile type.
   if (condition.has_required_tile()) {
     if (!MahjongCommonUtils::isTileTypeMatched(condition.required_tile(), tile.type())) {
       return false;

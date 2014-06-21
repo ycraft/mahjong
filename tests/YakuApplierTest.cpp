@@ -482,6 +482,58 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
             validate(condition, hand));
 }
 
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_tile_condition {"
+      "  required_state: AGARI_HAI"
+      "}"
+      "required_agarikei: false",
+      &condition));
+
+  ParsedHand hand;
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  Element* element = hand.add_element();
+  Tile* tile = element->add_tile();
+  tile->add_state(TileState::DORA_HAI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  tile->add_state(TileState::AGARI_HAI_RON);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, hand));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_tile_condition {"
+      "  disallowed_state: AGARI_HAI"
+      "}"
+      "required_agarikei: false",
+      &condition));
+
+  ParsedHand hand;
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  Element* element = hand.add_element();
+  Tile* tile = element->add_tile();
+  tile->add_state(TileState::DORA_HAI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, hand));
+
+  tile->add_state(TileState::AGARI_HAI_RON);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  element->add_tile();
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, hand));
+}
+
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(

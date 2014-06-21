@@ -15,6 +15,10 @@ class MahjongCommonUtils {
   static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile,
                                 mahjong::TileType mask);
 
+  // Utilities for TileState.
+  static bool isTileStateMatched(mahjong::TileState required,
+                                 mahjong::TileState actual);
+
   // Utilities for HandElementType
   static bool isHandElementTypeMatched(mahjong::HandElementType required,
                                        mahjong::HandElementType element_type);

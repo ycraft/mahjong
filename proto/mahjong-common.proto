@@ -76,13 +76,23 @@ enum TileType {
   PINZU_9 = 0x020509;
 }
 
+enum TileState {
+  UNKNOWN_TILE_STATE = 0;
+
+  AGARI_HAI = 0x1;
+    AGARI_HAI_TSUMO = 0x11;
+    AGARI_HAI_RON = 0x12;
+
+  DORA_HAI = 0x2;
+
+  CONDITIONAL_YAKU_HAI = 0x3;
+    BAKAZE_HAI = 0x31;
+    JIKAZE_HAI = 0x32;
+}
+
 message Tile {
   optional TileType type = 1;
-
-  // Examples:
-  //  RON_AGARI: is_tsumo = false, is_agari_hai = true
-  optional bool is_tsumo = 2;
-  optional bool is_agari_hai = 3;
+  repeated TileState state = 2;
 }
 
 enum HandElementType {
@@ -90,12 +100,18 @@ enum HandElementType {
 
   MENTSU = 0x1;
     SHUNTSU = 0x11;
+      ANSHUNTSU = 0x111;
+      MINSHUNTSU = 0x112;
+
     KOUTSU  = 0x12;
-      KANTSU = 0x121;
+      ANKOUTSU = 0x121;
+      MINKOUTSU = 0x122;
+
+    KANTSU = 0x13;
+      ANKANTSU = 0x131;
+      MINKANTSU = 0x132;
 
   TOITSU = 0x2;
-
-  IRREGULAR = 0x3;
 }
 
 message Element {
