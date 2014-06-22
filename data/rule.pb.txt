@@ -1204,8 +1204,26 @@ yaku {
   menzen_fan: 26
   yaku_condition {
     required_machi_type: TANKI
+    required_element_condition {
+      allowed_element_type: ANKOUTSU
+      allowed_element_type: ANKANTSU
+    }
+    required_element_condition {
+      allowed_element_type: ANKOUTSU
+      allowed_element_type: ANKANTSU
+    }
+    required_element_condition {
+      allowed_element_type: ANKOUTSU
+      allowed_element_type: ANKANTSU
+    }
+    required_element_condition {
+      allowed_element_type: ANKOUTSU
+      allowed_element_type: ANKANTSU
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
-  required_yaku_name: "四暗刻"
 }
 
 yaku {
