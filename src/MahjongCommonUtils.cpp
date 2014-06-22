@@ -73,5 +73,10 @@ bool MahjongCommonUtils::isAgariStateMatched(AgariState required,
   return isMatched(required, state);
 }
 
+bool MahjongCommonUtils::isAgariFormatMatched(AgariFormat required,
+                                              AgariFormat actual) {
+  return isMatched(required, actual);
+}
+
 }
 }

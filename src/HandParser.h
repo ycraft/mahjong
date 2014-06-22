@@ -41,7 +41,7 @@ class HandParser {
   void dfs(int i, int id, bool has_jantou);
   void checkChiiToitsu();
   void checkIrregular();
-  void addAgarikeiResult(int last_id);
+  void addAgarikeiResult(int last_id, const mahjong::AgariFormat& format);
   void deduplicateResult();
 };
 

@@ -36,7 +36,11 @@ string HandParserResultUtil::getDebugString(const HandParserResult& result) {
     if (!(str.empty() || str.back() == '\r' || str.back() == '\n')) {
       str += " ";
     }
-    str += (parsedHand.is_agarikei() ? "YES: " : " NO: ");
+    str += (MahjongCommonUtils::isAgariFormatMatched(AgariFormat::REGULAR_AGARI,
+                                                     parsedHand.agari().format())
+            || MahjongCommonUtils::isAgariFormatMatched(AgariFormat::CHITOITSU_AGARI,
+                                                        parsedHand.agari().format())
+           ? "YES: " : " NO: ");
     for (const Element& element : parsedHand.element()) {
       bool is_naki =
           MahjongCommonUtils::isHandElementTypeMatched(HandElementType::MINSHUNTSU, element.type())
@@ -107,7 +111,7 @@ void HandParser::runDfs() {
 
 void HandParser::dfs(int i, int id, bool has_jantou) {
   if (i == _num_free_tiles && has_jantou) {
-    addAgarikeiResult(id - 1);
+    addAgarikeiResult(id - 1, AgariFormat::REGULAR_AGARI);
     return;
   }
 
@@ -217,7 +221,7 @@ void HandParser::checkChiiToitsu() {
     _free_tile_element_types[i - 1] = _free_tile_element_types[i] = HandElementType::TOITSU;
   }
 
-  addAgarikeiResult(7);
+  addAgarikeiResult(7, AgariFormat::CHITOITSU_AGARI);
 
   // Reset IDs.
   memset(_free_tile_group_ids, 0, _num_free_tiles * sizeof(_free_tile_group_ids[0]));
@@ -229,7 +233,7 @@ void HandParser::checkIrregular() {
   }
 
   ParsedHand* parsed_hand = _result->add_parsed_hand();
-  parsed_hand->set_is_agarikei(false);
+  parsed_hand->mutable_agari()->set_format(AgariFormat::IRREGULAR_AGARI);
 
   Element* element = parsed_hand->add_element();
   element->set_type(HandElementType::UNKNOWN_HAND_ELEMENT_TYPE);
@@ -245,7 +249,7 @@ void HandParser::checkIrregular() {
       : TileState::AGARI_HAI_RON);
 }
 
-void HandParser::addAgarikeiResult(int last_id) {
+void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
   for (int agari_group_id = 1; agari_group_id <= last_id; ++agari_group_id) {
     bool valid_agari_group_id = false;
     for (int i = 0; i < _num_free_tiles; ++i) {
@@ -261,7 +265,7 @@ void HandParser::addAgarikeiResult(int last_id) {
     }
 
     ParsedHand* parsed_hand = _result->add_parsed_hand();
-    parsed_hand->set_is_agarikei(true);
+    parsed_hand->mutable_agari()->set_format(format);
 
     // Parse closed tiles
     for (int id = 1; id <= last_id; ++id) {
@@ -403,7 +407,7 @@ inline bool checkSame(const ParsedHand& lhs, const ParsedHand& rhs) {
   static bool is_used[10];
 
   if (lhs.element_size() != rhs.element_size()
-      || lhs.is_agarikei() != rhs.is_agarikei()
+      || lhs.agari().format() != rhs.agari().format()
       || lhs.machi_type() != rhs.machi_type()) {
     return false;
   }

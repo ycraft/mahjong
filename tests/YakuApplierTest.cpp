@@ -45,12 +45,11 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
   CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::PINZU_9);
   CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
-  parsed_hand.set_is_agarikei(true);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::CHITOITSU_AGARI);
 
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       parsed_hand,
-                      Agari::default_instance(),
                       &result);
   ASSERT_EQ(1, result.yaku_size());
   EXPECT_EQ("七対子", result.yaku(0).name());
@@ -64,101 +63,35 @@ class YakuConditionValidatorTest : public ::testing::Test {
  protected:
   YakuConditionValidatorResult validate(const YakuCondition& condition,
                                         const PlayerType& playerType,
-                                        const ParsedHand& parsed_hand,
-                                        const Agari& agari) {
+                                        const ParsedHand& parsed_hand) {
     return YakuConditionValidator(condition,
                                   playerType,
-                                  parsed_hand,
-                                  agari).validate();
+                                  parsed_hand).validate();
   }
 
   YakuConditionValidatorResult validate(const YakuCondition& condition,
                                         const ParsedHand& parsed_hand) {
     return validate(condition,
                     PlayerType::DEALER,
-                    parsed_hand,
-                    Agari::default_instance());
+                    parsed_hand);
   }
 
   YakuConditionValidatorResult validate(const YakuCondition& condition,
                                         const PlayerType& player_type) {
     return validate(condition,
                     player_type,
-                    ParsedHand::default_instance(),
-                    Agari::default_instance());
+                    ParsedHand::default_instance());
   }
 
   YakuConditionValidatorResult validate(const YakuCondition& condition,
                                         const Agari& agari) {
+    ParsedHand parsed_hand;
+    parsed_hand.mutable_agari()->CopyFrom(agari);
     return validate(condition,
                     PlayerType::DEALER,
-                    ParsedHand::default_instance(),
-                    agari);
+                    parsed_hand);
   }
 };
-
-/**
- * Tests for "Required Agari-kei"
- */
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_1) {
-  YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agarikei: true",
-      &condition));
-
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: false",
-      &hand));
-
-  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI,
-            validate(condition, hand));
-}
-
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_2) {
-  YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agarikei: true",
-      &condition));
-
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: true",
-      &hand));
-
-  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validate(condition, hand));
-}
-
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_3) {
-  YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agarikei: false",
-      &condition));
-
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: false",
-      &hand));
-
-  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validate(condition, hand));
-}
-
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgarikei_4) {
-  YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agarikei: false",
-      &condition));
-
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: true",
-      &hand));
-
-  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validate(condition, hand));
-}
 
 /**
  * Tests for "Allowed Tile Condition"
@@ -168,17 +101,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_tile: PINZU_1"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: false",
-      &hand));
-
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validate(condition, hand));
+            validate(condition, ParsedHand::default_instance()));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
@@ -186,8 +113,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_tile: PINZU_1"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -202,8 +128,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_tile: PINZU_1"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -224,8 +149,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
       "}"
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_TILE_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -243,8 +167,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
       "}"
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_TILE_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -259,8 +182,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_NUMBER_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -277,8 +199,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -294,8 +215,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -311,8 +231,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -327,8 +246,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -344,8 +262,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -361,8 +278,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -378,8 +294,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -399,17 +314,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "disallowed_tile_condition {"
       "  required_tile: PINZU_8"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
-  ParsedHand hand;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "is_agarikei: false",
-      &hand));
-
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
-            validate(condition, hand));
+            validate(condition, ParsedHand::default_instance()));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
@@ -417,8 +326,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "disallowed_tile_condition {"
       "  required_tile: PINZU_8"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -433,8 +341,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "disallowed_tile_condition {"
       "  required_tile: PINZU_8"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -452,8 +359,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "required_tile_condition {"
       "  required_tile: PINZU_8"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -471,8 +377,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
       "}"
       "required_tile_condition {"
       "  required_tile: SOUZU_3"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -487,8 +392,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "required_tile_condition {"
       "  required_state: AGARI_HAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -511,8 +415,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "required_tile_condition {"
       "  disallowed_state: AGARI_HAI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   ParsedHand hand;
@@ -537,8 +440,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_machi_type: MACHI_2FU "
-      "required_agarikei: false",
+      "required_machi_type: MACHI_2FU ",
       &condition));
 
   ParsedHand hand;
@@ -551,8 +453,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_machi_type: MACHI_2FU "
-      "required_agarikei: false",
+      "required_machi_type: MACHI_2FU ",
       &condition));
 
   ParsedHand hand;
@@ -565,8 +466,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerType_1) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_player_type: DEALER "
-      "required_agarikei: false",
+      "required_player_type: DEALER ",
       &condition));
 
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
@@ -580,8 +480,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
   EXPECT_TRUE(TextFormat::ParseFromString(
       "required_agari_condition {"
       "  required_type: RON"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   Agari agari;
@@ -600,8 +499,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
       "required_agari_condition {"
       "  required_state: SOKU"
       "  required_state: HAITEI"
-      "}"
-      "required_agarikei: false",
+      "}",
       &condition));
 
   Agari agari;
@@ -617,6 +515,32 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
             validate(condition, agari));
 
   agari.add_state(AgariState::RINSHAN);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, agari));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_agari_condition {"
+      "  allowed_format: REGULAR_AGARI"
+      "  allowed_format: CHITOITSU_AGARI"
+      "}",
+      &condition));
+
+  Agari agari;
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION,
+            validate(condition, agari));
+
+  agari.set_format(AgariFormat::IRREGULAR_AGARI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION,
+            validate(condition, agari));
+
+  agari.set_format(AgariFormat::REGULAR_AGARI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, agari));
+
+  agari.set_format(AgariFormat::CHITOITSU_AGARI);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
             validate(condition, agari));
 }

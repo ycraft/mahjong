@@ -36,14 +36,12 @@ YakuApplier::~YakuApplier() {
 
 void YakuApplier::apply(const mahjong::PlayerType& playerType,
                         const ParsedHand& parsed_hand,
-                        const mahjong::Agari& agari,
                         YakuApplierResult* result) const {
   DLOG(INFO) << "Apply " << parsed_hand.DebugString();
   for (const Yaku& yaku : rule_->yaku()) {
     YakuConditionValidator validator(yaku.yaku_condition(),
                                      playerType,
-                                     parsed_hand,
-                                     agari);
+                                     parsed_hand);
     YakuConditionValidatorResult validate_result = validator.validate();
     DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
     if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
@@ -58,12 +56,10 @@ void YakuApplier::apply(const mahjong::PlayerType& playerType,
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
                                                const mahjong::PlayerType& playerType,
-                                               const ParsedHand& parsed_hand,
-                                               const mahjong::Agari& agari)
+                                               const ParsedHand& parsed_hand)
     : condition_(condition),
       playerType_(playerType),
-      parsed_hand_(parsed_hand),
-      agari_(agari) {
+      parsed_hand_(parsed_hand) {
   for (const Element& element : parsed_hand_.element()) {
     for (const Tile& tile : element.tile()) {
       hand_tiles_.Add()->CopyFrom(tile);
@@ -72,13 +68,6 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
 }
 
 YakuConditionValidatorResult YakuConditionValidator::validate() {
-  // Validate agarikei.
-  if (condition_.required_agarikei()) {
-    if (!parsed_hand_.is_agarikei()) {
-      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI;
-    }
-  }
-
   // Validate machi type.
   if (condition_.has_required_machi_type()) {
     if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
@@ -98,7 +87,7 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
   // Validate agari condition.
   if (condition_.has_required_agari_condition()) {
     if (!validateRequiredAgariCondition(condition_.required_agari_condition(),
-                                        agari_)) {
+                                        parsed_hand_.agari())) {
       return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION;
     }
   }
@@ -141,8 +130,6 @@ string YakuConditionValidator::getErrorMessage(YakuConditionValidatorResult resu
           return "Allowed tile condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION:
           return "Disallowed tile condition isn't satisfied.";
-    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI:
-          return "Required agarikei condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION:
           return "Required element condition isn't satisfied.";
     case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION:
@@ -159,6 +146,21 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
   if (condition.has_required_type()) {
     if (!MahjongCommonUtils::isAgariTypeMatched(condition.required_type(),
                                                 agari.type())) {
+      return false;
+    }
+  }
+
+  // Check format.
+  if (condition.allowed_format_size() != 0) {
+    bool found = false;
+    for (const int allowed_format_int : condition.allowed_format()) {
+      AgariFormat allowed_format = static_cast<AgariFormat>(allowed_format_int);
+      if (MahjongCommonUtils::isAgariFormatMatched(allowed_format, agari.format())) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
       return false;
     }
   }

@@ -98,6 +98,10 @@ yaku {
     allowed_tile_condition {
       required_tile: TILE_8
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
+    }
   }
 }
 
@@ -124,6 +128,9 @@ yaku {
       allowed_element_type: ANSHUNTSU
     }
     required_machi_type: MACHI_0FU
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -155,6 +162,9 @@ yaku {
         required_variable_tile: VARIABLE_TILE_C
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -169,6 +179,9 @@ yaku {
       allowed_tile_condition {
         required_tile: SANGEN_HAKU
       }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -185,6 +198,9 @@ yaku {
         required_tile: SANGEN_HATSU
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -199,6 +215,9 @@ yaku {
       allowed_tile_condition {
         required_tile: SANGEN_CHUN
       }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -253,6 +272,9 @@ yaku {
         required_variable_tile: VARIABLE_NUMBER_C
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -305,6 +327,9 @@ yaku {
         required_variable_tile: VARIABLE_COLOR_A
         required_tile: TILE_9
       }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -374,6 +399,10 @@ yaku {
         required_tile: JIHAI_TILE
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
+    }
   }
 }
 
@@ -424,6 +453,9 @@ yaku {
         required_variable_tile: VARIABLE_TILE_G
       }
     }
+    required_agari_condition {
+      allowed_format: CHITOITSU_AGARI
+    }
   }
 }
 
@@ -448,6 +480,9 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -468,6 +503,9 @@ yaku {
       allowed_element_type: ANKOUTSU
       allowed_element_type: ANKANTSU
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -484,6 +522,10 @@ yaku {
     }
     allowed_tile_condition {
       required_tile: JIHAI_TILE
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
     }
   }
 }
@@ -517,6 +559,9 @@ yaku {
         required_variable_tile: VARIABLE_NUMBER_A
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -533,6 +578,9 @@ yaku {
     }
     required_element_condition {
       allowed_element_type: KANTSU
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -565,6 +613,9 @@ yaku {
         required_variable_tile: VARIABLE_TILE_C
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -583,6 +634,10 @@ yaku {
   yaku_condition {
     allowed_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
     }
   }
 }
@@ -636,6 +691,9 @@ yaku {
       either_tile_condition {
         required_tile: TILE_9
       }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -692,6 +750,9 @@ yaku {
         required_variable_tile: VARIABLE_TILE2_C
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -703,6 +764,10 @@ yaku {
     allowed_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
+    }
   }
 }
 
@@ -710,7 +775,6 @@ yaku {
   name: "国士無双"
   menzen_fan: 13
   yaku_condition {
-    required_agarikei: false
     required_tile_condition {
       required_tile: WIND_TON
     }
@@ -759,6 +823,9 @@ yaku {
     allowed_tile_condition {
       required_tile: TILE_9
     }
+    required_agari_condition {
+      allowed_format: IRREGULAR_AGARI
+    }
   }
 }
 
@@ -781,6 +848,9 @@ yaku {
     required_element_condition {
       allowed_element_type: ANKOUTSU
       allowed_element_type: ANKANTSU
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -811,6 +881,9 @@ yaku {
         required_tile: SANGEN_CHUN
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -821,6 +894,10 @@ yaku {
   yaku_condition {
     allowed_tile_condition {
       required_tile: JIHAI_TILE
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
     }
   }
 }
@@ -861,6 +938,9 @@ yaku {
         required_variable_tile: VARIABLE_TILE_D
       }
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -887,6 +967,9 @@ yaku {
     allowed_tile_condition {
       required_tile: SANGEN_HATSU
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -900,6 +983,10 @@ yaku {
     }
     allowed_tile_condition {
       required_tile: TILE_9
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+      allowed_format: CHITOITSU_AGARI
     }
   }
 }
@@ -920,6 +1007,9 @@ yaku {
     }
     required_element_condition {
       allowed_element_type: KANTSU
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -983,6 +1073,9 @@ yaku {
     required_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A
     }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
   }
 }
 
@@ -1026,7 +1119,6 @@ yaku {
   menzen_fan: 26
   kuisagari_fan: 26
   yaku_condition {
-    required_agarikei: false
     required_tile_condition {
       required_tile: WIND_TON
       disallowed_state: AGARI_HAI
@@ -1088,6 +1180,9 @@ yaku {
     allowed_tile_condition {
       required_tile: TILE_9
     }
+    required_agari_condition {
+      allowed_format: IRREGULAR_AGARI
+    }
   }
 }
 
@@ -1136,6 +1231,9 @@ yaku {
         required_tile: WIND_TILE
         required_variable_tile: VARIABLE_TILE_D
       }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }
@@ -1212,6 +1310,9 @@ yaku {
     required_tile_condition {
       required_variable_tile: VARIABLE_COLOR_A
       required_state: AGARI_HAI
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
     }
   }
 }

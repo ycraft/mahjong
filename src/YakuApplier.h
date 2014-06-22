@@ -23,7 +23,6 @@ class YakuApplier {
 
   void apply(const mahjong::PlayerType& playerType,
              const ParsedHand& parsed_hand,
-             const mahjong::Agari& agari,
              YakuApplierResult* result) const;
 
  private:
@@ -36,22 +35,20 @@ class YakuApplier {
  */
 enum YakuConditionValidatorResult {
   YAKU_CONDITION_VALIDATOR_RESULT_OK = 0,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARIKEI = -1,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION = -2,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION = -3,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION = -4,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION = -5,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE = -6,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE = -7,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION = -8,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION = -1,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION = -2,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION = -3,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION = -4,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE = -5,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE = -6,
+  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION = -7,
 };
 
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const mahjong::YakuCondition& condition,
                          const mahjong::PlayerType& playerType,
-                         const ParsedHand& parsed_hand,
-                         const mahjong::Agari& agari);
+                         const ParsedHand& parsed_hand);
 
   YakuConditionValidatorResult validate();
   std::string getErrorMessage(YakuConditionValidatorResult result);
@@ -60,7 +57,6 @@ class YakuConditionValidator {
   const mahjong::YakuCondition& condition_;
   const mahjong::PlayerType& playerType_;
   const ParsedHand& parsed_hand_;
-  const mahjong::Agari& agari_;
 
   ::google::protobuf::RepeatedPtrField<mahjong::Tile> hand_tiles_;
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;

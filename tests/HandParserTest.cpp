@@ -320,10 +320,8 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::RYANMEN, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Penchan_1) {
@@ -350,10 +348,8 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::PENCHAN, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Penchan_2) {
@@ -380,10 +376,8 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::PENCHAN, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Kanchan) {
@@ -410,10 +404,8 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::KANCHAN, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Shabo) {
@@ -440,10 +432,8 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::SHABO, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Tanki_1) {
@@ -470,10 +460,8 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
   EXPECT_EQ(MachiType::TANKI, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
@@ -500,10 +488,8 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
 
   EXPECT_EQ(2, result.parsed_hand_size());
 
-  EXPECT_TRUE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::CHITOITSU_AGARI);
   EXPECT_EQ(MachiType::TANKI, result.parsed_hand(0).machi_type());
-
-  EXPECT_FALSE(result.parsed_hand(1).is_agarikei());
 }
 
 TEST_F(HandParserTest, ParseTest_Kokushimusou) {
@@ -530,6 +516,6 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
 
   EXPECT_EQ(1, result.parsed_hand_size());
 
-  EXPECT_FALSE(result.parsed_hand(0).is_agarikei());
+  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::IRREGULAR_AGARI);
   EXPECT_EQ(MachiType::UNKNOWN_MACHI_TYPE, result.parsed_hand(0).machi_type());
 }

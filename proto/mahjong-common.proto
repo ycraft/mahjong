@@ -134,9 +134,17 @@ enum AgariState {
   BEGINNING = 5;
 }
 
+enum AgariFormat {
+  UNKNOWN_AGARI_FORMAT = 0;
+  REGULAR_AGARI = 1;  // 1-toitsu and 4-mentsu.
+  CHITOITSU_AGARI = 2;  // 7-toitsu.
+  IRREGULAR_AGARI = 3;  // e.g. kokushi-musou.
+}
+
 message Agari {
   optional AgariType type = 1;
   repeated AgariState state = 2;
+  optional AgariFormat format = 3;
 }
 
 enum RichiType {

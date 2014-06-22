@@ -71,6 +71,7 @@ message ElementCondition {
 message AgariCondition {
   optional AgariType required_type = 1;
   repeated AgariState required_state = 2;
+  repeated AgariFormat allowed_format = 3;
 }
 
 message YakuCondition {
@@ -86,10 +87,6 @@ message YakuCondition {
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;  // TODO: Implement this.
-
-  // If true, 4 mentsu and 1 jantou, or 7 toitsu are needed.
-  // TODO: Change this restriction to "optional AgariFormat required_agariformat"
-  optional bool required_agarikei = 9 [default = true];
 
   repeated string required_yaku = 10;  // TODO: Implement this.
 }

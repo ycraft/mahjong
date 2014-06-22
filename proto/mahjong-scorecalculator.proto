@@ -21,15 +21,6 @@ message HandParserResult {
 
 message ParsedHand {
   repeated mahjong.Element element = 1;
-
-  // True if this parsed hand satisfy the agarikei.
-  // The agarikei means either of 4-mentsu 1-jantou or 7-toitsu.
-  // Thus, this field will set to false for Kokushi-musou.
-  // Why we accept 7-toitsu pattern as the agarikei is to be able to
-  // write the rule condition simple. The HandParser can parse correctly
-  // only if the given hand satisfies the agarikei. Otherwise, it does
-  // nothing except annotation is_agarikei = false.
-  optional bool is_agarikei = 2;
-
-  optional mahjong.MachiType machi_type = 3;
+  optional mahjong.MachiType machi_type = 2;
+  optional mahjong.Agari agari = 3;
 }
