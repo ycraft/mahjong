@@ -15,7 +15,13 @@ message Yaku {
   optional int32 kuisagari_fan = 4;
   optional int32 force_fu = 5;
   optional YakuCondition yaku_condition = 6;
-  repeated string upper_version_yaku_name = 7;
+
+  // Required yaku_name in addition to yaku_condition.
+  repeated string required_yaku_name = 7;  // Implement this.
+
+  // Upper version of this yaku.
+  // This yaku will not be applied if there is any upper version yaku for the given hand.
+  repeated string upper_version_yaku_name = 8;  // Implement this.
 }
 
 message TileCondition {
@@ -87,6 +93,4 @@ message YakuCondition {
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;
-
-  repeated string required_yaku = 10;  // TODO: Implement this.
 }

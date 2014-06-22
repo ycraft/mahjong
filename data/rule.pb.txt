@@ -4,6 +4,7 @@ yaku {
   yaku_condition {
     required_richi_type: NORMAL_RICHI
   }
+  upper_version_yaku_name: "ダブル立直"
 }
 
 yaku {
@@ -166,6 +167,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "二盃口"
 }
 
 yaku {
@@ -404,6 +406,7 @@ yaku {
       allowed_format: CHITOITSU_AGARI
     }
   }
+  upper_version_yaku_name: "純全帯么九"
 }
 
 yaku {
@@ -507,6 +510,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "四暗刻"
 }
 
 yaku {
@@ -528,6 +532,7 @@ yaku {
       allowed_format: CHITOITSU_AGARI
     }
   }
+  upper_version_yaku_name: "清老頭"
 }
 
 yaku {
@@ -583,6 +588,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "四槓子"
 }
 
 yaku {
@@ -617,6 +623,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "大三元"
 }
 
 yaku {
@@ -640,6 +647,7 @@ yaku {
       allowed_format: CHITOITSU_AGARI
     }
   }
+  upper_version_yaku_name: "清一色"
 }
 
 yaku {
@@ -696,6 +704,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "清老頭"
 }
 
 yaku {
@@ -827,6 +836,7 @@ yaku {
       allowed_format: IRREGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "国士無双十三面待ち"
 }
 
 yaku {
@@ -853,6 +863,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "四暗刻単騎待ち"
 }
 
 yaku {
@@ -942,6 +953,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "大四喜"
 }
 
 yaku {
@@ -1077,6 +1089,7 @@ yaku {
       allowed_format: REGULAR_AGARI
     }
   }
+  upper_version_yaku_name: "純正九蓮宝燈"
 }
 
 yaku {
@@ -1191,8 +1204,8 @@ yaku {
   menzen_fan: 26
   yaku_condition {
     required_machi_type: TANKI
-    required_yaku: "四暗刻"
   }
+  required_yaku_name: "四暗刻"
 }
 
 yaku {
