@@ -2,7 +2,7 @@ yaku {
   name: "立直"
   menzen_fan: 1
   yaku_condition {
-    required_richi_type: RICHI
+    required_richi_type: NORMAL_RICHI
   }
 }
 

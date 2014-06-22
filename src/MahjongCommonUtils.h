@@ -39,6 +39,9 @@ class MahjongCommonUtils {
 
   // Utilities for AgariFormat.
   static bool isAgariFormatMatched(mahjong::AgariFormat required, mahjong::AgariFormat actual);
+
+  // Utilities for RichiType.
+  static bool isRichiTypeMatched(mahjong::RichiType required, mahjong::RichiType actual);
 };
 
 }

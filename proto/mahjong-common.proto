@@ -149,10 +149,13 @@ message Agari {
 
 enum RichiType {
   UNKNOWN_RICHI_TYPE = 0;
-  NONE = 1;
-  RICHI = 2;
-  OPENED_RICHI = 3;
-  DOUBLE_RICHI = 4;
+
+  NO_RICHI = 0x1;
+
+  RICHI = 0x2;
+    NORMAL_RICHI = 0x21;
+    OPENED_RICHI = 0x22;
+    DOUBLE_RICHI = 0x23;
 }
 
 enum MachiType {

@@ -86,7 +86,7 @@ message YakuCondition {
   optional MachiType required_machi_type = 5;
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
-  optional RichiType required_richi_type = 8;  // TODO: Implement this.
+  optional RichiType required_richi_type = 8;
 
   repeated string required_yaku = 10;  // TODO: Implement this.
 }

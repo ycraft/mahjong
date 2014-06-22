@@ -34,13 +34,15 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
 YakuApplier::~YakuApplier() {
 }
 
-void YakuApplier::apply(const mahjong::PlayerType& playerType,
+void YakuApplier::apply(const PlayerType& player_type,
+                        const RichiType& richi_type,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
   DLOG(INFO) << "Apply " << parsed_hand.DebugString();
   for (const Yaku& yaku : rule_->yaku()) {
     YakuConditionValidator validator(yaku.yaku_condition(),
-                                     playerType,
+                                     player_type,
+                                     richi_type,
                                      parsed_hand);
     YakuConditionValidatorResult validate_result = validator.validate();
     DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
@@ -55,10 +57,12 @@ void YakuApplier::apply(const mahjong::PlayerType& playerType,
  * Implementations for YakuConditionValidator.
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
-                                               const mahjong::PlayerType& playerType,
+                                               const mahjong::PlayerType& player_type,
+                                               const mahjong::RichiType& richi_type,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
-      playerType_(playerType),
+      playerType_(player_type),
+      richi_type_(richi_type),
       parsed_hand_(parsed_hand) {
   for (const Element& element : parsed_hand_.element()) {
     for (const Tile& tile : element.tile()) {
@@ -81,6 +85,14 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
     if (!MahjongCommonUtils::isPlayerTypeMatched(condition_.required_player_type(),
                                                  playerType_)) {
       return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE;
+    }
+  }
+
+  // Validate richi type.
+  if (condition_.has_required_richi_type()) {
+    if (!MahjongCommonUtils::isRichiTypeMatched(condition_.required_richi_type(),
+                                                richi_type_)) {
+      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE;
     }
   }
 

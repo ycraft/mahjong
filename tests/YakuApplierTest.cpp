@@ -49,6 +49,7 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
 
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
                       parsed_hand,
                       &result);
   ASSERT_EQ(1, result.yaku_size());
@@ -62,10 +63,12 @@ TEST_F(YakuApplierTest, DISABLED_ApplyTest_Chitoitsu) {
 class YakuConditionValidatorTest : public ::testing::Test {
  protected:
   YakuConditionValidatorResult validate(const YakuCondition& condition,
-                                        const PlayerType& playerType,
+                                        const PlayerType& player_type,
+                                        const RichiType& richi_type,
                                         const ParsedHand& parsed_hand) {
     return YakuConditionValidator(condition,
-                                  playerType,
+                                  player_type,
+                                  richi_type,
                                   parsed_hand).validate();
   }
 
@@ -73,6 +76,7 @@ class YakuConditionValidatorTest : public ::testing::Test {
                                         const ParsedHand& parsed_hand) {
     return validate(condition,
                     PlayerType::DEALER,
+                    RichiType::NO_RICHI,
                     parsed_hand);
   }
 
@@ -80,6 +84,7 @@ class YakuConditionValidatorTest : public ::testing::Test {
                                         const PlayerType& player_type) {
     return validate(condition,
                     player_type,
+                    RichiType::NO_RICHI,
                     ParsedHand::default_instance());
   }
 
@@ -89,8 +94,17 @@ class YakuConditionValidatorTest : public ::testing::Test {
     parsed_hand.mutable_agari()->CopyFrom(agari);
     return validate(condition,
                     PlayerType::DEALER,
+                    RichiType::NO_RICHI,
                     parsed_hand);
   }
+
+  YakuConditionValidatorResult validate(const YakuCondition& condition,
+                                        const RichiType& richi_type) {
+      return validate(condition,
+                      PlayerType::DEALER,
+                      richi_type,
+                      ParsedHand::default_instance());
+    }
 };
 
 /**
@@ -543,4 +557,34 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
   agari.set_format(AgariFormat::CHITOITSU_AGARI);
   EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
             validate(condition, agari));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
+  YakuCondition condition;
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::NO_RICHI));
+
+  condition.set_required_richi_type(RichiType::RICHI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE,
+            validate(condition, RichiType::NO_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::NORMAL_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::DOUBLE_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::OPENED_RICHI));
+
+  condition.set_required_richi_type(RichiType::DOUBLE_RICHI);
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE,
+            validate(condition, RichiType::NO_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE,
+            validate(condition, RichiType::RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE,
+            validate(condition, RichiType::NORMAL_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_OK,
+            validate(condition, RichiType::DOUBLE_RICHI));
+  EXPECT_EQ(YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE,
+            validate(condition, RichiType::OPENED_RICHI));
 }

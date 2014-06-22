@@ -78,5 +78,10 @@ bool MahjongCommonUtils::isAgariFormatMatched(AgariFormat required,
   return isMatched(required, actual);
 }
 
+bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
+                                            RichiType actual) {
+  return isMatchedForHierarchalData(required, actual);
+}
+
 }
 }
