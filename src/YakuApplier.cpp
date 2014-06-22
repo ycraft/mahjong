@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <memory>
-#include <utility>
+#include <set>
 #include <string>
+#include <utility>
 
 #include <glog/logging.h>
 
@@ -12,11 +13,12 @@
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
 
-using std::string;
 using std::make_pair;
-using std::vector;
-using std::unique_ptr;
 using std::move;
+using std::set;
+using std::string;
+using std::unique_ptr;
+using std::vector;
 
 namespace ydec {
 
@@ -44,9 +46,10 @@ void YakuApplier::apply(const PlayerType& player_type,
                                      player_type,
                                      richi_type,
                                      parsed_hand);
-    YakuConditionValidatorResult validate_result = validator.validate();
-    DLOG(INFO) << yaku.name() << ": " << validator.getErrorMessage(validate_result);
-    if (validate_result == YAKU_CONDITION_VALIDATOR_RESULT_OK) {
+    YakuConditionValidatorResult validator_result;
+    validator.validate(&validator_result);
+    DLOG(INFO) << yaku.name() << ": " << YakuConditionValidatorResult::Type_Name(validator_result.type());
+    if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
       result->add_yaku()->CopyFrom(yaku);
     }
   }
@@ -63,7 +66,8 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
     : condition_(condition),
       playerType_(player_type),
       richi_type_(richi_type),
-      parsed_hand_(parsed_hand) {
+      parsed_hand_(parsed_hand),
+      result_(nullptr) {
   for (const Element& element : parsed_hand_.element()) {
     for (const Tile& tile : element.tile()) {
       hand_tiles_.Add()->CopyFrom(tile);
@@ -71,12 +75,23 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
   }
 }
 
-YakuConditionValidatorResult YakuConditionValidator::validate() {
+YakuConditionValidatorResult::Type YakuConditionValidator::validate() {
+  YakuConditionValidatorResult result;
+  return validate(&result);
+}
+
+YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditionValidatorResult* result) {
+
+  DLOG(INFO) << "Start YakuConditionValidator::validate";
+
+  result_ = result;
+
   // Validate machi type.
   if (condition_.has_required_machi_type()) {
     if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
                                                 parsed_hand_.machi_type())) {
-      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE;
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_MACHI_TYPE);
+      return result_->type();
     }
   }
 
@@ -84,7 +99,8 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
   if (condition_.has_required_player_type()) {
     if (!MahjongCommonUtils::isPlayerTypeMatched(condition_.required_player_type(),
                                                  playerType_)) {
-      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE;
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_TYPE);
+      return result_->type();
     }
   }
 
@@ -92,7 +108,8 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
   if (condition_.has_required_richi_type()) {
     if (!MahjongCommonUtils::isRichiTypeMatched(condition_.required_richi_type(),
                                                 richi_type_)) {
-      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE;
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE);
+      return result_->type();
     }
   }
 
@@ -100,7 +117,8 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
   if (condition_.has_required_agari_condition()) {
     if (!validateRequiredAgariCondition(condition_.required_agari_condition(),
                                         parsed_hand_.agari())) {
-      return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION;
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION);
+      return result_->type();
     }
   }
 
@@ -108,47 +126,35 @@ YakuConditionValidatorResult YakuConditionValidator::validate() {
   if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
                                     hand_tiles_,
                                     true /* allow_defining_new_variable */)) {
-    return YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION;
+    result_->set_type(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION);
+    return result_->type();
   }
 
   // Validate disallowed tile condition
   if (!validateDisallowedTileCondition(condition_.disallowed_tile_condition(),
                                        hand_tiles_)) {
-    return YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION;
+    result_->set_type(YakuConditionValidatorResult_Type_NG_DISALLOWED_TILE_CONDITION);
+    return result_->type();
   }
 
   // Validate required tile condition
   if (!validateRequiredTileCondition(condition_.required_tile_condition(),
                                      hand_tiles_,
                                      true /* allow_defining_new_variable */)) {
-    return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION;
+    result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION);
+    return result_->type();
   }
 
   // Validate element conditions
   if (!validateRequiredElementCondition(condition_.required_element_condition(),
                                         parsed_hand_.element(),
                                         true /* allow_defining_new_variable */)) {
-    return YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION;
+    result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_ELEMENT_CONDITION);
+    return result_->type();
   }
 
-  return YAKU_CONDITION_VALIDATOR_RESULT_OK;
-}
-
-string YakuConditionValidator::getErrorMessage(YakuConditionValidatorResult result) {
-  switch (result) {
-    case YAKU_CONDITION_VALIDATOR_RESULT_OK:
-      return "OK";
-    case YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION:
-          return "Allowed tile condition isn't satisfied.";
-    case YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION:
-          return "Disallowed tile condition isn't satisfied.";
-    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION:
-          return "Required element condition isn't satisfied.";
-    case YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION:
-          return "Required tile condition isn't satisfied.";
-    default:
-      return "Unknown";
-  }
+  result_->set_type(YakuConditionValidatorResult_Type_OK);
+  return result_->type();
 }
 
 bool YakuConditionValidator::validateRequiredAgariCondition(
@@ -499,34 +505,61 @@ bool YakuConditionValidator::validateTileCondition(const TileCondition& conditio
 bool YakuConditionValidator::setValiableTile(
     const TileCondition::VariableTileType& type,
     const TileType& tile) {
-  switch (type & TileCondition::MASK_VARIABLE_TYPE) {
-    case TileCondition::VARIABLE_TILE:
-    case TileCondition::VARIABLE_TILE2:
-      return variable_tiles_.insert(make_pair(type, tile)).second;
+  // If the given variable_tile_type is already defined with other tile, this method just return
+  // false.
+  {
+    const auto& iter = variable_tiles_.find(type);
+    if (iter != variable_tiles_.end()) {
+      return validateVariableTile(type, iter->second, tile);
+    }
+  }
 
-    case TileCondition::VARIABLE_NUMBER:
+  TileCondition::VariableTileType variable_type =
+      static_cast<TileCondition::VariableTileType>(type & TileCondition_VariableTileType_MASK_VARIABLE_TYPE);
+
+  set<TileType>& defined_tiles = defined_tiles_[variable_type];
+
+  // Check whether the given tile is already defined as other variable_tile in the same variable_type.
+  if (defined_tiles.find(tile) != defined_tiles.end()) {
+    return false;
+  }
+
+  switch (variable_type) {
+    case TileCondition_VariableTileType_VARIABLE_TILE:
+    case TileCondition_VariableTileType_VARIABLE_TILE2:
+      defined_tiles.insert(variable_tiles_[type] = tile);
+      DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+      return true;
+
+    case TileCondition_VariableTileType_VARIABLE_NUMBER:
       if (!MahjongCommonUtils::isSequentialTileType(tile)) {
         return false;
       } else {
-        return variable_tiles_.insert(make_pair(type, tile)).second;
+        defined_tiles.insert(variable_tiles_[type] = tile);
+        DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+        return true;
       }
 
-    case TileCondition::VARIABLE_COLOR:
+    case TileCondition_VariableTileType_VARIABLE_COLOR:
       switch (type) {
-        case TileCondition::VARIABLE_COLOR_A:
+        case TileCondition_VariableTileType_VARIABLE_COLOR_A:
           if (!MahjongCommonUtils::isSequentialTileType(tile)) {
             return false;
           } else {
-            return variable_tiles_.insert(make_pair(type, tile)).second;
+            defined_tiles.insert(variable_tiles_[type] = tile);
+            DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+            return true;
           }
 
-        case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
+        case TileCondition_VariableTileType_VARIABLE_COLOR_A_OR_JIHAI:
           if (!MahjongCommonUtils::isSequentialTileType(tile)) {
             // We don't need to store jihai tile to our variable_tile map since
             // it doesn't have any color.
             return true;
           } else {
-            return variable_tiles_.insert(make_pair(type, tile)).second;
+            defined_tiles.insert(variable_tiles_[type] = tile);
+            DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+            return true;
           }
 
         default:

@@ -15,6 +15,22 @@ message YakuApplierResult {
   repeated mahjong.Yaku yaku = 1;
 }
 
+message YakuConditionValidatorResult {
+  enum Type {
+    OK = 0;
+    NG_ALLOWED_TILE_CONDITION = -1;
+    NG_DISALLOWED_TILE_CONDITION = -2;
+    NG_REQUIRED_TILE_CONDITION = -3;
+    NG_REQUIRED_ELEMENT_CONDITION = -4;
+    NG_REQUIRED_MACHI_TYPE = -5;
+    NG_REQUIRED_PLAYER_TYPE = -6;
+    NG_REQUIRED_AGARI_CONDITION = -7;
+    NG_REQUIRED_RICHI_TYPE = -8;
+  }
+
+  optional Type type = 1;
+}
+
 message HandParserResult {
   repeated ParsedHand parsed_hand = 1;
 }

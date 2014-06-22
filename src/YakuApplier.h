@@ -1,10 +1,11 @@
 #ifndef YAKUAPPLIER_H_
 #define YAKUAPPLIER_H_
 
-#include <vector>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
+#include <vector>
 
 #include "src-gen/cpp/mahjong-common.pb.h"
 #include "src-gen/cpp/mahjong-rule.pb.h"
@@ -34,18 +35,6 @@ class YakuApplier {
 /**
  * YakuConditionValidator
  */
-enum YakuConditionValidatorResult {
-  YAKU_CONDITION_VALIDATOR_RESULT_OK = 0,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_ALLOWED_TILE_CONDITION = -1,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_DISALLOWED_TILE_CONDITION = -2,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_TILE_CONDITION = -3,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_ELEMENT_CONDITION = -4,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_MACHI_TYPE = -5,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_PLAYER_TYPE = -6,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_AGARI_CONDITION = -7,
-  YAKU_CONDITION_VALIDATOR_RESULT_NG_REQUIRED_RICHI_TYPE = -8,
-};
-
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const mahjong::YakuCondition& condition,
@@ -53,8 +42,8 @@ class YakuConditionValidator {
                          const mahjong::RichiType& richi_type,
                          const ParsedHand& parsed_hand);
 
-  YakuConditionValidatorResult validate();
-  std::string getErrorMessage(YakuConditionValidatorResult result);
+  YakuConditionValidatorResult::Type validate();
+  YakuConditionValidatorResult::Type validate(YakuConditionValidatorResult* result);
 
  private:
   const mahjong::YakuCondition& condition_;
@@ -62,8 +51,11 @@ class YakuConditionValidator {
   const mahjong::RichiType& richi_type_;
   const ParsedHand& parsed_hand_;
 
+  YakuConditionValidatorResult* result_;
+
   ::google::protobuf::RepeatedPtrField<mahjong::Tile> hand_tiles_;
   std::map<mahjong::TileCondition::VariableTileType, mahjong::TileType> variable_tiles_;
+  std::map<mahjong::TileCondition::VariableTileType, std::set<mahjong::TileType>> defined_tiles_;
 
   // Agari conditions.
   bool validateRequiredAgariCondition(
