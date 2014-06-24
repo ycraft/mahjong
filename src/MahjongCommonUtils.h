@@ -42,6 +42,10 @@ class MahjongCommonUtils {
 
   // Utilities for RichiType.
   static bool isRichiTypeMatched(mahjong::RichiType required, mahjong::RichiType actual);
+
+  // Return N, where N is N-yakuman equivalent to the given fan.
+  // e.g. (fan < 13) -> 0, (13 <= fan < 26) -> 1, ...
+  static int toYakuman(int fan);
 };
 
 }

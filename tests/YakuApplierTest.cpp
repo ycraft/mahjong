@@ -1,9 +1,14 @@
 #include <google/protobuf/text_format.h>
 #include <gtest/gtest.h>
-#include <stdexcept>
 
-#include <iostream>
+#include <algorithm>
 #include <fstream>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #include "src/YakuApplier.h"
 #include "CommonTestUtil.h"
@@ -31,6 +36,34 @@ class YakuApplierTest : public ::testing::Test {
   }
 
   YakuApplierTest() : yaku_applier_(unique_ptr<Rule>(new Rule(RULE))) {}
+
+ private:
+  static string concatStrings(const vector<string>& strings) {
+    stringstream ss;
+    copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
+    return ss.str();
+  }
+
+  static vector<string> getYakuNames(const YakuApplierResult& result) {
+    vector<string> yakus;
+    yakus.reserve(result.yaku_size());
+    for (const Yaku& yaku : result.yaku()) {
+      yakus.push_back(yaku.name());
+    }
+    return yakus;
+  }
+
+ protected:
+  static void assertEquals(const vector<string>& expected,
+                           const YakuApplierResult& actual) {
+    vector<string> e = expected, a = getYakuNames(actual);
+    sort(e.begin(), e.end());
+    sort(a.begin(), a.end());
+    if (e != a) {
+      FAIL() << "Expected = {" << concatStrings(e) << "}\n"
+          << "Actual = {" << concatStrings(a) << "}";
+    }
+  }
 };
 
 Rule YakuApplierTest::RULE;
@@ -51,8 +84,7 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
                       RichiType::NO_RICHI,
                       parsed_hand,
                       &result);
-  ASSERT_EQ(1, result.yaku_size());
-  EXPECT_EQ("七対子", result.yaku(0).name());
+  assertEquals({"七対子"}, result);
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
@@ -71,9 +103,122 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
                       RichiType::NO_RICHI,
                       parsed_hand,
                       &result);
-  ASSERT_EQ(0, result.yaku_size());  // We cannot use same tile kind for two-toitsu.
+  assertEquals({}, result);  // We cannot use same tile kind for two-toitsu.
 }
 
+TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "二盃口", "平和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createMinkoutsu(parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::RON);
+  parsed_hand.set_machi_type(MachiType::SHABO);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"三暗刻", "対々和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::SHABO);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"四暗刻"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::SOUZU_1);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3, true);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::TANKI);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"四暗刻単騎待ち"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::RON);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_TON);
+  CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_NAN);
+  CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_SHA);
+  CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_PE);
+  CommonTestUtil::createToitsu(parsed_hand.add_element(), TileType::SANGEN_HAKU, true);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::TANKI);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      parsed_hand,
+                      &result);
+  assertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result);
+}
 
 /**
  * Unit tests for YakuConditionValidator
@@ -149,7 +294,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
       &condition));
 
   ParsedHand hand;
-  CommonTestUtil::createAnkou(hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createAnkoutsu(hand.add_element(), TileType::PINZU_1);
 
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             validate(condition, hand));

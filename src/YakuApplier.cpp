@@ -31,6 +31,26 @@ namespace msc{
  */
 YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
     : rule_(std::move(rule)) {
+  for (const Yaku& yaku : rule_->yaku()) {
+    CHECK(yaku_lookup_table_.insert(make_pair(yaku.name(), &yaku)).second)
+        << "Duplicated yaku definition found.";
+  }
+
+  for (const Yaku& yaku : rule_->yaku()) {
+    upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<const string>()));
+    for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
+      CHECK(yaku_lookup_table_.find(upper_yaku_name) != yaku_lookup_table_.end());
+      upper_yaku_lookup_table_[yaku.name()].push_back(upper_yaku_name);
+    }
+    // Add yakuman as a upper yaku, if the current yaku is not a yakuman.
+    if (MahjongCommonUtils::toYakuman(yaku.menzen_fan()) == 0) {
+      for (const Yaku& r_yaku : rule_->yaku()) {
+        if (MahjongCommonUtils::toYakuman(r_yaku.menzen_fan()) > 0) {
+          upper_yaku_lookup_table_[yaku.name()].push_back(r_yaku.name());
+        }
+      }
+    }
+  }
 }
 
 YakuApplier::~YakuApplier() {
@@ -41,6 +61,8 @@ void YakuApplier::apply(const PlayerType& player_type,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
   DLOG(INFO) << "Apply " << parsed_hand.DebugString();
+
+  set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_->yaku()) {
     YakuConditionValidator validator(yaku.yaku_condition(),
                                      player_type,
@@ -50,7 +72,20 @@ void YakuApplier::apply(const PlayerType& player_type,
     validator.validate(&validator_result);
     DLOG(INFO) << yaku.name() << ": " << YakuConditionValidatorResult::Type_Name(validator_result.type());
     if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
-      result->add_yaku()->CopyFrom(yaku);
+      applied_yaku_names.insert(yaku.name());
+    }
+  }
+
+  for (const string& yaku_name : applied_yaku_names) {
+    bool upper_yaku_found = false;
+    for (const string& upper_yaku_name : upper_yaku_lookup_table_.at(yaku_name)) {
+      upper_yaku_found = (applied_yaku_names.find(upper_yaku_name) != applied_yaku_names.end());
+      if (upper_yaku_found) {
+        break;
+      }
+    }
+    if (!upper_yaku_found) {
+      result->add_yaku()->CopyFrom(*yaku_lookup_table_.at(yaku_name));
     }
   }
 }

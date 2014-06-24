@@ -1,5 +1,7 @@
 #include "MahjongCommonUtils.h"
 
+#include "MahjongCommonValue.h"
+
 using namespace ydec::mahjong;
 
 namespace ydec {
@@ -81,6 +83,10 @@ bool MahjongCommonUtils::isAgariFormatMatched(AgariFormat required,
 bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
                                             RichiType actual) {
   return isMatchedForHierarchalData(required, actual);
+}
+
+int MahjongCommonUtils::toYakuman(int fan) {
+  return fan / MahjongCommonValue::KAZOE_YAKUMAN_FAN;
 }
 
 }

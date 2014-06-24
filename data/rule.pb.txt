@@ -117,16 +117,17 @@ yaku {
       required_state: CONDITIONAL_YAKU_HAI
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU  # SHUNTSU, because if AGARI_TYPE is RON, that element type
+                                     # will be MINSHUNTSU.
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
     }
     required_machi_type: MACHI_0FU
     required_agari_condition {
@@ -140,7 +141,7 @@ yaku {
   menzen_fan: 1
   yaku_condition {
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE_A
       }
@@ -152,7 +153,7 @@ yaku {
       }
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE_A
       }
@@ -712,7 +713,7 @@ yaku {
   menzen_fan: 3
   yaku_condition {
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE_A
       }
@@ -724,7 +725,7 @@ yaku {
       }
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE_A
       }
@@ -736,7 +737,7 @@ yaku {
       }
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE2_A
       }
@@ -748,7 +749,7 @@ yaku {
       }
     }
     required_element_condition {
-      allowed_element_type: ANSHUNTSU
+      allowed_element_type: SHUNTSU
       required_tile_condition {
         required_variable_tile: VARIABLE_TILE2_A
       }

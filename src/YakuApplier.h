@@ -29,6 +29,8 @@ class YakuApplier {
 
  private:
   std::unique_ptr<mahjong::Rule> rule_;
+  std::map<const std::string, const mahjong::Yaku*> yaku_lookup_table_;
+  std::map<const std::string, std::vector<const std::string>> upper_yaku_lookup_table_;
 };
 
 

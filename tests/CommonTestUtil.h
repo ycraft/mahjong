@@ -24,12 +24,24 @@ class CommonTestUtil {
   static void createToitsu(mahjong::Element* element,
                            const mahjong::TileType& tile_type,
                            bool include_agari_hai = false);
-  static void createAnkou(mahjong::Element* element,
-                          const mahjong::TileType& tile_type,
-                          bool include_agari_hai = false);
+
+  static void createAnkantsu(mahjong::Element* element,
+                             const mahjong::TileType& tile_type,
+                             bool include_agari_hai = false);
+
+  static void createAnkoutsu(mahjong::Element* element,
+                             const mahjong::TileType& tile_type,
+                             bool include_agari_hai = false);
+  static void createMinkoutsu(mahjong::Element* element,
+                              const mahjong::TileType& tile_type,
+                              bool include_agari_hai = false);
+
   static void createAnshuntsu(mahjong::Element* element,
                               const mahjong::TileType& smallest_tile_type,
                               int agari_hai_index = -1);
+  static void createMinshuntsu(mahjong::Element* element,
+                               const mahjong::TileType& smallest_tile_type,
+                               int agari_hai_index = -1);
 };
 
 } /* namespace msc */
