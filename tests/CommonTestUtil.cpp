@@ -60,6 +60,13 @@ CommonTestUtil::CommonTestUtil() {}
 
 CommonTestUtil::~CommonTestUtil() {}
 
+Element CommonTestUtil::createToitsu(const TileType& tile_type,
+                                     bool include_agari_hai) {
+  Element element;
+  createToitsu(&element, tile_type, include_agari_hai);
+  return element;
+}
+
 void CommonTestUtil::createToitsu(Element* element,
                                   const TileType& tile_type,
                                   bool include_agari_hai) {
@@ -73,34 +80,69 @@ void CommonTestUtil::createToitsu(Element* element,
   }
 }
 
+Element CommonTestUtil::createAnkantsu(const TileType& tile_type,
+                                       bool include_agari_hai) {
+  Element element;
+  createAnkantsu(&element, tile_type, include_agari_hai);
+  return element;
+}
+
 void CommonTestUtil::createAnkantsu(Element* element,
                                     const TileType& tile_type,
                                     bool include_agari_hai) {
-  return createKantsu(element, tile_type, true, include_agari_hai);
+  createKantsu(element, tile_type, true, include_agari_hai);
+}
+
+Element CommonTestUtil::createAnkoutsu(const TileType& tile_type,
+                                       bool include_agari_hai) {
+  Element element;
+  createAnkoutsu(&element, tile_type, include_agari_hai);
+  return element;
 }
 
 void CommonTestUtil::createAnkoutsu(Element* element,
                                     const TileType& tile_type,
                                     bool include_agari_hai) {
-  return createKoutsu(element, tile_type, true, include_agari_hai);
+  createKoutsu(element, tile_type, true, include_agari_hai);
+}
+
+Element CommonTestUtil::createMinkoutsu(const TileType& tile_type,
+                                        bool include_agari_hai) {
+  Element element;
+  createMinkoutsu(&element, tile_type, include_agari_hai);
+  return element;
 }
 
 void CommonTestUtil::createMinkoutsu(Element* element,
                                      const TileType& tile_type,
                                      bool include_agari_hai) {
-  return createKoutsu(element, tile_type, false, include_agari_hai);
+  createKoutsu(element, tile_type, false, include_agari_hai);
+}
+
+Element CommonTestUtil::createAnshuntsu(const TileType& smallest_tile_type,
+                                        int agari_hai_index) {
+  Element element;
+  createAnshuntsu(&element, smallest_tile_type, agari_hai_index);
+  return element;
 }
 
 void CommonTestUtil::createAnshuntsu(Element* element,
                                      const TileType& smallest_tile_type,
                                      int agari_hai_index) {
-  return createShuntsu(element, smallest_tile_type, true, agari_hai_index);
+  createShuntsu(element, smallest_tile_type, true, agari_hai_index);
+}
+
+Element CommonTestUtil::createMinshuntsu(const TileType& smallest_tile_type,
+                                         int agari_hai_index) {
+  Element element;
+  createMinshuntsu(&element, smallest_tile_type, agari_hai_index);
+  return element;
 }
 
 void CommonTestUtil::createMinshuntsu(Element* element,
                                       const TileType& smallest_tile_type,
                                       int agari_hai_index) {
-  return createShuntsu(element, smallest_tile_type, false, agari_hai_index);
+  createShuntsu(element, smallest_tile_type, false, agari_hai_index);
 }
 
 } /* namespace msc */

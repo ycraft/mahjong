@@ -21,24 +21,38 @@ class CommonTestUtil {
   ~CommonTestUtil();
 
  public:
+  static mahjong::Element createToitsu(const mahjong::TileType& tile_type,
+                                       bool include_agari_hai = false);
   static void createToitsu(mahjong::Element* element,
                            const mahjong::TileType& tile_type,
                            bool include_agari_hai = false);
 
+  static mahjong::Element createAnkantsu(const mahjong::TileType& tile_type,
+                                         bool include_agari_hai = false);
   static void createAnkantsu(mahjong::Element* element,
                              const mahjong::TileType& tile_type,
                              bool include_agari_hai = false);
 
+  static mahjong::Element createAnkoutsu(const mahjong::TileType& tile_type,
+                                         bool include_agari_hai = false);
   static void createAnkoutsu(mahjong::Element* element,
                              const mahjong::TileType& tile_type,
                              bool include_agari_hai = false);
+
+  static mahjong::Element createMinkoutsu(const mahjong::TileType& tile_type,
+                                          bool include_agari_hai = false);
   static void createMinkoutsu(mahjong::Element* element,
                               const mahjong::TileType& tile_type,
                               bool include_agari_hai = false);
 
+  static mahjong::Element createAnshuntsu(const mahjong::TileType& smallest_tile_type,
+                                          int agari_hai_index = -1);
   static void createAnshuntsu(mahjong::Element* element,
                               const mahjong::TileType& smallest_tile_type,
                               int agari_hai_index = -1);
+
+  static mahjong::Element createMinshuntsu(const mahjong::TileType& smallest_tile_type,
+                                           int agari_hai_index = -1);
   static void createMinshuntsu(mahjong::Element* element,
                                const mahjong::TileType& smallest_tile_type,
                                int agari_hai_index = -1);
