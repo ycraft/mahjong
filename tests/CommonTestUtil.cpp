@@ -10,6 +10,20 @@
 using namespace ydec::mahjong;
 
 namespace {
+void createToitsu(Element* element,
+                  const TileType& tile_type,
+                  bool tsumo,
+                  bool include_agari_hai) {
+  element->set_type(tsumo ? HandElementType::ANTOITSU : HandElementType::MINTOITSU);
+  for (int i = 0; i < 2; ++i) {
+    Tile* tile = element->add_tile();
+    tile->set_type(tile_type);
+    if (include_agari_hai && i == 0) {
+      tile->add_state(tsumo ? TileState::AGARI_HAI_TSUMO : TileState::AGARI_HAI_RON);
+    }
+  }
+}
+
 void createKantsu(Element* element,
                   const TileType& tile_type,
                   bool tsumo,
@@ -60,24 +74,30 @@ CommonTestUtil::CommonTestUtil() {}
 
 CommonTestUtil::~CommonTestUtil() {}
 
-Element CommonTestUtil::createToitsu(const TileType& tile_type,
+Element CommonTestUtil::createAntoitsu(const TileType& tile_type,
                                      bool include_agari_hai) {
   Element element;
-  createToitsu(&element, tile_type, include_agari_hai);
+  createAntoitsu(&element, tile_type, include_agari_hai);
   return element;
 }
 
-void CommonTestUtil::createToitsu(Element* element,
+void CommonTestUtil::createAntoitsu(Element* element,
                                   const TileType& tile_type,
                                   bool include_agari_hai) {
-  element->set_type(HandElementType::TOITSU);
-  for (int i = 0; i < 2; ++i) {
-    Tile* tile = element->add_tile();
-    tile->set_type(tile_type);
-    if (include_agari_hai && i == 0) {
-      tile->add_state(TileState::AGARI_HAI_TSUMO);
-    }
-  }
+  createToitsu(element, tile_type, true, include_agari_hai);
+}
+
+Element CommonTestUtil::createMintoitsu(const TileType& tile_type,
+                                        bool include_agari_hai) {
+  Element element;
+  createMintoitsu(&element, tile_type, include_agari_hai);
+  return element;
+}
+
+void CommonTestUtil::createMintoitsu(Element* element,
+                                     const TileType& tile_type,
+                                     bool include_agari_hai) {
+  createToitsu(element, tile_type, false, include_agari_hai);
 }
 
 Element CommonTestUtil::createAnkantsu(const TileType& tile_type,

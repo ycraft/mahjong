@@ -21,11 +21,17 @@ class CommonTestUtil {
   ~CommonTestUtil();
 
  public:
-  static mahjong::Element createToitsu(const mahjong::TileType& tile_type,
+  static mahjong::Element createAntoitsu(const mahjong::TileType& tile_type,
                                        bool include_agari_hai = false);
-  static void createToitsu(mahjong::Element* element,
-                           const mahjong::TileType& tile_type,
-                           bool include_agari_hai = false);
+  static void createAntoitsu(mahjong::Element* element,
+                             const mahjong::TileType& tile_type,
+                             bool include_agari_hai = false);
+
+  static mahjong::Element createMintoitsu(const mahjong::TileType& tile_type,
+                                          bool include_agari_hai = false);
+  static void createMintoitsu(mahjong::Element* element,
+                              const mahjong::TileType& tile_type,
+                              bool include_agari_hai = false);
 
   static mahjong::Element createAnkantsu(const mahjong::TileType& tile_type,
                                          bool include_agari_hai = false);

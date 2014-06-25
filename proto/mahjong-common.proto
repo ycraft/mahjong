@@ -112,6 +112,8 @@ enum HandElementType {
       MINKANTSU = 0x132;
 
   TOITSU = 0x2;
+    ANTOITSU = 0x21;
+    MINTOITSU = 0x22;
 }
 
 message Element {

@@ -122,7 +122,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
 
   _free_tile_group_ids[i] = id;
 
-  // jantou
+  // toitsu
   if (!has_jantou) {
     _free_tile_element_types[i] = HandElementType::TOITSU;
     for (int j = i + 1; j < _num_free_tiles && _free_tiles[i] == _free_tiles[j]; ++j) {
@@ -138,18 +138,18 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
     }
   }
 
-  // anko
+  // koutsu
   {
     int counter = 0;
     int using_tile_indices[2];
-    _free_tile_element_types[i] = HandElementType::ANKOUTSU;
+    _free_tile_element_types[i] = HandElementType::KOUTSU;
     for (int j = i + 1; j < _num_free_tiles && _free_tiles[i] == _free_tiles[j]; ++j) {
       if (_free_tile_group_ids[j] == 0) {
         using_tile_indices[counter] = j;
         ++counter;
 
         _free_tile_group_ids[j] = id;
-        _free_tile_element_types[j] = HandElementType::ANKOUTSU;
+        _free_tile_element_types[j] = HandElementType::KOUTSU;
 
         if (counter == 2) {
           dfs(j + 1, id + 1, has_jantou);
@@ -164,11 +164,11 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
     }
   }
 
-  // anshuntsu
+  // shuntsu
   if (MahjongCommonUtils::isSequentialTileType(_free_tiles[i])) {
     int counter = 0;
     int using_tile_indices[2];
-    _free_tile_element_types[i] = HandElementType::ANSHUNTSU;
+    _free_tile_element_types[i] = HandElementType::SHUNTSU;
     TileType prev = _free_tiles[i];
     for (int j = i + 1; j < _num_free_tiles && _free_tiles[j] - prev <= 1; ++j) {
       if (_free_tile_group_ids[j] == 0 && _free_tiles[j] - prev == 1) {
@@ -177,7 +177,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
 
         prev = _free_tiles[j];
         _free_tile_group_ids[j] = id;
-        _free_tile_element_types[j] = HandElementType::ANSHUNTSU;
+        _free_tile_element_types[j] = HandElementType::SHUNTSU;
 
         if (counter == 2) {
           dfs(i + 1, id + 1, has_jantou);
@@ -274,7 +274,25 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
       // Set element type.
       for (int i = 0; i < _num_free_tiles; ++i) {
         if (_free_tile_group_ids[i] == id) {
-          element->set_type(_free_tile_element_types[i]);
+          bool contains_ron_hai =
+              (id == agari_group_id
+               && MahjongCommonUtils::isAgariTypeMatched(AgariType::RON, _hand->agari().type()));
+          if (MahjongCommonUtils::isHandElementTypeMatched(HandElementType::TOITSU,
+                                                           _free_tile_element_types[i])) {
+            element->set_type(
+                contains_ron_hai ? HandElementType::MINTOITSU : HandElementType::ANTOITSU);
+          } else if (MahjongCommonUtils::isHandElementTypeMatched(HandElementType::KOUTSU,
+                                                                  _free_tile_element_types[i])) {
+            element->set_type(
+                contains_ron_hai ? HandElementType::MINKOUTSU : HandElementType::ANKOUTSU);
+          } else if (MahjongCommonUtils::isHandElementTypeMatched(HandElementType::SHUNTSU,
+                                                                  _free_tile_element_types[i])) {
+            element->set_type(
+                contains_ron_hai ? HandElementType::MINSHUNTSU : HandElementType::ANSHUNTSU);
+          } else {
+            DLOG(FATAL) << "Unexpected HandElementType: "
+                        << HandElementType_Name(_free_tile_element_types[i]);
+          }
           break;
         }
       }
