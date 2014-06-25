@@ -93,7 +93,8 @@ class HandParserTest : public ::testing::Test {
 
   bool checkIrregularAgariFormatIsContained(const HandParserResult& actual) {
     for (const ParsedHand& parsed_hand : actual.parsed_hand()) {
-      if (parsed_hand.agari().format() == AgariFormat::IRREGULAR_AGARI) {
+      if (parsed_hand.agari().format() == AgariFormat::IRREGULAR_AGARI
+          && parsed_hand.machi_type() == MachiType::UNKNOWN_MACHI_TYPE) {
         return true;
       }
     }
@@ -243,6 +244,7 @@ TEST_F(HandParserTest, ParseTest_3) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
+  hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -250,6 +252,16 @@ TEST_F(HandParserTest, ParseTest_3) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_5),
+       CommonTestUtil::createAnshuntsu(TileType::SOUZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::WANZU_1),
+       CommonTestUtil::createAntoitsu(TileType::WANZU_9, true)},
+      MachiType::TANKI,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_4) {
@@ -268,6 +280,7 @@ TEST_F(HandParserTest, ParseTest_4) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
+  hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -275,6 +288,7 @@ TEST_F(HandParserTest, ParseTest_4) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_5) {
@@ -293,6 +307,7 @@ TEST_F(HandParserTest, ParseTest_5) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -300,6 +315,7 @@ TEST_F(HandParserTest, ParseTest_5) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_6) {
@@ -318,6 +334,7 @@ TEST_F(HandParserTest, ParseTest_6) {
   hand.add_closed_tile(TileType::WANZU_3);
   hand.add_closed_tile(TileType::WANZU_9);
   hand.set_agari_tile(TileType::WANZU_9);
+  hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -325,6 +342,7 @@ TEST_F(HandParserTest, ParseTest_6) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_7) {
@@ -343,6 +361,7 @@ TEST_F(HandParserTest, ParseTest_7) {
   chii->add_tile(TileType::PINZU_3);
   chii->add_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_4);
+  hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -350,6 +369,15 @@ TEST_F(HandParserTest, ParseTest_7) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAnkoutsu(TileType::PINZU_3),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_4, true),
+       CommonTestUtil::createMinkoutsu(TileType::PINZU_2),
+       CommonTestUtil::createAnkantsu(TileType::PINZU_1),
+       CommonTestUtil::createMinshuntsu(TileType::PINZU_2)},
+      MachiType::TANKI,
+      AgariFormat::REGULAR_AGARI,
+      result));
 }
 
 TEST_F(HandParserTest, ParseTest_Churen) {
@@ -368,6 +396,7 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   hand.add_closed_tile(TileType::PINZU_9);
   hand.add_closed_tile(TileType::PINZU_9);
   hand.set_agari_tile(TileType::PINZU_9);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -375,6 +404,25 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(3, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_4),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_7),
+       CommonTestUtil::createMinkoutsu(TileType::PINZU_9, true)},
+      MachiType::SHABO,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_4),
+       CommonTestUtil::createMinshuntsu(TileType::PINZU_7, 2),
+       CommonTestUtil::createAnkoutsu(TileType::PINZU_9)},
+      MachiType::RYANMEN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Chitoitsu) {
@@ -393,6 +441,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   hand.add_closed_tile(TileType::PINZU_6);
   hand.add_closed_tile(TileType::PINZU_7);
   hand.set_agari_tile(TileType::PINZU_7);
+  hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -400,6 +449,45 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(5, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_2),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_2),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_5),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_5, 2)},
+      MachiType::PENCHAN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_4),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_5),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_5, 2)},
+      MachiType::PENCHAN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_4),
+       CommonTestUtil::createAnshuntsu(TileType::PINZU_4),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_7, true)},
+      MachiType::TANKI,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_2),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_3),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_4),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_5),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_6),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_7, true)},
+      MachiType::TANKI,
+      AgariFormat::CHITOITSU_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
@@ -418,6 +506,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   hand.add_closed_tile(TileType::WIND_TON);
   hand.add_closed_tile(TileType::WIND_NAN);
   hand.set_agari_tile(TileType::WIND_NAN);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -425,6 +514,18 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAntoitsu(TileType::PINZU_2),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAntoitsu(TileType::WIND_TON),
+       CommonTestUtil::createMintoitsu(TileType::WIND_NAN, true)},
+      MachiType::TANKI,
+      AgariFormat::CHITOITSU_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
@@ -443,6 +544,7 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   hand.add_closed_tile(TileType::WIND_TON);
   hand.add_closed_tile(TileType::WIND_NAN);
   hand.set_agari_tile(TileType::WIND_NAN);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -450,6 +552,7 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Ryanmen) {
@@ -468,6 +571,7 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
   hand.set_agari_tile(TileType::SOUZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -475,9 +579,16 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::RYANMEN, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMinshuntsu(TileType::SOUZU_1, 0)},
+      MachiType::RYANMEN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Penchan_1) {
@@ -496,6 +607,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.set_agari_tile(TileType::SOUZU_3);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -503,9 +615,16 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::PENCHAN, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMinshuntsu(TileType::SOUZU_1, 2)},
+      MachiType::PENCHAN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Penchan_2) {
@@ -524,6 +643,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
   hand.add_closed_tile(TileType::SOUZU_8);
   hand.add_closed_tile(TileType::SOUZU_9);
   hand.set_agari_tile(TileType::SOUZU_7);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -531,9 +651,16 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::PENCHAN, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMinshuntsu(TileType::SOUZU_7, 0)},
+      MachiType::PENCHAN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Kanchan) {
@@ -552,6 +679,7 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_4);
   hand.set_agari_tile(TileType::SOUZU_3);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -559,9 +687,16 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::KANCHAN, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMinshuntsu(TileType::SOUZU_2, 1)},
+      MachiType::KANCHAN,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Shabo) {
@@ -580,6 +715,7 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -587,9 +723,16 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::SHABO, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMinkoutsu(TileType::SOUZU_1, true)},
+      MachiType::SHABO,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Tanki_1) {
@@ -608,6 +751,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
   hand.add_closed_tile(TileType::SANGEN_CHUN);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -615,9 +759,16 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(MachiType::TANKI, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAnkoutsu(TileType::PINZU_1),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAnkoutsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createMintoitsu(TileType::SOUZU_1, true)},
+      MachiType::TANKI,
+      AgariFormat::REGULAR_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
@@ -636,6 +787,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
   hand.add_closed_tile(TileType::WIND_PE);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.set_agari_tile(TileType::SOUZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -643,9 +795,18 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(2, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::CHITOITSU_AGARI);
-  EXPECT_EQ(MachiType::TANKI, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createAntoitsu(TileType::WIND_NAN),
+       CommonTestUtil::createAntoitsu(TileType::WIND_PE),
+       CommonTestUtil::createMintoitsu(TileType::SOUZU_1, true)},
+      MachiType::TANKI,
+      AgariFormat::CHITOITSU_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
 
 TEST_F(HandParserTest, ParseTest_Kokushimusou) {
@@ -664,6 +825,7 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   hand.add_closed_tile(TileType::SANGEN_HATSU);
   hand.add_closed_tile(TileType::SANGEN_CHUN);
   hand.set_agari_tile(TileType::WANZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -671,7 +833,5 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   // cout << HandParserResultUtil::getDebugString(result) << endl;
 
   EXPECT_EQ(1, result.parsed_hand_size());
-
-  EXPECT_EQ(result.parsed_hand(0).agari().format(), AgariFormat::IRREGULAR_AGARI);
-  EXPECT_EQ(MachiType::UNKNOWN_MACHI_TYPE, result.parsed_hand(0).machi_type());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }

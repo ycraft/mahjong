@@ -113,6 +113,19 @@ void CommonTestUtil::createAnkantsu(Element* element,
   createKantsu(element, tile_type, true, include_agari_hai);
 }
 
+Element CommonTestUtil::createMinkantsu(const TileType& tile_type,
+                                        bool include_agari_hai) {
+  Element element;
+  createMinkantsu(&element, tile_type, include_agari_hai);
+  return element;
+}
+
+void CommonTestUtil::createMinkantsu(Element* element,
+                                     const TileType& tile_type,
+                                     bool include_agari_hai) {
+  createKantsu(element, tile_type, false, include_agari_hai);
+}
+
 Element CommonTestUtil::createAnkoutsu(const TileType& tile_type,
                                        bool include_agari_hai) {
   Element element;

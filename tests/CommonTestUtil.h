@@ -39,6 +39,12 @@ class CommonTestUtil {
                              const mahjong::TileType& tile_type,
                              bool include_agari_hai = false);
 
+  static mahjong::Element createMinkantsu(const mahjong::TileType& tile_type,
+                                          bool include_agari_hai = false);
+  static void createMinkantsu(mahjong::Element* element,
+                              const mahjong::TileType& tile_type,
+                              bool include_agari_hai = false);
+
   static mahjong::Element createAnkoutsu(const mahjong::TileType& tile_type,
                                          bool include_agari_hai = false);
   static void createAnkoutsu(mahjong::Element* element,
