@@ -9,6 +9,7 @@
 #include <glog/logging.h>
 
 #include "MahjongCommonUtils.h"
+#include "ValidatorUtils.h"
 
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
@@ -219,30 +220,11 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
   }
 
   // Check state.
-  if (condition.required_state_size() != 0) {
-    unique_ptr<bool[]> used(new bool[agari.state_size()]);
-    memset(used.get(), 0, sizeof(used[0]) * agari.state_size());
-
-    for (const int required_state_int : condition.required_state()) {
-      const AgariState required_state = static_cast<AgariState>(required_state_int);
-      bool found = false;
-      for (int i = 0; i < agari.state_size(); ++i) {
-        if (used[i]) {
-          continue;
-        }
-
-        if (!MahjongCommonUtils::isAgariStateMatched(required_state, agari.state(i))) {
-          continue;
-        }
-
-        used[i] = true;
-        found = true;
-        break;
-      }
-      if (!found) {
-        return false;
-      }
-    }
+  if (!ValidatorUtils::validateRequiredItems(
+      condition.required_state(),
+      agari.state(),
+      ValidatorUtils::enumComp<AgariState>(MahjongCommonUtils::isAgariStateMatched))) {
+    return false;
   }
 
   return true;
