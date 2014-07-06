@@ -5,7 +5,7 @@ import "mahjong-rule.proto";
 
 package ydec.msc;
 
-message ScoreCalculationResponse {
+message ScoreCalculaterResult {
   optional int32 fu = 1;
   optional int32 fan = 2;
   repeated mahjong.Yaku yaku = 3;

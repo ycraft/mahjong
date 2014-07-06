@@ -1,21 +1,23 @@
-/*
- * ScoreCalculater.cpp
- *
- *  Created on: 2014/06/14
- *      Author: yuuki
- */
-
 #include <src/ScoreCalculater.h>
 
+#include <algorithm>
+
+#include "src/HandParser.h"
+#include "src/YakuApplier.h"
+
+using namespace std;
+
 namespace ydec {
+namespace msc {
 
-ScoreCalculater::ScoreCalculater() {
-  // TODO Auto-generated constructor stub
-
+ScoreCalculater::ScoreCalculater(unique_ptr<HandParser>&& hand_parser,
+                                 unique_ptr<YakuApplier>&& yaku_applier)
+    : hand_parser_(move(hand_parser)),
+      yaku_applier_(move(yaku_applier)) {
 }
 
 ScoreCalculater::~ScoreCalculater() {
-  // TODO Auto-generated destructor stub
 }
 
+} /* namespace msc */
 } /* namespace ydec */
