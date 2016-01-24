@@ -91,7 +91,7 @@ void HandParser::setup(const Hand& hand, HandParserResult* result) {
   _num_free_tiles = hand.closed_tile_size() + 1;
 
   for (int i = 0; i < hand.closed_tile_size(); ++i) {
-  _free_tiles[i] = hand.closed_tile(i);
+    _free_tiles[i] = hand.closed_tile(i);
   }
   _free_tiles[_num_free_tiles - 1] = hand.agari_tile();
 

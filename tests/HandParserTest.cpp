@@ -835,3 +835,64 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   EXPECT_EQ(1, result.parsed_hand_size());
   EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
 }
+
+TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
+  // Parse first hand.
+  Hand hand;
+  hand.add_closed_tile(TileType::PINZU_1);
+  hand.add_closed_tile(TileType::PINZU_1);
+  hand.add_closed_tile(TileType::SANGEN_HAKU);
+  hand.add_closed_tile(TileType::SANGEN_HAKU);
+  hand.add_closed_tile(TileType::SANGEN_HATSU);
+  hand.add_closed_tile(TileType::SANGEN_HATSU);
+  hand.add_closed_tile(TileType::SANGEN_CHUN);
+  hand.add_closed_tile(TileType::SANGEN_CHUN);
+  hand.add_closed_tile(TileType::WIND_NAN);
+  hand.add_closed_tile(TileType::WIND_NAN);
+  hand.add_closed_tile(TileType::WIND_PE);
+  hand.add_closed_tile(TileType::WIND_PE);
+  hand.add_closed_tile(TileType::SOUZU_1);
+  hand.set_agari_tile(TileType::SOUZU_1);
+  hand.mutable_agari()->set_type(AgariType::RON);
+
+  HandParserResult result;
+  _handParser.parse(hand, &result);
+
+  EXPECT_EQ(2, result.parsed_hand_size());
+  EXPECT_TRUE(check(
+      {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HAKU),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_HATSU),
+       CommonTestUtil::createAntoitsu(TileType::SANGEN_CHUN),
+       CommonTestUtil::createAntoitsu(TileType::WIND_NAN),
+       CommonTestUtil::createAntoitsu(TileType::WIND_PE),
+       CommonTestUtil::createMintoitsu(TileType::SOUZU_1, true)},
+      MachiType::TANKI,
+      AgariFormat::CHITOITSU_AGARI,
+      result));
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result));
+
+  // Parse second hand.
+  Hand hand2;
+  hand2.add_closed_tile(TileType::WANZU_1);
+  hand2.add_closed_tile(TileType::WANZU_9);
+  hand2.add_closed_tile(TileType::SOUZU_1);
+  hand2.add_closed_tile(TileType::SOUZU_9);
+  hand2.add_closed_tile(TileType::PINZU_1);
+  hand2.add_closed_tile(TileType::PINZU_9);
+  hand2.add_closed_tile(TileType::WIND_TON);
+  hand2.add_closed_tile(TileType::WIND_NAN);
+  hand2.add_closed_tile(TileType::WIND_SHA);
+  hand2.add_closed_tile(TileType::WIND_PE);
+  hand2.add_closed_tile(TileType::SANGEN_HAKU);
+  hand2.add_closed_tile(TileType::SANGEN_HATSU);
+  hand2.add_closed_tile(TileType::SANGEN_CHUN);
+  hand2.set_agari_tile(TileType::WANZU_1);
+  hand2.mutable_agari()->set_type(AgariType::RON);
+
+  HandParserResult result2;
+  _handParser.parse(hand2, &result2);
+
+  EXPECT_EQ(1, result2.parsed_hand_size());
+  EXPECT_TRUE(checkIrregularAgariFormatIsContained(result2));
+}

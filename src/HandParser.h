@@ -25,6 +25,10 @@ class HandParser {
   HandParser();
   ~HandParser();
 
+  /**
+   * Parses given hand and saves the result into the given result
+   * variable. You can call this method any time.
+   */
   void parse(const mahjong::Hand& hand, HandParserResult* result);
 
  private:
