@@ -18,7 +18,7 @@ message Yaku {
 
   // Upper version of this yaku.
   // This yaku will not be applied if there is any upper version yaku for the given hand.
-  repeated string upper_version_yaku_name = 7;  // Implement this.
+  repeated string upper_version_yaku_name = 7;
 }
 
 message TileCondition {
