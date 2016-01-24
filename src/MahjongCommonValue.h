@@ -1,15 +1,8 @@
-/*
- * MahjongCommonValue.h
- *
- *  Created on: 2014/06/24
- *      Author: yuuki
- */
-
 #ifndef MAHJONGCOMMONVALUE_H_
 #define MAHJONGCOMMONVALUE_H_
 
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 class MahjongCommonValue {
  private:
@@ -20,7 +13,7 @@ class MahjongCommonValue {
   static const int KAZOE_YAKUMAN_FAN = 13;
 };
 
-} /* namespace msc */
+} /* namespace mahjong */
 } /* namespace ydec */
 
 #endif /* MAHJONGCOMMONVALUE_H_ */

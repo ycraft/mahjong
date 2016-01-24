@@ -2,10 +2,9 @@
 
 #include "src/MahjongCommonUtils.h"
 
-using namespace ydec::mahjong;
-using namespace ydec::msc;
-
 using namespace std;
+using namespace ydec::mahjong;
+
 
 class MahjongCommonUtilsTest : public ::testing::Test {
  protected:

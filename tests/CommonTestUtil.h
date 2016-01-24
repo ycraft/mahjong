@@ -13,7 +13,7 @@
 #include "src-gen/cpp/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 class CommonTestUtil {
  private:
@@ -21,56 +21,56 @@ class CommonTestUtil {
   ~CommonTestUtil();
 
  public:
-  static mahjong::Element createAntoitsu(const mahjong::TileType& tile_type,
-                                       bool include_agari_hai = false);
-  static void createAntoitsu(mahjong::Element* element,
-                             const mahjong::TileType& tile_type,
+  static Element createAntoitsu(const TileType& tile_type,
+                                bool include_agari_hai = false);
+  static void createAntoitsu(Element* element,
+                             const TileType& tile_type,
                              bool include_agari_hai = false);
 
-  static mahjong::Element createMintoitsu(const mahjong::TileType& tile_type,
-                                          bool include_agari_hai = false);
-  static void createMintoitsu(mahjong::Element* element,
-                              const mahjong::TileType& tile_type,
+  static Element createMintoitsu(const TileType& tile_type,
+                                 bool include_agari_hai = false);
+  static void createMintoitsu(Element* element,
+                              const TileType& tile_type,
                               bool include_agari_hai = false);
 
-  static mahjong::Element createAnkantsu(const mahjong::TileType& tile_type,
-                                         bool include_agari_hai = false);
-  static void createAnkantsu(mahjong::Element* element,
-                             const mahjong::TileType& tile_type,
+  static Element createAnkantsu(const TileType& tile_type,
+                                bool include_agari_hai = false);
+  static void createAnkantsu(Element* element,
+                             const TileType& tile_type,
                              bool include_agari_hai = false);
 
-  static mahjong::Element createMinkantsu(const mahjong::TileType& tile_type,
-                                          bool include_agari_hai = false);
-  static void createMinkantsu(mahjong::Element* element,
-                              const mahjong::TileType& tile_type,
+  static Element createMinkantsu(const TileType& tile_type,
+                                 bool include_agari_hai = false);
+  static void createMinkantsu(Element* element,
+                              const TileType& tile_type,
                               bool include_agari_hai = false);
 
-  static mahjong::Element createAnkoutsu(const mahjong::TileType& tile_type,
-                                         bool include_agari_hai = false);
-  static void createAnkoutsu(mahjong::Element* element,
-                             const mahjong::TileType& tile_type,
+  static Element createAnkoutsu(const TileType& tile_type,
+                                bool include_agari_hai = false);
+  static void createAnkoutsu(Element* element,
+                             const TileType& tile_type,
                              bool include_agari_hai = false);
 
-  static mahjong::Element createMinkoutsu(const mahjong::TileType& tile_type,
-                                          bool include_agari_hai = false);
-  static void createMinkoutsu(mahjong::Element* element,
-                              const mahjong::TileType& tile_type,
+  static Element createMinkoutsu(const TileType& tile_type,
+                                 bool include_agari_hai = false);
+  static void createMinkoutsu(Element* element,
+                              const TileType& tile_type,
                               bool include_agari_hai = false);
 
-  static mahjong::Element createAnshuntsu(const mahjong::TileType& smallest_tile_type,
-                                          int agari_hai_index = -1);
-  static void createAnshuntsu(mahjong::Element* element,
-                              const mahjong::TileType& smallest_tile_type,
+  static Element createAnshuntsu(const TileType& smallest_tile_type,
+                                 int agari_hai_index = -1);
+  static void createAnshuntsu(Element* element,
+                              const TileType& smallest_tile_type,
                               int agari_hai_index = -1);
 
-  static mahjong::Element createMinshuntsu(const mahjong::TileType& smallest_tile_type,
-                                           int agari_hai_index = -1);
-  static void createMinshuntsu(mahjong::Element* element,
-                               const mahjong::TileType& smallest_tile_type,
+  static Element createMinshuntsu(const TileType& smallest_tile_type,
+                                  int agari_hai_index = -1);
+  static void createMinshuntsu(Element* element,
+                               const TileType& smallest_tile_type,
                                int agari_hai_index = -1);
 };
 
-} /* namespace msc */
+} /* namespace mahjong */
 } /* namespace ydec */
 
 #endif /* COMMONTESTUTIL_H_ */

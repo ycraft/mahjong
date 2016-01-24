@@ -13,10 +13,8 @@
 #include "src/YakuApplier.h"
 #include "CommonTestUtil.h"
 
-using namespace ydec::mahjong;
-using namespace ydec::msc;
-
 using namespace std;
+using namespace ydec::mahjong;
 
 using google::protobuf::TextFormat;
 

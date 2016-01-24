@@ -19,10 +19,7 @@ using std::unique_ptr;
 using std::vector;
 
 namespace ydec {
-
-using namespace mahjong;
-
-namespace msc{
+namespace mahjong {
 
 /**
  * Implementations for Yaku Applier.
@@ -97,8 +94,8 @@ void YakuApplier::apply(const PlayerType& player_type,
  * Implementations for YakuConditionValidator.
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
-                                               const mahjong::PlayerType& player_type,
-                                               const mahjong::RichiType& richi_type,
+                                               const PlayerType& player_type,
+                                               const RichiType& richi_type,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
       playerType_(player_type),
@@ -642,5 +639,5 @@ bool YakuConditionValidator::validateVariableTile(
   }
 }
 
-} /* namespace msc */
+} /* namespace mahjong */
 } /* namespace ydec */

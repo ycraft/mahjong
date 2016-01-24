@@ -10,8 +10,10 @@
 
 #include <memory>
 
+#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 class HandParser;
 class YakuApplier;
@@ -26,10 +28,10 @@ class ScoreCalculater {
                   std::unique_ptr<YakuApplier>&& yaku_applier);
   ~ScoreCalculater();
 
-  void calculate();
+  void calculate(const Hand& hand, ScoreCalculaterResult* result);
 };
 
-} /* namespace msc */
+} /* namespace mahjong */
 } /* namespace ydec */
 
 #endif /* SCORECALCULATER_H_ */

@@ -13,23 +13,22 @@
 
 #include "MahjongCommonUtils.h"
 
-using namespace std;
-using namespace ydec::mahjong;
-
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 namespace {
   bool containsRequiredTileState(const TileState required_state, const Tile& tile) {
-    return find_if(tile.state().begin(), tile.state().end(),
-                   [&required_state](int state){
-                     return MahjongCommonUtils::isTileStateMatched(required_state, static_cast<TileState>(state));
-                   }) != tile.state().end();
+    return std::find_if(
+        tile.state().begin(),
+        tile.state().end(),
+        [&required_state](int state) {
+          return MahjongCommonUtils::isTileStateMatched(required_state, static_cast<TileState>(state));
+        }) != tile.state().end();
   }
 }
 
-string HandParserResultUtil::getDebugString(const HandParserResult& result) {
-  string str;
+std::string HandParserResultUtil::getDebugString(const HandParserResult& result) {
+  std::string str;
   for (const ParsedHand& parsedHand : result.parsed_hand()) {
     if (!(str.empty() || str.back() == '\r' || str.back() == '\n')) {
       str += " ";
@@ -49,9 +48,9 @@ string HandParserResultUtil::getDebugString(const HandParserResult& result) {
         str += "(";
       }
 
-      string element_tiles;
+      std::string element_tiles;
       for (const Tile &tile : element.tile()) {
-        string tile_string = TileType_Name(tile.type());
+        std::string tile_string = TileType_Name(tile.type());
         if (containsRequiredTileState(TileState::AGARI_HAI, tile)) {
           tile_string = "[" + tile_string + "]";
         }
@@ -95,7 +94,7 @@ void HandParser::setup(const Hand& hand, HandParserResult* result) {
   }
   _free_tiles[_num_free_tiles - 1] = hand.agari_tile();
 
-  sort(_free_tiles, _free_tiles + _num_free_tiles);
+  std::sort(_free_tiles, _free_tiles + _num_free_tiles);
 
   memset(_free_tile_group_ids, 0, _num_free_tiles * sizeof(_free_tile_group_ids[0]));
 
@@ -201,7 +200,7 @@ void HandParser::checkChiiToitsu() {
     return;
   }
 
-  set<TileType> used_tiles;
+  std::set<TileType> used_tiles;
   for (int i = 1; i < _num_free_tiles; i += 2) {
     if (_free_tiles[i - 1] != _free_tiles[i]) {
       return;
@@ -390,7 +389,9 @@ inline bool checkSame(const Tile& lhs, const Tile& rhs) {
   // This equality check is designed by assuming that the given state does not contain duplicated
   // objects.
   for (const int state : lhs.state()) {
-    if (find(rhs.state().begin(), rhs.state().end(), static_cast<TileState>(state)) == rhs.state().end()) {
+    if (std::find(rhs.state().begin(),
+                  rhs.state().end(),
+                  static_cast<TileState>(state)) == rhs.state().end()) {
       return false;
     }
   }

@@ -2,27 +2,27 @@
 
 #include "MahjongCommonValue.h"
 
-using namespace ydec::mahjong;
-
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 namespace {
-  bool isMatched(unsigned int required, unsigned int actual, unsigned int mask) {
-    return !(required & mask)
-        || (required & mask) == (actual & mask);
-  }
 
-  bool isMatched(unsigned int required, unsigned int actual) {
-    return isMatched(required, actual, 0xffffffff);
-  }
+bool isMatched(unsigned int required, unsigned int actual, unsigned int mask) {
+  return !(required & mask)
+      || (required & mask) == (actual & mask);
+}
 
-  bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
-    while (required < actual) {
-      actual >>= 4;
-    }
-    return required == actual;
+bool isMatched(unsigned int required, unsigned int actual) {
+  return isMatched(required, actual, 0xffffffff);
+}
+
+bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
+  while (required < actual) {
+    actual >>= 4;
   }
+  return required == actual;
+}
+
 }
 
 bool MahjongCommonUtils::isSequentialTileType(TileType tile) {

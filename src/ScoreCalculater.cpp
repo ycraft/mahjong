@@ -8,7 +8,7 @@
 using namespace std;
 
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 ScoreCalculater::ScoreCalculater(unique_ptr<HandParser>&& hand_parser,
                                  unique_ptr<YakuApplier>&& yaku_applier)
@@ -19,5 +19,5 @@ ScoreCalculater::ScoreCalculater(unique_ptr<HandParser>&& hand_parser,
 ScoreCalculater::~ScoreCalculater() {
 }
 
-} /* namespace msc */
+} /* namespace mahjong */
 } /* namespace ydec */

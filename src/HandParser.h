@@ -13,7 +13,7 @@
 #include <string>
 
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 class HandParserResultUtil {
  public:
@@ -29,27 +29,27 @@ class HandParser {
    * Parses given hand and saves the result into the given result
    * variable. You can call this method any time.
    */
-  void parse(const mahjong::Hand& hand, HandParserResult* result);
+  void parse(const Hand& hand, HandParserResult* result);
 
  private:
-  const mahjong::Hand* _hand;
+  const Hand* _hand;
   unsigned int _num_free_tiles;
   unsigned int _free_tile_group_ids[14];
-  mahjong::TileType _free_tiles[14];
-  mahjong::HandElementType _free_tile_element_types[14];
+  TileType _free_tiles[14];
+  HandElementType _free_tile_element_types[14];
 
   HandParserResult* _result;
 
-  void setup(const mahjong::Hand& hand, HandParserResult* result);
+  void setup(const Hand& hand, HandParserResult* result);
   void runDfs();
   void dfs(int i, int id, bool has_jantou);
   void checkChiiToitsu();
   void checkIrregular();
-  void addAgarikeiResult(int last_id, const mahjong::AgariFormat& format);
+  void addAgarikeiResult(int last_id, const AgariFormat& format);
   void deduplicateResult();
 };
 
-}  // msc
+}  // mahjong
 }  // ydec
 
 #endif /* YDEC_MSC_HANDPARSER_H_ */

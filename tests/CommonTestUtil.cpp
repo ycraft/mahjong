@@ -7,7 +7,8 @@
 
 #include "tests/CommonTestUtil.h"
 
-using namespace ydec::mahjong;
+namespace ydec {
+namespace mahjong {
 
 namespace {
 void createToitsu(Element* element,
@@ -65,13 +66,9 @@ void createShuntsu(Element* element,
     }
   }
 }
-}
-
-namespace ydec {
-namespace msc {
+}  // namespace
 
 CommonTestUtil::CommonTestUtil() {}
-
 CommonTestUtil::~CommonTestUtil() {}
 
 Element CommonTestUtil::createAntoitsu(const TileType& tile_type,

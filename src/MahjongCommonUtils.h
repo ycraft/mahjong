@@ -5,43 +5,43 @@
 
 
 namespace ydec {
-namespace msc {
+namespace mahjong {
 
 class MahjongCommonUtils {
  public:
   // Utilities for TileType.
-  static bool isSequentialTileType(mahjong::TileType tile);
-  static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile);
-  static bool isTileTypeMatched(mahjong::TileType required, mahjong::TileType tile,
-                                mahjong::TileType mask);
+  static bool isSequentialTileType(TileType tile);
+  static bool isTileTypeMatched(TileType required, TileType tile);
+  static bool isTileTypeMatched(TileType required, TileType tile,
+                                TileType mask);
 
   // Utilities for TileState.
-  static bool isTileStateMatched(mahjong::TileState required,
-                                 mahjong::TileState actual);
+  static bool isTileStateMatched(TileState required,
+                                 TileState actual);
 
   // Utilities for HandElementType
-  static bool isHandElementTypeMatched(mahjong::HandElementType required,
-                                       mahjong::HandElementType element_type);
+  static bool isHandElementTypeMatched(HandElementType required,
+                                       HandElementType element_type);
 
   // Utilities for MachiType.
-  static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type);
-  static bool isMachiTypeMatched(mahjong::MachiType required, mahjong::MachiType type,
-                                 mahjong::MachiType mask);
+  static bool isMachiTypeMatched(MachiType required, MachiType type);
+  static bool isMachiTypeMatched(MachiType required, MachiType type,
+                                 MachiType mask);
 
   // Utilities for PlayerType.
-  static bool isPlayerTypeMatched(mahjong::PlayerType required, mahjong::PlayerType type);
+  static bool isPlayerTypeMatched(PlayerType required, PlayerType type);
 
   // Utilities for AgariType.
-  static bool isAgariTypeMatched(mahjong::AgariType required, mahjong::AgariType type);
+  static bool isAgariTypeMatched(AgariType required, AgariType type);
 
   // Utilities for AgariState.
-  static bool isAgariStateMatched(mahjong::AgariState required, mahjong::AgariState state);
+  static bool isAgariStateMatched(AgariState required, AgariState state);
 
   // Utilities for AgariFormat.
-  static bool isAgariFormatMatched(mahjong::AgariFormat required, mahjong::AgariFormat actual);
+  static bool isAgariFormatMatched(AgariFormat required, AgariFormat actual);
 
   // Utilities for RichiType.
-  static bool isRichiTypeMatched(mahjong::RichiType required, mahjong::RichiType actual);
+  static bool isRichiTypeMatched(RichiType required, RichiType actual);
 
   // Return N, where N is N-yakuman equivalent to the given fan.
   // e.g. (fan < 13) -> 0, (13 <= fan < 26) -> 1, ...

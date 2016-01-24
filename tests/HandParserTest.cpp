@@ -6,10 +6,8 @@
 #include "CommonTestUtil.h"
 #include "src/HandParser.h"
 
-using namespace ydec::mahjong;
-using namespace ydec::msc;
-
 using namespace std;
+using namespace ydec::mahjong;
 
 class HandParserTest : public ::testing::Test {
  protected:

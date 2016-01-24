@@ -3,16 +3,16 @@ syntax = "proto2";
 import "mahjong-common.proto";
 import "mahjong-rule.proto";
 
-package ydec.msc;
+package ydec.mahjong;
 
 message ScoreCalculaterResult {
   optional int32 fu = 1;
   optional int32 fan = 2;
-  repeated mahjong.Yaku yaku = 3;
+  repeated Yaku yaku = 3;
 }
 
 message YakuApplierResult {
-  repeated mahjong.Yaku yaku = 1;
+  repeated Yaku yaku = 1;
 }
 
 message YakuConditionValidatorResult {
@@ -36,7 +36,7 @@ message HandParserResult {
 }
 
 message ParsedHand {
-  repeated mahjong.Element element = 1;
-  optional mahjong.MachiType machi_type = 2;
-  optional mahjong.Agari agari = 3;
+  repeated Element element = 1;
+  optional MachiType machi_type = 2;
+  optional Agari agari = 3;
 }
