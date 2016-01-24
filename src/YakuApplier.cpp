@@ -6,8 +6,6 @@
 #include <string>
 #include <utility>
 
-#include <glog/logging.h>
-
 #include "MahjongCommonUtils.h"
 
 using google::protobuf::RepeatedField;
@@ -32,14 +30,18 @@ namespace msc{
 YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
     : rule_(std::move(rule)) {
   for (const Yaku& yaku : rule_->yaku()) {
-    CHECK(yaku_lookup_table_.insert(make_pair(yaku.name(), &yaku)).second)
-        << "Duplicated yaku definition found.";
+    if (!yaku_lookup_table_.insert(make_pair(yaku.name(), &yaku)).second) {
+      std::cerr << "Duplicated yaku definition found." << std::endl;
+      std::abort();
+    }
   }
 
   for (const Yaku& yaku : rule_->yaku()) {
     upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<const string>()));
     for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
-      CHECK(yaku_lookup_table_.find(upper_yaku_name) != yaku_lookup_table_.end());
+      if (yaku_lookup_table_.find(upper_yaku_name) == yaku_lookup_table_.end()) {
+        std::abort();
+      }
       upper_yaku_lookup_table_[yaku.name()].push_back(upper_yaku_name);
     }
     // Add yakuman as a upper yaku, if the current yaku is not a yakuman.
@@ -60,7 +62,7 @@ void YakuApplier::apply(const PlayerType& player_type,
                         const RichiType& richi_type,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
-  DLOG(INFO) << "Apply " << parsed_hand.DebugString();
+  std::cout << "Apply " << parsed_hand.DebugString() << std::endl;
 
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_->yaku()) {
@@ -70,7 +72,7 @@ void YakuApplier::apply(const PlayerType& player_type,
                                      parsed_hand);
     YakuConditionValidatorResult validator_result;
     validator.validate(&validator_result);
-    DLOG(INFO) << yaku.name() << ": " << YakuConditionValidatorResult::Type_Name(validator_result.type());
+    std::cout << yaku.name() << ": " << YakuConditionValidatorResult::Type_Name(validator_result.type()) << std::endl;
     if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
       applied_yaku_names.insert(yaku.name());
     }
@@ -117,7 +119,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate() {
 
 YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditionValidatorResult* result) {
 
-  DLOG(INFO) << "Start YakuConditionValidator::validate";
+  std::cout << "Start YakuConditionValidator::validate" << std::endl;
 
   result_ = result;
 
@@ -563,7 +565,7 @@ bool YakuConditionValidator::setValiableTile(
     case TileCondition_VariableTileType_VARIABLE_TILE:
     case TileCondition_VariableTileType_VARIABLE_TILE2:
       defined_tiles.insert(variable_tiles_[type] = tile);
-      DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+      std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
       return true;
 
     case TileCondition_VariableTileType_VARIABLE_NUMBER:
@@ -571,7 +573,7 @@ bool YakuConditionValidator::setValiableTile(
         return false;
       } else {
         defined_tiles.insert(variable_tiles_[type] = tile);
-        DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+        std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
         return true;
       }
 
@@ -582,7 +584,7 @@ bool YakuConditionValidator::setValiableTile(
             return false;
           } else {
             defined_tiles.insert(variable_tiles_[type] = tile);
-            DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+            std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
             return true;
           }
 
@@ -593,7 +595,7 @@ bool YakuConditionValidator::setValiableTile(
             return true;
           } else {
             defined_tiles.insert(variable_tiles_[type] = tile);
-            DLOG(INFO) << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile);
+            std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
             return true;
           }
 

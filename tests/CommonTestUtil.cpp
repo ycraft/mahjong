@@ -5,7 +5,7 @@
  *      Author: yuuki
  */
 
-#include <tests/CommonTestUtil.h>
+#include "tests/CommonTestUtil.h"
 
 using namespace ydec::mahjong;
 

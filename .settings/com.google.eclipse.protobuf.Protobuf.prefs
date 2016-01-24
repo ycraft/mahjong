@@ -1,8 +1,0 @@
-compiler.compileProtoFiles=true
-compiler.cppCodeGenerationEnabled=true
-compiler.cppOutputDirectory=src-gen/cpp/
-compiler.enableProjectSettings=true
-compiler.pythonCodeGenerationEnabled=true
-compiler.pythonOutputDirectory=src-gen/py/
-eclipse.preferences.version=1
-general.enableProjectSettings=true

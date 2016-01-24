@@ -11,8 +11,6 @@
 #include <functional>
 #include <set>
 
-#include <glog/logging.h>
-
 #include "MahjongCommonUtils.h"
 
 using namespace std;
@@ -290,8 +288,9 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
             element->set_type(
                 contains_ron_hai ? HandElementType::MINSHUNTSU : HandElementType::ANSHUNTSU);
           } else {
-            DLOG(FATAL) << "Unexpected HandElementType: "
-                        << HandElementType_Name(_free_tile_element_types[i]);
+            std::cerr << "Unexpected HandElementType: "
+                      << HandElementType_Name(_free_tile_element_types[i])
+                      << std::endl;
           }
           break;
         }
@@ -337,7 +336,7 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
                 }
               }
             } else {
-              DLOG(FATAL) << "Unexpected hand element type: " << _free_tile_element_types[i];
+              std::cerr << "Unexpected hand element type: " << _free_tile_element_types[i] << std::endl;
             }
           }
         }

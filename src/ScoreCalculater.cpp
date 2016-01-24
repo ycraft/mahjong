@@ -1,4 +1,4 @@
-#include <src/ScoreCalculater.h>
+#include "src/ScoreCalculater.h"
 
 #include <algorithm>
 
