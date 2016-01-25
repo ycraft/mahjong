@@ -123,11 +123,12 @@ enum AgariType {
 
 enum AgariState {
   UNKNOWN_AGARI_STATE = 0;
-  SOKU = 1;
-  HAITEI = 2;
-  CHANKAN = 3;
-  RINSHAN = 4;
-  BEGINNING = 5;
+  MENZEN = 1;
+  SOKU = 2;
+  HAITEI = 3;
+  CHANKAN = 4;
+  RINSHAN = 5;
+  BEGINNING = 6;
 }
 
 enum AgariFormat {
@@ -167,13 +168,13 @@ enum MachiType {
   MASK_MACHI_FU = 0xff00;
 
   MACHI_2FU = 0x0100;
-  MACHI_0FU = 0x0200;
+    TANKI    = 0x0101;
+    KANCHAN  = 0x0102;
+    PENCHAN  = 0x0103;
 
-  TANKI    = 0x0101;
-  KANCHAN  = 0x0102;
-  PENCHAN  = 0x0103;
-  SHABO    = 0x0204;
-  RYANMEN  = 0x0205;
+  MACHI_0FU = 0x0200;
+    SHABO    = 0x0204;
+    RYANMEN  = 0x0205;
 }
 
 enum PlayerType {

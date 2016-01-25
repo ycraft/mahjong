@@ -19,8 +19,14 @@ ScoreCalculater::ScoreCalculater(unique_ptr<HandParser>&& hand_parser,
 ScoreCalculater::~ScoreCalculater() {
 }
 
-void ScoreCalculater::calculate(const Hand& hand, ScoreCalculaterResult* result) {
-  
+void ScoreCalculater::calculate(const Field& hand,
+                                const Player& player,
+                                ScoreCalculaterResult* result) {
+  HandParserResult hand_parser_result;
+  hand_parser_->parse(player.hand(), &hand_parser_result);
+  for (const ParsedHand& parsed_hand : hand_parser_result.parsed_hand()) {
+
+  }
 }
 
 } /* namespace mahjong */

@@ -132,7 +132,7 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
     }
-    required_machi_type: MACHI_0FU
+    required_machi_type: RYANMEN
     required_agari_condition {
       allowed_format: REGULAR_AGARI
     }
@@ -938,7 +938,7 @@ yaku {
 
 yaku {
   name: "国士無双"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_tile_condition {
       required_tile: WIND_TON
@@ -997,7 +997,7 @@ yaku {
 
 yaku {
   name: "四暗刻"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_element_condition {
       allowed_element_type: ANKOUTSU
@@ -1024,8 +1024,7 @@ yaku {
 
 yaku {
   name: "大三元"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
@@ -1056,8 +1055,7 @@ yaku {
 
 yaku {
   name: "字一色"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     allowed_tile_condition {
       required_tile: JIHAI_TILE
@@ -1071,8 +1069,7 @@ yaku {
 
 yaku {
   name: "小四喜"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU
@@ -1114,8 +1111,7 @@ yaku {
 
 yaku {
   name: "緑一色"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     allowed_tile_condition {
       required_tile: SOUZU_2
@@ -1143,8 +1139,7 @@ yaku {
 
 yaku {
   name: "清老頭"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     allowed_tile_condition {
       required_tile: TILE_1
@@ -1161,8 +1156,7 @@ yaku {
 
 yaku {
   name: "四槓子"
-  menzen_fan: 13
-  kuisagari_fan: 13
+  yakuman: 1
   yaku_condition {
     required_element_condition {
       allowed_element_type: KANTSU
@@ -1184,7 +1178,7 @@ yaku {
 
 yaku {
   name: "九蓮宝燈"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_tile_condition {
       required_tile: TILE_1
@@ -1250,7 +1244,7 @@ yaku {
 
 yaku {
   name: "天和"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_player_type: DEALER
     required_agari_condition {
@@ -1262,7 +1256,7 @@ yaku {
 
 yaku {
   name: "地和"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_player_type: NON_DEALER
     required_agari_condition {
@@ -1274,7 +1268,7 @@ yaku {
 
 yaku {
   name: "人和"
-  menzen_fan: 13
+  yakuman: 1
   yaku_condition {
     required_agari_condition {
       required_type: RON
@@ -1285,8 +1279,7 @@ yaku {
 
 yaku {
   name: "国士無双十三面待ち"
-  menzen_fan: 26
-  kuisagari_fan: 26
+  yakuman: 2
   yaku_condition {
     required_tile_condition {
       required_tile: WIND_TON
@@ -1357,7 +1350,7 @@ yaku {
 
 yaku {
   name: "四暗刻単騎待ち"
-  menzen_fan: 26
+  yakuman: 2
   yaku_condition {
     required_machi_type: TANKI
     required_element_condition {
@@ -1384,8 +1377,7 @@ yaku {
 
 yaku {
   name: "大四喜"
-  menzen_fan: 26
-  kuisagari_fan: 26
+  yakuman: 2
   yaku_condition {
     required_element_condition {
       allowed_element_type: KOUTSU
@@ -1427,7 +1419,7 @@ yaku {
 
 yaku {
   name: "純正九蓮宝燈"
-  menzen_fan: 26
+  yakuman: 2
   yaku_condition {
     required_tile_condition {
       required_tile: TILE_1

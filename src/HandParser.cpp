@@ -230,6 +230,7 @@ void HandParser::checkIrregular() {
   }
 
   ParsedHand* parsed_hand = _result->add_parsed_hand();
+  *parsed_hand->mutable_agari() = _hand->agari();
   parsed_hand->mutable_agari()->set_format(AgariFormat::IRREGULAR_AGARI);
 
   Element* element = parsed_hand->add_element();
@@ -262,6 +263,8 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
     }
 
     ParsedHand* parsed_hand = _result->add_parsed_hand();
+
+    *parsed_hand->mutable_agari() = _hand->agari();
     parsed_hand->mutable_agari()->set_format(format);
 
     // Parse closed tiles

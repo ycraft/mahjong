@@ -8,7 +8,8 @@ package ydec.mahjong;
 message ScoreCalculaterResult {
   optional int32 fu = 1;
   optional int32 fan = 2;
-  repeated Yaku yaku = 3;
+  optional int32 yakuman = 3;
+  repeated Yaku yaku = 4;
 }
 
 message YakuApplierResult {

@@ -28,7 +28,9 @@ class ScoreCalculater {
                   std::unique_ptr<YakuApplier>&& yaku_applier);
   ~ScoreCalculater();
 
-  void calculate(const Hand& hand, ScoreCalculaterResult* result);
+  void calculate(const Field& hand,
+                 const Player& player,
+                 ScoreCalculaterResult* result);
 };
 
 } /* namespace mahjong */

@@ -76,6 +76,7 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::CHITOITSU_AGARI);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
 
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
@@ -97,6 +98,7 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::CHITOITSU_AGARI);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
 
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
@@ -117,6 +119,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -138,6 +141,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::RON);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::SHABO);
 
   YakuApplierResult result;
@@ -157,6 +161,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::SHABO);
@@ -180,6 +185,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3, true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::TANKI);
 
   YakuApplierResult result;
@@ -193,6 +199,28 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::RON);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
   ParsedHand parsed_hand;
   CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
@@ -210,7 +238,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result);
+  assertEquals({"一気通貫", "清一色"}, result);
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
@@ -222,6 +250,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SANGEN_HAKU, true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::TANKI);
 
   YakuApplierResult result;
@@ -243,6 +272,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -264,6 +294,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -285,6 +316,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -304,6 +336,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
@@ -325,6 +358,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::KANCHAN);
@@ -348,6 +382,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_TON);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -369,6 +404,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_NAN);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -390,6 +426,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_TON);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
@@ -400,6 +437,49 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
                       parsed_hand,
                       &result);
   assertEquals({"門前清自摸和", "平和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.mutable_agari()->add_state(AgariState::MENZEN);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "一盃口", "平和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
+  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({}, result);
 }
 
 /**

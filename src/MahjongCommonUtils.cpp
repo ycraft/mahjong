@@ -85,9 +85,5 @@ bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
   return isMatchedForHierarchalData(required, actual);
 }
 
-int MahjongCommonUtils::toYakuman(int fan) {
-  return fan / MahjongCommonValue::KAZOE_YAKUMAN_FAN;
-}
-
 }
 }

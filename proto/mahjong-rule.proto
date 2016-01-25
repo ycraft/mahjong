@@ -11,14 +11,17 @@ message Rule {
 message Yaku {
   optional string name = 1;
   optional string description = 2;
+
   optional int32 menzen_fan = 3;
   optional int32 kuisagari_fan = 4;
   optional int32 force_fu = 5;
-  optional YakuCondition yaku_condition = 6;
+  optional int32 yakuman = 6;
+
+  optional YakuCondition yaku_condition = 7;
 
   // Upper version of this yaku.
   // This yaku will not be applied if there is any upper version yaku for the given hand.
-  repeated string upper_version_yaku_name = 7;
+  repeated string upper_version_yaku_name = 8;
 }
 
 message TileCondition {

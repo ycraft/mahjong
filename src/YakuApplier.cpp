@@ -41,10 +41,13 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
       }
       upper_yaku_lookup_table_[yaku.name()].push_back(upper_yaku_name);
     }
-    // Add yakuman as a upper yaku, if the current yaku is not a yakuman.
-    if (MahjongCommonUtils::toYakuman(yaku.menzen_fan()) == 0) {
+
+    // Add all yakuman yakus as a upper yaku of this yaku, if this yaku is not a yakuman.
+    // For example, if both suanko and tanyao are maiden concurrently, we don't count
+    // tanyao because suanko is dominant.
+    if (yaku.yakuman() == 0) {
       for (const Yaku& r_yaku : rule_->yaku()) {
-        if (MahjongCommonUtils::toYakuman(r_yaku.menzen_fan()) > 0) {
+        if (r_yaku.yakuman() > 0) {
           upper_yaku_lookup_table_[yaku.name()].push_back(r_yaku.name());
         }
       }
@@ -65,6 +68,20 @@ void YakuApplier::apply(const PlayerType& player_type,
 
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_->yaku()) {
+
+    // Check if hansuu is not zero.
+    if (!(yaku.kuisagari_fan() > 0 ||
+          yaku.yakuman() > 0 ||
+          (yaku.menzen_fan() > 0 &&
+           std::find(parsed_hand.agari().state().begin(),
+                     parsed_hand.agari().state().end(),
+                     AgariState::MENZEN) != parsed_hand.agari().state().end()))) {
+      std::cout << yaku.name()
+                << ": Skipped because kuisagari_fan is zero."
+                << std::endl;
+      continue;
+    }
+
     YakuConditionValidator validator(yaku.yaku_condition(),
                                      player_type,
                                      richi_type,
@@ -73,7 +90,12 @@ void YakuApplier::apply(const PlayerType& player_type,
                                      parsed_hand);
     YakuConditionValidatorResult validator_result;
     validator.validate(&validator_result);
-    std::cout << yaku.name() << ": " << YakuConditionValidatorResult::Type_Name(validator_result.type()) << std::endl;
+
+    std::cout << yaku.name()
+              << ": "
+              << YakuConditionValidatorResult::Type_Name(validator_result.type())
+              << std::endl;
+
     if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
       applied_yaku_names.insert(yaku.name());
     }
