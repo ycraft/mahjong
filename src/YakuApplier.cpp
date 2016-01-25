@@ -57,6 +57,8 @@ YakuApplier::~YakuApplier() {
 
 void YakuApplier::apply(const PlayerType& player_type,
                         const RichiType& richi_type,
+                        const TileType& field_wind,
+                        const TileType& player_wind,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
   std::cout << "Apply " << parsed_hand.DebugString() << std::endl;
@@ -66,6 +68,8 @@ void YakuApplier::apply(const PlayerType& player_type,
     YakuConditionValidator validator(yaku.yaku_condition(),
                                      player_type,
                                      richi_type,
+                                     field_wind,
+                                     player_wind,
                                      parsed_hand);
     YakuConditionValidatorResult validator_result;
     validator.validate(&validator_result);
@@ -96,10 +100,14 @@ void YakuApplier::apply(const PlayerType& player_type,
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
                                                const PlayerType& player_type,
                                                const RichiType& richi_type,
+                                               const TileType& field_wind,
+                                               const TileType& player_wind,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
       playerType_(player_type),
       richi_type_(richi_type),
+      field_wind_(field_wind),
+      player_wind_(player_wind),
       parsed_hand_(parsed_hand),
       result_(nullptr) {
   for (const Element& element : parsed_hand_.element()) {
@@ -119,6 +127,24 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
   std::cout << "Start YakuConditionValidator::validate" << std::endl;
 
   result_ = result;
+
+  // Validate field wind.
+  if (condition_.has_required_field_wind()) {
+    if (!MahjongCommonUtils::isTileTypeMatched(condition_.required_field_wind(),
+                                               field_wind_)) {
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND);
+      return result_->type();
+    }
+  }
+
+  // Validate player wind.
+  if (condition_.has_required_player_wind()) {
+    if (!MahjongCommonUtils::isTileTypeMatched(condition_.required_player_wind(),
+                                               player_wind_)) {
+      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND);
+      return result_->type();
+    }
+  }
 
   // Validate machi type.
   if (condition_.has_required_machi_type()) {

@@ -90,4 +90,6 @@ message YakuCondition {
   optional PlayerType required_player_type = 6;
   optional AgariCondition required_agari_condition = 7;
   optional RichiType required_richi_type = 8;
+  optional TileType required_field_wind = 9;
+  optional TileType required_player_wind = 10;
 }

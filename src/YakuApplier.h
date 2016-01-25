@@ -24,6 +24,8 @@ class YakuApplier {
 
   void apply(const PlayerType& player_type,
              const RichiType& richi_type,
+             const TileType& field_wind,
+             const TileType& player_wind,
              const ParsedHand& parsed_hand,
              YakuApplierResult* result) const;
 
@@ -42,6 +44,8 @@ class YakuConditionValidator {
   YakuConditionValidator(const YakuCondition& condition,
                          const PlayerType& player_type,
                          const RichiType& richi_type,
+                         const TileType& field_wind,
+                         const TileType& player_wind,
                          const ParsedHand& parsed_hand);
 
   YakuConditionValidatorResult::Type validate();
@@ -51,6 +55,8 @@ class YakuConditionValidator {
   const YakuCondition& condition_;
   const PlayerType& playerType_;
   const RichiType& richi_type_;
+  const TileType& field_wind_;
+  const TileType& player_wind_;
   const ParsedHand& parsed_hand_;
 
   YakuConditionValidatorResult* result_;

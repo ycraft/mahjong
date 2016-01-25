@@ -1,5 +1,5 @@
 genrule(
-    name = "gen_mahjong_proto",
+    name = "gen_mahjong_proto_cc_hdrs",
     srcs = [
         "proto/mahjong-common.proto",
         "proto/mahjong-rule.proto",
@@ -7,22 +7,41 @@ genrule(
     ],
     outs = [
         "src-gen/cpp/mahjong-common.pb.h",
-        "src-gen/cpp/mahjong-common.pb.cc",
         "src-gen/cpp/mahjong-rule.pb.h",
-        "src-gen/cpp/mahjong-rule.pb.cc",
         "src-gen/cpp/mahjong-scorecalculator.pb.h",
+    ],
+    cmd = "protoc -I=proto --cpp_out=$(GENDIR)/src-gen/cpp $(SRCS)",
+)
+
+genrule(
+    name = "gen_mahjong_proto_cc_srcs",
+    srcs = [
+        "proto/mahjong-common.proto",
+        "proto/mahjong-rule.proto",
+        "proto/mahjong-scorecalculator.proto",
+    ],
+    outs = [
+        "src-gen/cpp/mahjong-common.pb.cc",
+        "src-gen/cpp/mahjong-rule.pb.cc",
         "src-gen/cpp/mahjong-scorecalculator.pb.cc",
     ],
     cmd = "protoc -I=proto --cpp_out=$(GENDIR)/src-gen/cpp $(SRCS)",
 )
 
 cc_library(
-    name = "mahjong_proto_lib",
-    srcs = [":gen_mahjong_proto"],
-    hdrs = [":gen_mahjong_proto"],
-    deps = [
-        "@protobuf//:protobuf",
-    ],
+    name = "mahjong_proto_cc_lib",
+    srcs = [":gen_mahjong_proto_cc_srcs"],
+    hdrs = [":gen_mahjong_proto_cc_hdrs"],
+    deps = ["@protobuf//:protobuf"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "gen_binary_rule_proto",
+    srcs = ["data/rule.pb.txt"],
+    outs = ["res/raw/rule.pb"],
+    tools = ["//tools:update_rule"],
+    cmd = "$(location //tools:update_rule) $(SRCS) $(OUTS)",
 )
 
 cc_library(
@@ -41,7 +60,7 @@ cc_library(
         "src/YakuApplier.h",
     ],
     deps = [
-        ":mahjong_proto_lib",
+        ":mahjong_proto_cc_lib",
     ],
 )
 
@@ -54,7 +73,7 @@ cc_library(
         "tests/CommonTestUtil.h",
     ],
     deps = [
-        ":mahjong_proto_lib",
+        ":mahjong_proto_cc_lib",
     ],
 )
 
@@ -66,7 +85,7 @@ cc_test(
         "tests/YakuApplierTest.cpp",
     ],
     data = [
-        "res/raw/rule.pb",
+        ":gen_binary_rule_proto",
     ],
     deps = [
         ":mahjong_score_calculator_lib",

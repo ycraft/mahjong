@@ -19,5 +19,9 @@ ScoreCalculater::ScoreCalculater(unique_ptr<HandParser>&& hand_parser,
 ScoreCalculater::~ScoreCalculater() {
 }
 
+void ScoreCalculater::calculate(const Hand& hand, ScoreCalculaterResult* result) {
+  
+}
+
 } /* namespace mahjong */
 } /* namespace ydec */

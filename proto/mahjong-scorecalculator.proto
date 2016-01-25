@@ -26,6 +26,8 @@ message YakuConditionValidatorResult {
     NG_REQUIRED_PLAYER_TYPE = -6;
     NG_REQUIRED_AGARI_CONDITION = -7;
     NG_REQUIRED_RICHI_TYPE = -8;
+    NG_REQUIRED_FIELD_WIND = -9;
+    NG_REQUIRED_PLAYER_WIND = -10;
   }
 
   optional Type type = 1;

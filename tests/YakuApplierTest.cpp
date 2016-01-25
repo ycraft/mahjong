@@ -80,6 +80,8 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"七対子"}, result);
@@ -99,6 +101,8 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({}, result);  // We cannot use same tile kind for two-toitsu.
@@ -118,6 +122,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"門前清自摸和", "二盃口", "平和"}, result);
@@ -137,6 +143,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"三暗刻", "対々和"}, result);
@@ -156,6 +164,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"四暗刻"}, result);
@@ -175,6 +185,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"四暗刻単騎待ち"}, result);
@@ -194,6 +206,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result);
@@ -213,9 +227,74 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
   YakuApplierResult result;
   yaku_applier_.apply(PlayerType::DEALER,
                       RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
   assertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "場風牌 東"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_TON /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "自風牌 東"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_NAN);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result);
 }
 
 /**
@@ -226,10 +305,14 @@ class YakuConditionValidatorTest : public ::testing::Test {
   YakuConditionValidatorResult::Type validate(const YakuCondition& condition,
                                               const PlayerType& player_type,
                                               const RichiType& richi_type,
+                                              const TileType& field_wind,
+                                              const TileType& player_wind,
                                               const ParsedHand& parsed_hand) {
     return YakuConditionValidator(condition,
                                   player_type,
                                   richi_type,
+                                  field_wind,
+                                  player_wind,
                                   parsed_hand).validate();
   }
 
@@ -238,6 +321,8 @@ class YakuConditionValidatorTest : public ::testing::Test {
     return validate(condition,
                     PlayerType::DEALER,
                     RichiType::NO_RICHI,
+                    TileType::WIND_TON /* field_wind */,
+                    TileType::WIND_NAN /* player_wind */,
                     parsed_hand);
   }
 
@@ -246,6 +331,8 @@ class YakuConditionValidatorTest : public ::testing::Test {
     return validate(condition,
                     player_type,
                     RichiType::NO_RICHI,
+                    TileType::WIND_TON /* field_wind */,
+                    TileType::WIND_NAN /* player_wind */,
                     ParsedHand::default_instance());
   }
 
@@ -256,6 +343,8 @@ class YakuConditionValidatorTest : public ::testing::Test {
     return validate(condition,
                     PlayerType::DEALER,
                     RichiType::NO_RICHI,
+                    TileType::WIND_TON /* field_wind */,
+                    TileType::WIND_NAN /* player_wind */,
                     parsed_hand);
   }
 
@@ -264,8 +353,30 @@ class YakuConditionValidatorTest : public ::testing::Test {
       return validate(condition,
                       PlayerType::DEALER,
                       richi_type,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
                       ParsedHand::default_instance());
-    }
+  }
+
+  YakuConditionValidatorResult::Type validateFieldWind(const YakuCondition& condition,
+                                                       const TileType& field_wind) {
+      return validate(condition,
+                      PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      field_wind,
+                      TileType::WIND_NAN /* player_wind */,
+                      ParsedHand::default_instance());
+  }
+
+  YakuConditionValidatorResult::Type validatePlayerWind(const YakuCondition& condition,
+                                                        const TileType& player_wind) {
+      return validate(condition,
+                      PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      player_wind,
+                      ParsedHand::default_instance());
+  }
 };
 
 /**
@@ -772,4 +883,36 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
             validate(condition, RichiType::DOUBLE_RICHI));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             validate(condition, RichiType::OPENED_RICHI));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredFieldWind) {
+  YakuCondition condition;
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+            validateFieldWind(condition, TileType::WIND_TON));
+
+  condition.set_required_field_wind(TileType::WIND_NAN);
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+            validateFieldWind(condition, TileType::WIND_TON));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+            validateFieldWind(condition, TileType::WIND_NAN));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+            validateFieldWind(condition, TileType::WIND_SHA));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+            validateFieldWind(condition, TileType::WIND_PE));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
+  YakuCondition condition;
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+            validatePlayerWind(condition, TileType::WIND_TON));
+
+  condition.set_required_player_wind(TileType::WIND_SHA);
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+            validatePlayerWind(condition, TileType::WIND_TON));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+            validatePlayerWind(condition, TileType::WIND_NAN));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+            validatePlayerWind(condition, TileType::WIND_SHA));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+            validatePlayerWind(condition, TileType::WIND_PE));
 }

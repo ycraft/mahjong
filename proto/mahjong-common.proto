@@ -221,5 +221,6 @@ message Player {
 message Field {
   optional TileType wind = 1; // Ton-ba, Nan-ba
   repeated TileType dora = 2; // Not dora hyouji hai
-  optional int32 honba = 3;
+  repeated TileType ura_dora = 3;
+  optional int32 honba = 4;
 }

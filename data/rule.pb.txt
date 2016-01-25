@@ -226,6 +226,158 @@ yaku {
 }
 
 yaku {
+  name: "自風牌 東"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_TON
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_player_wind: WIND_TON
+  }
+}
+
+yaku {
+  name: "自風牌 南"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_NAN
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_player_wind: WIND_NAN
+  }
+}
+
+yaku {
+  name: "自風牌 西"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_SHA
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_player_wind: WIND_SHA
+  }
+}
+
+yaku {
+  name: "自風牌 北"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_PE
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_player_wind: WIND_PE
+  }
+}
+
+yaku {
+  name: "場風牌 東"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_TON
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_field_wind: WIND_TON
+  }
+}
+
+yaku {
+  name: "場風牌 南"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_NAN
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_field_wind: WIND_NAN
+  }
+}
+
+yaku {
+  name: "場風牌 西"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_SHA
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_field_wind: WIND_SHA
+  }
+}
+
+yaku {
+  name: "場風牌 北"
+  menzen_fan: 1
+  kuisagari_fan: 1
+  yaku_condition {
+    required_element_condition {
+      allowed_element_type: KOUTSU
+      allowed_element_type: KANTSU
+      allowed_tile_condition {
+        required_tile: WIND_PE
+      }
+    }
+    required_agari_condition {
+      allowed_format: REGULAR_AGARI
+    }
+    required_field_wind: WIND_PE
+  }
+}
+
+yaku {
   name: "三色同順"
   menzen_fan: 2
   kuisagari_fan: 1
