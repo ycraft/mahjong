@@ -18,6 +18,7 @@ message YakuApplierResult {
 message YakuConditionValidatorResult {
   enum Type {
     OK = 0;
+
     NG_ALLOWED_TILE_CONDITION = -1;
     NG_DISALLOWED_TILE_CONDITION = -2;
     NG_REQUIRED_TILE_CONDITION = -3;
@@ -28,6 +29,8 @@ message YakuConditionValidatorResult {
     NG_REQUIRED_RICHI_TYPE = -8;
     NG_REQUIRED_FIELD_WIND = -9;
     NG_REQUIRED_PLAYER_WIND = -10;
+
+    ERROR_INTERNAL_ERROR = -11;
   }
 
   optional Type type = 1;

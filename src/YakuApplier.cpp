@@ -128,6 +128,18 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
 
   result_ = result;
 
+  if (!setValiableTile(TileCondition::VARIABLE_BAKAZE_TILE, field_wind_)) {
+    std::cerr << "Failed to set bakaze variable tile." << std::endl;
+    result_->set_type(YakuConditionValidatorResult::ERROR_INTERNAL_ERROR);
+    return result_->type();
+  }
+
+  if (!setValiableTile(TileCondition::VARIABLE_JIKAZE_TILE, player_wind_)) {
+    std::cerr << "Failed to set jikaze variable tile." << std::endl;
+    result_->set_type(YakuConditionValidatorResult::ERROR_INTERNAL_ERROR);
+    return result_->type();
+  }
+
   // Validate field wind.
   if (condition_.has_required_field_wind()) {
     if (!MahjongCommonUtils::isTileTypeMatched(condition_.required_field_wind(),
@@ -423,6 +435,7 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
       }
     }
   }
+
   return true;
 }
 
@@ -585,13 +598,15 @@ bool YakuConditionValidator::setValiableTile(
   }
 
   switch (variable_type) {
-    case TileCondition_VariableTileType_VARIABLE_TILE:
-    case TileCondition_VariableTileType_VARIABLE_TILE2:
+    case TileCondition::VARIABLE_TILE:
+    case TileCondition::VARIABLE_TILE2:
+    case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI:
+    case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI_2:
       defined_tiles.insert(variable_tiles_[type] = tile);
       std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
       return true;
 
-    case TileCondition_VariableTileType_VARIABLE_NUMBER:
+    case TileCondition::VARIABLE_NUMBER:
       if (!MahjongCommonUtils::isSequentialTileType(tile)) {
         return false;
       } else {
@@ -600,9 +615,9 @@ bool YakuConditionValidator::setValiableTile(
         return true;
       }
 
-    case TileCondition_VariableTileType_VARIABLE_COLOR:
+    case TileCondition::VARIABLE_COLOR:
       switch (type) {
-        case TileCondition_VariableTileType_VARIABLE_COLOR_A:
+        case TileCondition::VARIABLE_COLOR_A:
           if (!MahjongCommonUtils::isSequentialTileType(tile)) {
             return false;
           } else {
@@ -611,7 +626,7 @@ bool YakuConditionValidator::setValiableTile(
             return true;
           }
 
-        case TileCondition_VariableTileType_VARIABLE_COLOR_A_OR_JIHAI:
+        case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
           if (!MahjongCommonUtils::isSequentialTileType(tile)) {
             // We don't need to store jihai tile to our variable_tile map since
             // it doesn't have any color.
@@ -639,6 +654,8 @@ bool YakuConditionValidator::validateVariableTile(
   switch (type & TileCondition::MASK_VARIABLE_TYPE) {
     case TileCondition::VARIABLE_TILE:
     case TileCondition::VARIABLE_TILE2:
+    case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI:
+    case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI_2:
       return MahjongCommonUtils::isTileTypeMatched(required, tile);
 
     case TileCondition::VARIABLE_NUMBER:

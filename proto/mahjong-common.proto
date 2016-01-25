@@ -82,12 +82,6 @@ enum TileState {
   AGARI_HAI = 0x1;
     AGARI_HAI_TSUMO = 0x11;
     AGARI_HAI_RON = 0x12;
-
-  DORA_HAI = 0x2;
-
-  CONDITIONAL_YAKU_HAI = 0x3;
-    BAKAZE_HAI = 0x31;
-    JIKAZE_HAI = 0x32;
 }
 
 message Tile {

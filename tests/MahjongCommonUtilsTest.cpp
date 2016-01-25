@@ -14,7 +14,7 @@ TEST_F(MahjongCommonUtilsTest, TileStateMatchedTest) {
   EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI));
   EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI_RON));
   EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI_TSUMO));
-  EXPECT_FALSE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::BAKAZE_HAI));
+  EXPECT_FALSE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::UNKNOWN_TILE_STATE));
   EXPECT_FALSE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI_RON, TileState::AGARI_HAI));
 }
 

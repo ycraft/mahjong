@@ -51,9 +51,22 @@ message TileCondition {
       // Doesn't include Jihai. (Jihai-tile doesn't have any color.)
       VARIABLE_COLOR_A = 0x41;
       VARIABLE_COLOR_A_OR_JIHAI = 0x42;
+
+    VARIABLE_CONDITIONAL_YAKUHAI = 0x50;
+      VARIABLE_BAKAZE_TILE = 0x51;
+
+    // We cannot put bakaze tile and jikaze tile in the same group because
+    // bakaze and jikaze tile can be the same tile. All tiles in the same
+    // group have to unique.
+    VARIABLE_CONDITIONAL_YAKUHAI_2 = 0x60;
+      VARIABLE_JIKAZE_TILE = 0x61;
   }
   optional TileType required_tile = 1;
+
+  // Only leaf types can be used. Don't use non-leaf types, such as
+  // VARIABLE_TILE and VARIABLE_CONDITIONAL_YAKUHAI.
   optional VariableTileType required_variable_tile = 2;
+
   repeated TileState required_state = 3;
   repeated TileState disallowed_state = 4;
 }
@@ -67,7 +80,7 @@ message ElementCondition {
   repeated TileCondition required_tile_condition = 3;
 
   // At least one of the given conditions must be satisfied.
-  // You may *not* use variable_tile.
+  // You may *not* use variable_tile except for VARIABLE_CONDITIONAL_YAKUHAI.
   repeated TileCondition either_tile_condition = 4;
 }
 
@@ -81,7 +94,7 @@ message YakuCondition {
   // You may *not* use two or more variable_tiles.
   repeated TileCondition allowed_tile_condition = 1;
 
-  // You may *not* use variable_tile.
+  // You may *not* use variable_tile except for VARIABLE_CONDITIONAL_YAKUHAI.
   repeated TileCondition disallowed_tile_condition = 2;
 
   repeated TileCondition required_tile_condition = 3;

@@ -297,6 +297,111 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
   assertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result);
 }
 
+TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "平和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 1);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::KANCHAN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_TON);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_NAN);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和"}, result);
+}
+
+TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
+  ParsedHand parsed_hand;
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
+  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WIND_TON);
+  parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
+  parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
+  parsed_hand.set_machi_type(MachiType::RYANMEN);
+
+  YakuApplierResult result;
+  yaku_applier_.apply(PlayerType::DEALER,
+                      RichiType::NO_RICHI,
+                      TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */,
+                      parsed_hand,
+                      &result);
+  assertEquals({"門前清自摸和", "平和"}, result);
+}
+
 /**
  * Unit tests for YakuConditionValidator
  */
@@ -687,11 +792,36 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  tile->add_state(TileState::DORA_HAI);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+            validate(condition, hand));
+}
+
+TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
+  YakuCondition condition;
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_tile_condition {"
+      "  required_state: AGARI_HAI_TSUMO"
+      "}",
+      &condition));
+
+  ParsedHand hand;
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  Element* element = hand.add_element();
+  Tile* tile = element->add_tile();
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  tile->add_state(TileState::AGARI_HAI_RON);
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+            validate(condition, hand));
+
+  tile->add_state(TileState::AGARI_HAI_TSUMO);
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             validate(condition, hand));
 }
@@ -710,7 +840,6 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  tile->add_state(TileState::DORA_HAI);
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             validate(condition, hand));
 

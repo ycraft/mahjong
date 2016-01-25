@@ -114,7 +114,10 @@ yaku {
       required_tile: SANGEN_TILE
     }
     disallowed_tile_condition {
-      required_state: CONDITIONAL_YAKU_HAI
+      required_variable_tile: VARIABLE_BAKAZE_TILE
+    }
+    disallowed_tile_condition {
+      required_variable_tile: VARIABLE_JIKAZE_TILE
     }
     required_element_condition {
       allowed_element_type: SHUNTSU  # SHUNTSU, because if AGARI_TYPE is RON, that element type
