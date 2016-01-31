@@ -49,14 +49,15 @@ cc_library(
     srcs = [
         "src/HandParser.cpp",
         "src/MahjongCommonUtils.cpp",
-        "src/ScoreCalculater.cpp",
+        "src/MahjongCommonValue.cpp",
+        "src/ScoreCalculator.cpp",
         "src/YakuApplier.cpp",
     ],
     hdrs = [
         "src/HandParser.h",
         "src/MahjongCommonUtils.h",
         "src/MahjongCommonValue.h",
-        "src/ScoreCalculater.h",
+        "src/ScoreCalculator.h",
         "src/YakuApplier.h",
     ],
     deps = [
@@ -82,6 +83,7 @@ cc_test(
     srcs = [
         "tests/HandParserTest.cpp",
         "tests/MahjongCommonUtilsTest.cpp",
+        "tests/ScoreCalculatorTest.cpp",
         "tests/YakuApplierTest.cpp",
     ],
     data = [

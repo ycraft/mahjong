@@ -10,7 +10,7 @@ class MahjongCommonValue {
   virtual ~MahjongCommonValue() = 0;
 
  public:
-  static const int KAZOE_YAKUMAN_FAN = 13;
+  static const int KAZOE_YAKUMAN_FAN;
 };
 
 } /* namespace mahjong */

@@ -28,9 +28,6 @@ class MahjongCommonUtils {
   static bool isMachiTypeMatched(MachiType required, MachiType type,
                                  MachiType mask);
 
-  // Utilities for PlayerType.
-  static bool isPlayerTypeMatched(PlayerType required, PlayerType type);
-
   // Utilities for AgariType.
   static bool isAgariTypeMatched(AgariType required, AgariType type);
 
@@ -42,6 +39,10 @@ class MahjongCommonUtils {
 
   // Utilities for RichiType.
   static bool isRichiTypeMatched(RichiType required, RichiType actual);
+
+  static bool isYaochuhai(TileType tile);
+  
+  static bool isMenzen(const ParsedHand& parsed_hand);
 };
 
 }

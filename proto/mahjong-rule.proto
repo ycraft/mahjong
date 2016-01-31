@@ -14,14 +14,15 @@ message Yaku {
 
   optional int32 menzen_fan = 3;
   optional int32 kuisagari_fan = 4;
-  optional int32 force_fu = 5;
-  optional int32 yakuman = 6;
+  optional int32 force_fu_tsumo = 5;
+  optional int32 force_fu_ron = 6;
+  optional int32 yakuman = 7;
 
-  optional YakuCondition yaku_condition = 7;
+  optional YakuCondition yaku_condition = 8;
 
   // Upper version of this yaku.
   // This yaku will not be applied if there is any upper version yaku for the given hand.
-  repeated string upper_version_yaku_name = 8;
+  repeated string upper_version_yaku_name = 9;
 }
 
 message TileCondition {
@@ -103,9 +104,8 @@ message YakuCondition {
   repeated TileCondition required_tile_condition = 3;
   repeated ElementCondition required_element_condition = 4;
   optional MachiType required_machi_type = 5;
-  optional PlayerType required_player_type = 6;
-  optional AgariCondition required_agari_condition = 7;
-  optional RichiType required_richi_type = 8;
-  optional TileType required_field_wind = 9;
-  optional TileType required_player_wind = 10;
+  optional AgariCondition required_agari_condition = 6;
+  optional RichiType required_richi_type = 7;
+  optional TileType required_field_wind = 8;
+  optional TileType required_player_wind = 9;
 }

@@ -123,12 +123,11 @@ enum AgariType {
 
 enum AgariState {
   UNKNOWN_AGARI_STATE = 0;
-  MENZEN = 1;
-  SOKU = 2;
-  HAITEI = 3;
-  CHANKAN = 4;
-  RINSHAN = 5;
-  BEGINNING = 6;
+  SOKU = 1;
+  HAITEI = 2;
+  CHANKAN = 3;
+  RINSHAN = 4;
+  BEGINNING = 5;
 }
 
 enum AgariFormat {
@@ -177,12 +176,6 @@ enum MachiType {
     RYANMEN  = 0x0205;
 }
 
-enum PlayerType {
-  UNKNOWN_PLAYER_TYPE = 0;
-  DEALER = 1;
-  NON_DEALER = 2;
-}
-
 message Hand {
   repeated TileType closed_tile = 1;  // not includes Agari-tile
   optional TileType agari_tile = 2;
@@ -208,14 +201,13 @@ message Hand {
 }
 
 message Player {
-  optional PlayerType player_type = 1;
-  optional TileType wind = 2;
-  optional Hand hand = 3;
+  optional TileType wind = 1;
+  optional Hand hand = 2;
 }
 
 message Field {
   optional TileType wind = 1; // Ton-ba, Nan-ba
   repeated TileType dora = 2; // Not dora hyouji hai
-  repeated TileType ura_dora = 3;
+  repeated TileType uradora = 3;
   optional int32 honba = 4;
 }

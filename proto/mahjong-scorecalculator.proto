@@ -5,7 +5,7 @@ import "mahjong-rule.proto";
 
 package ydec.mahjong;
 
-message ScoreCalculaterResult {
+message ScoreCalculatorResult {
   optional int32 fu = 1;
   optional int32 fan = 2;
   optional int32 yakuman = 3;
@@ -25,13 +25,12 @@ message YakuConditionValidatorResult {
     NG_REQUIRED_TILE_CONDITION = -3;
     NG_REQUIRED_ELEMENT_CONDITION = -4;
     NG_REQUIRED_MACHI_TYPE = -5;
-    NG_REQUIRED_PLAYER_TYPE = -6;
-    NG_REQUIRED_AGARI_CONDITION = -7;
-    NG_REQUIRED_RICHI_TYPE = -8;
-    NG_REQUIRED_FIELD_WIND = -9;
-    NG_REQUIRED_PLAYER_WIND = -10;
+    NG_REQUIRED_AGARI_CONDITION = -6;
+    NG_REQUIRED_RICHI_TYPE = -7;
+    NG_REQUIRED_FIELD_WIND = -8;
+    NG_REQUIRED_PLAYER_WIND = -9;
 
-    ERROR_INTERNAL_ERROR = -11;
+    ERROR_INTERNAL_ERROR = -10;
   }
 
   optional Type type = 1;

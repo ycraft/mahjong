@@ -1,0 +1,101 @@
+#include <gtest/gtest.h>
+#include <fstream>
+#include <iostream>
+
+#include "src/HandParser.h"
+#include "src/ScoreCalculator.h"
+#include "src/YakuApplier.h"
+
+using namespace std;
+using namespace ydec::mahjong;
+
+/**
+ * Unit tests for ScoreCalculator.
+ */
+class ScoreCalculatorTest : public ::testing::Test {
+ protected:
+  static Rule rule_;
+  HandParser hand_parser_;
+  YakuApplier yaku_applier_;
+  ScoreCalculator score_calculator_;
+
+  static void SetUpTestCase() {
+    ifstream rule_file;
+    rule_file.open("res/raw/rule.pb", istream::in | istream::binary);
+    rule_.ParseFromIstream(&rule_file);
+    rule_file.close();
+  }
+
+  ScoreCalculatorTest() : 
+      hand_parser_(),
+      yaku_applier_(rule_),
+      score_calculator_(hand_parser_,
+                  yaku_applier_) {
+  }
+
+  static string concatStrings(const vector<string>& strings) {
+    stringstream ss;
+    copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
+    return ss.str();
+  }
+
+  static void verify(vector<string> expected_yaku,
+                     int expected_fu,
+                     int expected_han,
+                     int expected_yakuman,
+                     const ScoreCalculatorResult& actual) {
+    sort(expected_yaku.begin(), expected_yaku.end());
+
+    vector<string> actual_yaku;
+    for (const Yaku& yaku : actual.yaku()) {
+      actual_yaku.push_back(yaku.name());
+    }
+    sort(actual_yaku.begin(), actual_yaku.end());
+
+    if (expected_yaku != actual_yaku) {
+      FAIL() << "Expected = {" << concatStrings(expected_yaku) << "}\n"
+             << "Actual = {" << concatStrings(actual_yaku) << "}";
+    }
+
+    ASSERT_EQ(expected_han, actual.fan());
+    ASSERT_EQ(expected_fu, actual.fu());
+    ASSERT_EQ(expected_yakuman, actual.yakuman());
+  }
+};
+
+Rule ScoreCalculatorTest::rule_;
+
+TEST_F(ScoreCalculatorTest, TestCalculate) {
+  Field field;
+  field.set_wind(TileType::WIND_TON);
+  field.add_dora(TileType::WIND_NAN);
+  field.add_uradora(TileType::WIND_SHA);
+  field.set_honba(0);
+
+  Player player;
+  player.set_wind(TileType::WIND_TON);
+
+  Hand* hand = player.mutable_hand();
+  hand->add_closed_tile(TileType::PINZU_1);
+  hand->add_closed_tile(TileType::PINZU_1);
+  hand->add_closed_tile(TileType::PINZU_1);
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_4);
+  hand->add_closed_tile(TileType::PINZU_4);
+  hand->set_agari_tile(TileType::PINZU_1);
+  hand->mutable_agari()->set_type(AgariType::RON);
+
+  ScoreCalculatorResult result;
+  score_calculator_.calculate(field, player, &result);
+
+  ASSERT_NO_FATAL_FAILURE(verify({"二盃口", "清一色", "平和"},
+                                 30, 10, 0,
+                                 result));
+}

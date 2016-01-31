@@ -164,7 +164,6 @@ TEST_F(HandParserTest, ParseTest_1) {
   hand.add_closed_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_4);
   hand.mutable_agari()->set_type(AgariType::TSUMO);
-  hand.mutable_agari()->add_state(AgariState::MENZEN);
 
   HandParserResult result;
   _handParser.parse(hand, &result);
@@ -181,7 +180,7 @@ TEST_F(HandParserTest, ParseTest_1) {
       MachiType::RYANMEN,
       AgariType::TSUMO,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN} /* expected_agari_state */,
+      {} /* expected_agari_state */,
       result.parsed_hand(0)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createAnkoutsu(TileType::PINZU_1),
@@ -192,7 +191,7 @@ TEST_F(HandParserTest, ParseTest_1) {
       MachiType::TANKI,
       AgariType::TSUMO,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN} /* expected_agari_state */,
+      {} /* expected_agari_state */,
       result.parsed_hand(1)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createAnshuntsu(TileType::PINZU_1),
@@ -203,11 +202,11 @@ TEST_F(HandParserTest, ParseTest_1) {
       MachiType::TANKI,
       AgariType::TSUMO,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN} /* expected_agari_state */,
+      {} /* expected_agari_state */,
       result.parsed_hand(2)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
       hand,
-      {AgariState::MENZEN} /* expected_agari_state */,
+      {} /* expected_agari_state */,
       result.parsed_hand(3)));
 }
 
@@ -228,7 +227,6 @@ TEST_F(HandParserTest, ParseTest_2) {
   hand.add_closed_tile(TileType::PINZU_4);
   hand.set_agari_tile(TileType::PINZU_1);
   hand.mutable_agari()->set_type(AgariType::RON);
-  hand.mutable_agari()->add_state(AgariState::MENZEN);
   hand.mutable_agari()->add_state(AgariState::SOKU);
 
   HandParserResult result;
@@ -246,7 +244,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       MachiType::TANKI,
       AgariType::RON,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(0)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createAntoitsu(TileType::PINZU_1),
@@ -257,7 +255,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       MachiType::RYANMEN,
       AgariType::RON,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(1)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createMinkoutsu(TileType::PINZU_1, true),
@@ -268,7 +266,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       MachiType::SHABO,
       AgariType::RON,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(2)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createAnkoutsu(TileType::PINZU_1),
@@ -279,7 +277,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       MachiType::RYANMEN,
       AgariType::RON,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(3)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
       {CommonTestUtil::createMinshuntsu(TileType::PINZU_1, 0),
@@ -290,11 +288,11 @@ TEST_F(HandParserTest, ParseTest_2) {
       MachiType::RYANMEN,
       AgariType::RON,
       AgariFormat::REGULAR_AGARI,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(4)));
   ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
       hand,
-      {AgariState::MENZEN, AgariState::SOKU},
+      {AgariState::SOKU},
       result.parsed_hand(5)));
 }
 

@@ -60,11 +60,6 @@ bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type,
   return isMatched(required, type, mask);
 }
 
-bool MahjongCommonUtils::isPlayerTypeMatched(PlayerType required,
-                                             PlayerType type) {
-  return isMatched(required, type);
-}
-
 bool MahjongCommonUtils::isAgariTypeMatched(AgariType required,
                                             AgariType type) {
   return isMatched(required, type);
@@ -83,6 +78,41 @@ bool MahjongCommonUtils::isAgariFormatMatched(AgariFormat required,
 bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
                                             RichiType actual) {
   return isMatchedForHierarchalData(required, actual);
+}
+
+bool MahjongCommonUtils::isYaochuhai(TileType tile) {
+  return isSequentialTileType(tile) ||
+         isTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
+         isTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
+}
+
+bool MahjongCommonUtils::isMenzen(const ParsedHand& hand) {
+  for (const Element& element : hand.element()) {
+    if (element.type() == HandElementType::MINSHUNTSU ||
+        element.type() == HandElementType::MINKOUTSU ||
+        element.type() == HandElementType::MINKANTSU) {
+      // Check if this mentsu contains agari tile. If it contains agari tile,
+      // the hand still can be menzen, because RON doesn't count for naki.
+      // (HandParcer annotates mentsu including RON tile MIN*).
+      bool contains_agari_tile = false;
+      for (const Tile& tile : element.tile()) {
+        for (int state : tile.state()) {
+          contains_agari_tile |= isTileStateMatched(TileState::AGARI_HAI,
+                                                    static_cast<TileState>(state));
+          if (contains_agari_tile) {
+            break;
+          }
+        }
+        if (contains_agari_tile) {
+          break;
+        }
+      }
+      if (!contains_agari_tile) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 }

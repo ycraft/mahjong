@@ -24,16 +24,16 @@ namespace mahjong {
 /**
  * Implementations for Yaku Applier.
  */
-YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
-    : rule_(std::move(rule)) {
-  for (const Yaku& yaku : rule_->yaku()) {
+YakuApplier::YakuApplier(const Rule& rule) :
+    rule_(rule) {
+  for (const Yaku& yaku : rule_.yaku()) {
     if (!yaku_lookup_table_.insert(make_pair(yaku.name(), &yaku)).second) {
       std::cerr << "Duplicated yaku definition found." << std::endl;
       std::abort();
     }
   }
 
-  for (const Yaku& yaku : rule_->yaku()) {
+  for (const Yaku& yaku : rule_.yaku()) {
     upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<const string>()));
     for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
       if (yaku_lookup_table_.find(upper_yaku_name) == yaku_lookup_table_.end()) {
@@ -46,7 +46,7 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
     // For example, if both suanko and tanyao are maiden concurrently, we don't count
     // tanyao because suanko is dominant.
     if (yaku.yakuman() == 0) {
-      for (const Yaku& r_yaku : rule_->yaku()) {
+      for (const Yaku& r_yaku : rule_.yaku()) {
         if (r_yaku.yakuman() > 0) {
           upper_yaku_lookup_table_[yaku.name()].push_back(r_yaku.name());
         }
@@ -58,43 +58,32 @@ YakuApplier::YakuApplier(std::unique_ptr<Rule>&& rule)
 YakuApplier::~YakuApplier() {
 }
 
-void YakuApplier::apply(const PlayerType& player_type,
-                        const RichiType& richi_type,
+void YakuApplier::apply(const RichiType& richi_type,
                         const TileType& field_wind,
                         const TileType& player_wind,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
-  std::cout << "Apply " << parsed_hand.DebugString() << std::endl;
+  bool is_menzen = MahjongCommonUtils::isMenzen(parsed_hand);
 
   set<string> applied_yaku_names;
-  for (const Yaku& yaku : rule_->yaku()) {
+  for (const Yaku& yaku : rule_.yaku()) {
 
     // Check if hansuu is not zero.
-    if (!(yaku.kuisagari_fan() > 0 ||
-          yaku.yakuman() > 0 ||
-          (yaku.menzen_fan() > 0 &&
-           std::find(parsed_hand.agari().state().begin(),
-                     parsed_hand.agari().state().end(),
-                     AgariState::MENZEN) != parsed_hand.agari().state().end()))) {
-      std::cout << yaku.name()
-                << ": Skipped because kuisagari_fan is zero."
-                << std::endl;
+    bool is_applicable =
+        yaku.kuisagari_fan() > 0 ||
+        yaku.yakuman() > 0 ||
+        (is_menzen && yaku.menzen_fan() > 0);
+    if (!is_applicable) {
       continue;
     }
 
     YakuConditionValidator validator(yaku.yaku_condition(),
-                                     player_type,
                                      richi_type,
                                      field_wind,
                                      player_wind,
                                      parsed_hand);
     YakuConditionValidatorResult validator_result;
     validator.validate(&validator_result);
-
-    std::cout << yaku.name()
-              << ": "
-              << YakuConditionValidatorResult::Type_Name(validator_result.type())
-              << std::endl;
 
     if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
       applied_yaku_names.insert(yaku.name());
@@ -120,13 +109,11 @@ void YakuApplier::apply(const PlayerType& player_type,
  * Implementations for YakuConditionValidator.
  */
 YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
-                                               const PlayerType& player_type,
                                                const RichiType& richi_type,
                                                const TileType& field_wind,
                                                const TileType& player_wind,
                                                const ParsedHand& parsed_hand)
     : condition_(condition),
-      playerType_(player_type),
       richi_type_(richi_type),
       field_wind_(field_wind),
       player_wind_(player_wind),
@@ -145,9 +132,6 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate() {
 }
 
 YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditionValidatorResult* result) {
-
-  std::cout << "Start YakuConditionValidator::validate" << std::endl;
-
   result_ = result;
 
   if (!setValiableTile(TileCondition::VARIABLE_BAKAZE_TILE, field_wind_)) {
@@ -185,15 +169,6 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
     if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
                                                 parsed_hand_.machi_type())) {
       result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_MACHI_TYPE);
-      return result_->type();
-    }
-  }
-
-  // Validate player type.
-  if (condition_.has_required_player_type()) {
-    if (!MahjongCommonUtils::isPlayerTypeMatched(condition_.required_player_type(),
-                                                 playerType_)) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_TYPE);
       return result_->type();
     }
   }
@@ -625,7 +600,6 @@ bool YakuConditionValidator::setValiableTile(
     case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI:
     case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI_2:
       defined_tiles.insert(variable_tiles_[type] = tile);
-      std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
       return true;
 
     case TileCondition::VARIABLE_NUMBER:
@@ -633,7 +607,6 @@ bool YakuConditionValidator::setValiableTile(
         return false;
       } else {
         defined_tiles.insert(variable_tiles_[type] = tile);
-        std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
         return true;
       }
 
@@ -644,7 +617,6 @@ bool YakuConditionValidator::setValiableTile(
             return false;
           } else {
             defined_tiles.insert(variable_tiles_[type] = tile);
-            std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
             return true;
           }
 
@@ -655,7 +627,6 @@ bool YakuConditionValidator::setValiableTile(
             return true;
           } else {
             defined_tiles.insert(variable_tiles_[type] = tile);
-            std::cout << "Register variable tile: " << TileCondition::VariableTileType_Name(type) << " = " << TileType_Name(tile) << std::endl;
             return true;
           }
 

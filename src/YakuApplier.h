@@ -15,22 +15,21 @@ namespace ydec {
 namespace mahjong {
 
 /**
- * Yaku Applier
+ * Yaku Applier.
  */
 class YakuApplier {
  public:
-  YakuApplier(std::unique_ptr<Rule>&& rule);
+  YakuApplier(const Rule& rule);
   virtual ~YakuApplier();
 
-  void apply(const PlayerType& player_type,
-             const RichiType& richi_type,
+  void apply(const RichiType& richi_type,
              const TileType& field_wind,
              const TileType& player_wind,
              const ParsedHand& parsed_hand,
              YakuApplierResult* result) const;
 
  private:
-  std::unique_ptr<Rule> rule_;
+  const Rule& rule_;
   std::map<const std::string, const Yaku*> yaku_lookup_table_;
   std::map<const std::string, std::vector<const std::string>> upper_yaku_lookup_table_;
 };
@@ -42,7 +41,6 @@ class YakuApplier {
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const YakuCondition& condition,
-                         const PlayerType& player_type,
                          const RichiType& richi_type,
                          const TileType& field_wind,
                          const TileType& player_wind,
@@ -53,7 +51,6 @@ class YakuConditionValidator {
 
  private:
   const YakuCondition& condition_;
-  const PlayerType& playerType_;
   const RichiType& richi_type_;
   const TileType& field_wind_;
   const TileType& player_wind_;
