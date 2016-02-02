@@ -10,6 +10,8 @@ message ScoreCalculatorResult {
   optional int32 fan = 2;
   optional int32 yakuman = 3;
   repeated Yaku yaku = 4;
+  optional int32 dora = 5;
+  optional int32 uradora = 6;
 }
 
 message YakuApplierResult {

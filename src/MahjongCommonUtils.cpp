@@ -81,7 +81,7 @@ bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
 }
 
 bool MahjongCommonUtils::isYaochuhai(TileType tile) {
-  return isSequentialTileType(tile) ||
+  return !isSequentialTileType(tile) ||
          isTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
          isTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
 }

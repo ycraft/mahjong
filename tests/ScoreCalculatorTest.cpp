@@ -43,7 +43,11 @@ class ScoreCalculatorTest : public ::testing::Test {
                      int expected_fu,
                      int expected_han,
                      int expected_yakuman,
+                     int expected_dora,
+                     int expected_uradora,
                      const ScoreCalculatorResult& actual) {
+    SCOPED_TRACE(actual.Utf8DebugString());
+
     sort(expected_yaku.begin(), expected_yaku.end());
 
     vector<string> actual_yaku;
@@ -60,6 +64,8 @@ class ScoreCalculatorTest : public ::testing::Test {
     ASSERT_EQ(expected_han, actual.fan());
     ASSERT_EQ(expected_fu, actual.fu());
     ASSERT_EQ(expected_yakuman, actual.yakuman());
+    ASSERT_EQ(expected_dora, actual.dora());
+    ASSERT_EQ(expected_uradora, actual.uradora());
   }
 };
 
@@ -96,6 +102,51 @@ TEST_F(ScoreCalculatorTest, TestCalculate) {
   score_calculator_.calculate(field, player, &result);
 
   ASSERT_NO_FATAL_FAILURE(verify({"二盃口", "清一色", "平和"},
-                                 30, 10, 0,
+                                 30 /* fu */,
+                                 10 /* han */,
+                                  0 /* yakuman */,
+                                  0 /* dora */,
+                                  0 /* uradora */,
                                  result));
 }
+
+TEST_F(ScoreCalculatorTest, TestCalculate_2) {
+  Field field;
+  field.set_wind(TileType::WIND_TON);
+  field.add_dora(TileType::WIND_NAN);
+  field.add_uradora(TileType::WIND_SHA);
+  field.set_honba(0);
+
+  Player player;
+  player.set_wind(TileType::WIND_TON);
+
+  Hand* hand = player.mutable_hand();
+  hand->add_closed_tile(TileType::WIND_TON);
+  hand->add_closed_tile(TileType::WIND_TON);
+  hand->add_closed_tile(TileType::WIND_TON);
+  hand->add_closed_tile(TileType::WIND_NAN);
+  hand->add_closed_tile(TileType::WIND_NAN);
+  hand->add_closed_tile(TileType::WIND_NAN);
+  hand->add_closed_tile(TileType::WIND_SHA);
+  hand->add_closed_tile(TileType::WIND_SHA);
+  hand->add_closed_tile(TileType::WIND_SHA);
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_4);
+  hand->add_closed_tile(TileType::SOUZU_8);
+  hand->set_agari_tile(TileType::SOUZU_8);
+  hand->mutable_agari()->set_type(AgariType::RON);
+  hand->set_richi_type(RichiType::NORMAL_RICHI);
+
+  ScoreCalculatorResult result;
+  score_calculator_.calculate(field, player, &result);
+
+  ASSERT_NO_FATAL_FAILURE(verify({"立直", "三暗刻", "場風牌 東", "自風牌 東"},
+                                 60 /* fu */,
+                                 11 /* han */,
+                                 0 /* yakuman */,
+                                 3 /* dora */,
+                                 3 /* uradora */,
+                                 result));
+}
+

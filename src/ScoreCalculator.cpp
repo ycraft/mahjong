@@ -82,6 +82,7 @@ void ScoreCalculator::calculate(const Field& field,
       player.wind(),
       parsed_hand,
       &yaku_applier_result);
+
   if (yaku_applier_result.yaku_size() == 0) {
     return;
   }
@@ -98,7 +99,35 @@ void ScoreCalculator::calculate(const Field& field,
     yakuman += yaku.yakuman();
   }
 
-  result->set_fan(han);
+  int dora = 0;
+  for (const Element& element : parsed_hand.element()) {
+    for (const Tile& tile : element.tile()) {
+      for (int dora_tile : field.dora()) {      
+        if (tile.type() == static_cast<TileType>(dora_tile)) {
+          ++dora;
+        }
+      }
+    }
+  }
+
+  int uradora = 0;
+  if (MahjongCommonUtils::isRichiTypeMatched(
+      RichiType::RICHI,
+      player.hand().richi_type())) {
+    for (const Element& element : parsed_hand.element()) {
+      for (const Tile& tile : element.tile()) {
+        for (int uradora_tile : field.uradora()) {      
+          if (tile.type() == static_cast<TileType>(uradora_tile)) {
+            ++uradora;
+          }
+        }
+      }
+    }
+  }
+
+  result->set_dora(dora);
+  result->set_uradora(uradora);
+  result->set_fan(han + dora + uradora);
   result->set_yakuman(yakuman);
   *result->mutable_yaku() = yaku_applier_result.yaku();
 
