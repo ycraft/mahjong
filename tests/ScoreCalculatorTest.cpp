@@ -150,3 +150,45 @@ TEST_F(ScoreCalculatorTest, TestCalculate_2) {
                                  result));
 }
 
+TEST_F(ScoreCalculatorTest, TestCalculate_3) {
+  Field field;
+  field.set_wind(TileType::WIND_TON);
+  field.add_dora(TileType::SOUZU_3);
+  field.add_dora(TileType::WANZU_8);
+  field.set_honba(0);
+
+  Player player;
+  player.set_wind(TileType::WIND_TON);
+
+  Hand* hand = player.mutable_hand();
+  hand->add_closed_tile(TileType::PINZU_2);
+  hand->add_closed_tile(TileType::PINZU_3);
+  hand->add_closed_tile(TileType::PINZU_4);
+  hand->add_closed_tile(TileType::SOUZU_3);
+  hand->add_closed_tile(TileType::SOUZU_5);
+  hand->add_closed_tile(TileType::PINZU_8);
+  hand->add_closed_tile(TileType::PINZU_8);
+
+  Hand::Chii* chii = hand->add_chiied_tile();
+  chii->add_tile(TileType::WANZU_7);
+  chii->add_tile(TileType::WANZU_8);
+  chii->add_tile(TileType::WANZU_9);
+
+  Hand::Kan* kan = hand->add_kanned_tile();
+  kan->set_tile(TileType::SANGEN_CHUN);
+  kan->set_is_closed(true);
+
+  hand->set_agari_tile(TileType::SOUZU_4);
+  hand->mutable_agari()->set_type(AgariType::RON);
+
+  ScoreCalculatorResult result;
+  score_calculator_.calculate(field, player, &result);
+
+  ASSERT_NO_FATAL_FAILURE(verify({"役牌 中"},
+                                 60 /* fu */,
+                                 3 /* han */,
+                                 0 /* yakuman */,
+                                 2 /* dora */,
+                                 0 /* uradora */,
+                                 result));
+}
