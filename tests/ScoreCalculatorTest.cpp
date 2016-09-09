@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 #include "src/HandParser.h"
 #include "src/ScoreCalculator.h"
@@ -26,7 +27,7 @@ class ScoreCalculatorTest : public ::testing::Test {
     rule_file.close();
   }
 
-  ScoreCalculatorTest() : 
+  ScoreCalculatorTest() :
       hand_parser_(),
       yaku_applier_(rule_),
       score_calculator_(hand_parser_,

@@ -1,7 +1,7 @@
 #ifndef YDEC_MSC_MAHJONGCOMMONUTILS_H_
 #define YDEC_MSC_MAHJONGCOMMONUTILS_H_
 
-#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+#include "proto/mahjong-scorecalculator.pb.h"
 
 
 namespace ydec {
@@ -41,7 +41,7 @@ class MahjongCommonUtils {
   static bool isRichiTypeMatched(RichiType required, RichiType actual);
 
   static bool isYaochuhai(TileType tile);
-  
+
   static bool isMenzen(const ParsedHand& parsed_hand);
 };
 

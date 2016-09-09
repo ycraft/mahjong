@@ -8,7 +8,7 @@
 #ifndef YDEC_MSC_HANDPARSER_H_
 #define YDEC_MSC_HANDPARSER_H_
 
-#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+#include "proto/mahjong-scorecalculator.pb.h"
 
 #include <string>
 

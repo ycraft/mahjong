@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "src-gen/cpp/mahjong-common.pb.h"
-#include "src-gen/cpp/mahjong-rule.pb.h"
-#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+#include "proto/mahjong-common.pb.h"
+#include "proto/mahjong-rule.pb.h"
+#include "proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -31,7 +31,7 @@ class YakuApplier {
  private:
   const Rule& rule_;
   std::map<const std::string, const Yaku*> yaku_lookup_table_;
-  std::map<const std::string, std::vector<const std::string>> upper_yaku_lookup_table_;
+  std::map<const std::string, std::vector<std::string>> upper_yaku_lookup_table_;
 };
 
 

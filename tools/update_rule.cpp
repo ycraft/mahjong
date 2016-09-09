@@ -3,7 +3,7 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
-#include "src-gen/cpp/mahjong-rule.pb.h"
+#include "proto/mahjong-rule.pb.h"
 
 using namespace std;
 using namespace google::protobuf;

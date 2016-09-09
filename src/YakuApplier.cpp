@@ -34,7 +34,7 @@ YakuApplier::YakuApplier(const Rule& rule) :
   }
 
   for (const Yaku& yaku : rule_.yaku()) {
-    upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<const string>()));
+    upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<string>()));
     for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
       if (yaku_lookup_table_.find(upper_yaku_name) == yaku_lookup_table_.end()) {
         std::abort();

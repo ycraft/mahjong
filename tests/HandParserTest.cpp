@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
 
 #include <google/protobuf/text_format.h>
 
@@ -52,7 +53,7 @@ bool checkElement(const Element& lhs, const Element& rhs) {
 void verifyAgari(
     const AgariType& expected_agari_type,
     const AgariFormat& expected_agari_format,
-    const vector<const AgariState>& expected_agari_state,
+    const vector<AgariState>& expected_agari_state,
     const Agari& actual) {
   ASSERT_EQ(expected_agari_type, actual.type());
   ASSERT_EQ(expected_agari_format, actual.format());
@@ -69,11 +70,11 @@ void verifyAgari(
 }
 
 void verifyParsedHand(
-    const vector<const Element>& expected_elements,
+    const vector<Element>& expected_elements,
     const MachiType& expected_machi_type,
     const AgariType& expected_agari_type,
     const AgariFormat& expected_agari_format,
-    const vector<const AgariState>& expected_agari_state,
+    const vector<AgariState>& expected_agari_state,
     const ParsedHand& actual_parsed_hand) {
   ASSERT_EQ(expected_machi_type, actual_parsed_hand.machi_type());
   ASSERT_NO_FATAL_FAILURE(
@@ -108,7 +109,7 @@ void verifyParsedHand(
 
 void verifyParsedHandForIrregularAgariFormat(
     const Hand& input_hand,
-    const vector<const AgariState>& expected_agari_state,
+    const vector<AgariState>& expected_agari_state,
     const ParsedHand& actual_parsed_hand) {
   Element element;
   element.set_type(HandElementType::UNKNOWN_HAND_ELEMENT_TYPE);

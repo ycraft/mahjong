@@ -8,9 +8,9 @@
 #ifndef COMMONTESTUTIL_H_
 #define COMMONTESTUTIL_H_
 
-#include "src-gen/cpp/mahjong-common.pb.h"
-#include "src-gen/cpp/mahjong-rule.pb.h"
-#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+#include "proto/mahjong-common.pb.h"
+#include "proto/mahjong-rule.pb.h"
+#include "proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "src-gen/cpp/mahjong-scorecalculator.pb.h"
+#include "proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
