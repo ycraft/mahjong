@@ -1,16 +1,9 @@
-/*
- * CommonTestUtil.h
- *
- *  Created on: 2014/06/17
- *      Author: yuuki
- */
+#ifndef YDEC_MAHJONG_COMMON_TEST_UTIL_H_
+#define YDEC_MAHJONG_COMMON_TEST_UTIL_H_
 
-#ifndef COMMONTESTUTIL_H_
-#define COMMONTESTUTIL_H_
-
-#include "proto/mahjong-common.pb.h"
-#include "proto/mahjong-rule.pb.h"
-#include "proto/mahjong-scorecalculator.pb.h"
+#include "ydec/mahjong/proto/mahjong-common.pb.h"
+#include "ydec/mahjong/proto/mahjong-rule.pb.h"
+#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -70,7 +63,7 @@ class CommonTestUtil {
                                int agari_hai_index = -1);
 };
 
-} /* namespace mahjong */
-} /* namespace ydec */
+}  // namespace ydec
+}  // namespace mahjong
 
-#endif /* COMMONTESTUTIL_H_ */
+#endif  // YDEC_MAHJONG_COMMON_TEST_UTIL_H_

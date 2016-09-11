@@ -1,9 +1,9 @@
-#ifndef SCORECALCULATOR_H_
-#define SCORECALCULATOR_H_
+#ifndef YDEC_MAHJONG_SCORE_CALCULATOR_H_
+#define YDEC_MAHJONG_SCORE_CALCULATOR_H_
 
 #include <memory>
 
-#include "proto/mahjong-scorecalculator.pb.h"
+#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -50,7 +50,7 @@ class FuCalculator {
   int getMachiFu(MachiType machi_type) const;
 };
 
-} /* namespace mahjong */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec
 
-#endif /* SCORECALCULATOR_H_ */
+#endif  // YDEC_MAHJONG_SCORE_CALCULATOR_H_

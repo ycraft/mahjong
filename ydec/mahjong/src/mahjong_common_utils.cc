@@ -1,6 +1,6 @@
-#include "mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_utils.h"
 
-#include "mahjong_common_value.h"
+#include "ydec/mahjong/src/mahjong_common_value.h"
 
 namespace ydec {
 namespace mahjong {
@@ -23,7 +23,7 @@ bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
   return required == actual;
 }
 
-}
+}  // namespace
 
 bool MahjongCommonUtils::isSequentialTileType(TileType tile) {
   return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
@@ -115,5 +115,5 @@ bool MahjongCommonUtils::isMenzen(const ParsedHand& hand) {
   return true;
 }
 
-}
-}
+}  // namespace mahjong
+}  // namespace ydec

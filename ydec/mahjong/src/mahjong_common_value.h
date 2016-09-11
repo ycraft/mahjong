@@ -1,5 +1,5 @@
-#ifndef MAHJONGCOMMONVALUE_H_
-#define MAHJONGCOMMONVALUE_H_
+#ifndef YDEC_MAHJONG_MAHJONG_COMMON_VALUE_H_
+#define YDEC_MAHJONG_MAHJONG_COMMON_VALUE_H_
 
 namespace ydec {
 namespace mahjong {
@@ -13,7 +13,7 @@ class MahjongCommonValue {
   static const int KAZOE_YAKUMAN_FAN;
 };
 
-} /* namespace mahjong */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec
 
-#endif /* MAHJONGCOMMONVALUE_H_ */
+#endif  // YDEC_MAHJONG_MAHJONG_COMMON_VALUE_H_

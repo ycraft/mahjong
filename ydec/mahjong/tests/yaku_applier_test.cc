@@ -10,8 +10,8 @@
 #include "google/protobuf/text_format.h"
 #include "gtest/gtest.h"
 
-#include "common_test_util.h"
-#include "src/yaku_applier.h"
+#include "ydec/mahjong/src/yaku_applier.h"
+#include "ydec/mahjong/tests/common_test_util.h"
 
 using namespace std;
 using namespace ydec::mahjong;
@@ -28,7 +28,7 @@ class YakuApplierTest : public ::testing::Test {
 
   static void SetUpTestCase() {
     ifstream rule_file;
-    rule_file.open("data/rule.pb", istream::in | istream::binary);
+    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
     rule_.ParseFromIstream(&rule_file);
     rule_file.close();
   }

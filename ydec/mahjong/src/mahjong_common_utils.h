@@ -1,8 +1,7 @@
-#ifndef YDEC_MSC_MAHJONGCOMMONUTILS_H_
-#define YDEC_MSC_MAHJONGCOMMONUTILS_H_
+#ifndef YDEC_MAHJONG_MAHJONG_COMMON_UTILS_H_
+#define YDEC_MAHJONG_MAHJONG_COMMON_UTILS_H_
 
-#include "proto/mahjong-scorecalculator.pb.h"
-
+#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -45,7 +44,7 @@ class MahjongCommonUtils {
   static bool isMenzen(const ParsedHand& parsed_hand);
 };
 
-}
-}
+}  // namespace mahjong
+}  // namespace ydec
 
-#endif /* YDEC_MSC_MAHJONGCOMMONUTILS_H_ */
+#endif  // YDEC_MAHJONG_MAHJONG_COMMON_UTILS_H_

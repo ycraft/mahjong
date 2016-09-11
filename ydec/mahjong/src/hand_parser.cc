@@ -1,17 +1,11 @@
-/*
- * HandParser.cpp
- *
- *  Created on: 2014/02/16
- *      Author: yuuki
- */
-#include "hand_parser.h"
+#include "ydec/mahjong/src/hand_parser.h"
 
 #include <iostream>
 #include <algorithm>
 #include <functional>
 #include <set>
 
-#include "mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_utils.h"
 
 namespace ydec {
 namespace mahjong {
@@ -25,7 +19,7 @@ namespace {
           return MahjongCommonUtils::isTileStateMatched(required_state, static_cast<TileState>(state));
         }) != tile.state().end();
   }
-}
+}  // namespace
 
 std::string HandParserResultUtil::getDebugString(const HandParserResult& result) {
   std::string str;
@@ -462,6 +456,5 @@ void HandParser::deduplicateResult() {
   _result->Swap(&dedupedResult);
 }
 
-} // msc
-} // ydec
-
+}  // namespace mahjong
+}  // namespace ydec

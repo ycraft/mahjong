@@ -1,16 +1,9 @@
-/*
- * HandParser.h
- *
- *  Created on: 2014/02/16
- *      Author: yuuki
- */
-
-#ifndef YDEC_MSC_HANDPARSER_H_
-#define YDEC_MSC_HANDPARSER_H_
-
-#include "proto/mahjong-scorecalculator.pb.h"
+#ifndef YDEC_MAHJONG_HAND_PARSER_H_
+#define YDEC_MAHJONG_HAND_PARSER_H_
 
 #include <string>
+
+#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -49,7 +42,7 @@ class HandParser {
   void deduplicateResult();
 };
 
-}  // mahjong
-}  // ydec
+}  // namespace mahjong
+}  // namespace ydec
 
-#endif /* YDEC_MSC_HANDPARSER_H_ */
+#endif  // YDEC_MAHJONG_HAND_PARSER_H_

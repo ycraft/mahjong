@@ -5,8 +5,8 @@
 #include "google/protobuf/text_format.h"
 #include "gtest/gtest.h"
 
-#include "common_test_util.h"
-#include "src/hand_parser.h"
+#include "ydec/mahjong/src/hand_parser.h"
+#include "ydec/mahjong/tests/common_test_util.h"
 
 using namespace std;
 using namespace ydec::mahjong;

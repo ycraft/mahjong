@@ -1,11 +1,4 @@
-/*
- * CommonTestUtil.cpp
- *
- *  Created on: 2014/06/17
- *      Author: yuuki
- */
-
-#include "common_test_util.h"
+#include "ydec/mahjong/tests/common_test_util.h"
 
 namespace ydec {
 namespace mahjong {
@@ -175,5 +168,5 @@ void CommonTestUtil::createMinshuntsu(Element* element,
   createShuntsu(element, smallest_tile_type, false, agari_hai_index);
 }
 
-} /* namespace msc */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec

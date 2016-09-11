@@ -1,4 +1,4 @@
-#include "yaku_applier.h"
+#include "ydec/mahjong/src/yaku_applier.h"
 
 #include <iostream>
 #include <memory>
@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#include "mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_utils.h"
 
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
@@ -675,5 +675,5 @@ bool YakuConditionValidator::validateVariableTile(
   }
 }
 
-} /* namespace mahjong */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec

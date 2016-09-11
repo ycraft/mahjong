@@ -1,25 +1,26 @@
 #include <iostream>
 #include <fstream>
-#include <google/protobuf/text_format.h>
-#include <google/protobuf/io/zero_copy_stream_impl.h>
 
-#include "proto/mahjong-rule.pb.h"
+#include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/text_format.h>
+
+#include "ydec/mahjong/proto/mahjong-rule.pb.h"
 
 using namespace std;
 using namespace google::protobuf;
-using namespace ydec::mahjong;
 using namespace google::protobuf::io;
+using namespace ydec::mahjong;
 
 int main(int argc, char** argv) {
-	if (argc != 3) {
-		cerr << "Missing arguments" << endl;
-		return -1;
-	}
+  if (argc != 3) {
+    cerr << "Missing arguments" << endl;
+    return -1;
+  }
 
-	const char* input_path = argv[1];
-	const char* output_path = argv[2];
+  const char* input_path = argv[1];
+  const char* output_path = argv[2];
 
-	Rule rule;
+  Rule rule;
 
   ifstream is;
   is.open(input_path, istream::in);
@@ -28,8 +29,8 @@ int main(int argc, char** argv) {
   is.close();
 
   if (!succeeded) {
-  	cerr << "Failed to parse the given rule text format proto." << endl;
-  	return -1;
+    cerr << "Failed to parse the given rule text format proto." << endl;
+    return -1;
   }
 
   ofstream os;
@@ -38,8 +39,8 @@ int main(int argc, char** argv) {
   os.close();
 
   if (!succeeded) {
-  	cerr << "Failed to serialize rule proto to the given output path." << endl;
-  	return -1;
+    cerr << "Failed to serialize rule proto to the given output path." << endl;
+    return -1;
   }
 
   return 0;

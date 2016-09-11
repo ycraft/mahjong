@@ -4,9 +4,9 @@
 
 #include "gtest/gtest.h"
 
-#include "src/hand_parser.h"
-#include "src/score_calculator.h"
-#include "src/yaku_applier.h"
+#include "ydec/mahjong/src/hand_parser.h"
+#include "ydec/mahjong/src/score_calculator.h"
+#include "ydec/mahjong/src/yaku_applier.h"
 
 using namespace std;
 using namespace ydec::mahjong;
@@ -23,7 +23,7 @@ class ScoreCalculatorTest : public ::testing::Test {
 
   static void SetUpTestCase() {
     ifstream rule_file;
-    rule_file.open("data/rule.pb", istream::in | istream::binary);
+    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
     rule_.ParseFromIstream(&rule_file);
     rule_file.close();
   }

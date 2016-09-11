@@ -1,14 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "src/mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_utils.h"
 
 using namespace std;
 using namespace ydec::mahjong;
 
 
-class MahjongCommonUtilsTest : public ::testing::Test {
- protected:
-};
+class MahjongCommonUtilsTest : public ::testing::Test {};
 
 TEST_F(MahjongCommonUtilsTest, TileStateMatchedTest) {
   EXPECT_TRUE(MahjongCommonUtils::isTileStateMatched(TileState::AGARI_HAI, TileState::AGARI_HAI));

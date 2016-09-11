@@ -7,7 +7,7 @@ cc_library(
       "common_test_util.h",
     ],
     deps = [
-      "//proto:mahjong-scorecalculator",
+      "//ydec/mahjong/proto:mahjong-scorecalculator",
     ],
 )
 
@@ -20,11 +20,11 @@ cc_test(
       "yaku_applier_test.cc",
     ],
     data = [
-      "//data:rule_pb",
+      "//ydec/mahjong/data:rule_pb",
     ],
     deps = [
       ":common_test_util_lib",
-      "//src:mahjong_score_calculator_lib",
+      "//ydec/mahjong/src:mahjong_score_calculator_lib",
       "@googletest//:gtest_main",
     ],
 )

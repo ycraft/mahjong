@@ -1,5 +1,5 @@
-#ifndef YAKUAPPLIER_H_
-#define YAKUAPPLIER_H_
+#ifndef YDEC_MAHJONG_YAKU_APPLIER_H_
+#define YDEC_MAHJONG_YAKU_APPLIER_H_
 
 #include <map>
 #include <memory>
@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "proto/mahjong-common.pb.h"
-#include "proto/mahjong-rule.pb.h"
-#include "proto/mahjong-scorecalculator.pb.h"
+#include "ydec/mahjong/proto/mahjong-common.pb.h"
+#include "ydec/mahjong/proto/mahjong-rule.pb.h"
+#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -117,7 +117,7 @@ class YakuConditionValidator {
       const TileType& tile);
 };
 
-} /* namespace msc */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec
 
-#endif /* YAKUAPPLIER_H_ */
+#endif  // YDEC_MAHJONG_YAKU_APPLIER_H_

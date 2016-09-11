@@ -1,12 +1,12 @@
-#include "score_calculator.h"
+#include "ydec/mahjong/src/score_calculator.h"
 
 #include <iostream>
 #include <algorithm>
 
-#include "hand_parser.h"
-#include "yaku_applier.h"
-#include "mahjong_common_utils.h"
-#include "mahjong_common_value.h"
+#include "ydec/mahjong/src/hand_parser.h"
+#include "ydec/mahjong/src/yaku_applier.h"
+#include "ydec/mahjong/src/mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_value.h"
 
 using namespace std;
 
@@ -210,5 +210,5 @@ int FuCalculator::getMachiFu(MachiType machi_type) const {
       MachiType::MASK_MACHI_FU) ? 2 : 0;
 }
 
-} /* namespace mahjong */
-} /* namespace ydec */
+}  // namespace mahjong
+}  // namespace ydec
