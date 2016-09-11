@@ -22,7 +22,7 @@ class ScoreCalculatorTest : public ::testing::Test {
 
   static void SetUpTestCase() {
     ifstream rule_file;
-    rule_file.open("res/raw/rule.pb", istream::in | istream::binary);
+    rule_file.open("data/rule.pb", istream::in | istream::binary);
     rule_.ParseFromIstream(&rule_file);
     rule_file.close();
   }
