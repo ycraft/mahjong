@@ -38,13 +38,29 @@ using google::protobuf::TextFormat;
 namespace ydec {
 namespace mahjong {
 
+namespace {
+string ConcatStrings(const vector<string>& strings) {
+  stringstream ss;
+  copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
+  return ss.str();
+}
+
+vector<string> GetYakuNames(const YakuApplierResult& result) {
+  vector<string> yakus;
+  yakus.reserve(result.yaku_size());
+  for (const Yaku& yaku : result.yaku()) {
+    yakus.push_back(yaku.name());
+  }
+  return yakus;
+}
+}  // namespace
+
 /**
  * Unit tests for YakuApplier.
  */
 class YakuApplierTest : public testing::Test {
  protected:
-  static Rule rule_;
-  YakuApplier yaku_applier_;
+  YakuApplierTest() : yaku_applier_(rule_) {}
 
   static void SetUpTestCase() {
     ifstream rule_file;
@@ -53,35 +69,21 @@ class YakuApplierTest : public testing::Test {
     rule_file.close();
   }
 
-  YakuApplierTest() : yaku_applier_(rule_) {}
-
- private:
-  static string concatStrings(const vector<string>& strings) {
-    stringstream ss;
-    copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
-    return ss.str();
-  }
-
-  static vector<string> getYakuNames(const YakuApplierResult& result) {
-    vector<string> yakus;
-    yakus.reserve(result.yaku_size());
-    for (const Yaku& yaku : result.yaku()) {
-      yakus.push_back(yaku.name());
-    }
-    return yakus;
-  }
-
- protected:
-  static void assertEquals(const vector<string>& expected,
-                           const YakuApplierResult& actual) {
-    vector<string> e = expected, a = getYakuNames(actual);
+  void AssertEquals(const vector<string>& expected,
+                  const YakuApplierResult& actual) {
+    vector<string> e = expected, a = GetYakuNames(actual);
     sort(e.begin(), e.end());
     sort(a.begin(), a.end());
     if (e != a) {
-      FAIL() << "Expected = {" << concatStrings(e) << "}\n"
-             << "Actual = {" << concatStrings(a) << "}";
+      FAIL() << "Expected = {" << ConcatStrings(e) << "}\n"
+             << "Actual = {" << ConcatStrings(a) << "}";
     }
   }
+
+  YakuApplier yaku_applier_;
+
+ private:
+  static Rule rule_;
 };
 
 Rule YakuApplierTest::rule_;
@@ -104,7 +106,7 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"七対子"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"七対子"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
@@ -126,7 +128,7 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
                       parsed_hand,
                       &result);
   // We cannot use same tile kind for two-toitsu.
-  ASSERT_NO_FATAL_FAILURE(assertEquals({}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
@@ -148,7 +150,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
                       parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"門前清自摸和", "二盃口", "平和"}, result));
+      AssertEquals({"門前清自摸和", "二盃口", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
@@ -169,7 +171,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"三暗刻", "対々和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"三暗刻", "対々和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
@@ -190,7 +192,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"四暗刻"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"四暗刻"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
@@ -211,7 +213,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"四暗刻単騎待ち"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"四暗刻単騎待ち"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
@@ -233,7 +235,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
                       parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
+      AssertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
@@ -257,7 +259,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
   // This hand contains min-shuntsu but this is still menzen hand because
   // that min-shuntsu has ron tile, not a chii.
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
+      AssertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_3) {
@@ -279,7 +281,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_3) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"一気通貫", "清一色"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"一気通貫", "清一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
@@ -301,7 +303,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
                       parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result));
+      AssertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
@@ -322,7 +324,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "場風牌 東"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "場風牌 東"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
@@ -343,7 +345,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
                       TileType::WIND_TON /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "自風牌 東"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "自風牌 東"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
@@ -365,7 +367,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
                       parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result));
+      AssertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
@@ -386,7 +388,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "平和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
@@ -407,7 +409,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
@@ -428,7 +430,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
@@ -449,7 +451,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
@@ -470,7 +472,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "平和"}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
@@ -492,7 +494,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
                       parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
-      assertEquals({"門前清自摸和", "一盃口", "平和"}, result));
+      AssertEquals({"門前清自摸和", "一盃口", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
@@ -514,13 +516,13 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({}, result));
+  ASSERT_NO_FATAL_FAILURE(AssertEquals({}, result));
 }
 
 /**
- * Unit tests for YakuConditionValidator
+ * Unit tests for YakuConditionValidator.
  */
-class YakuConditionValidatorTest : public ::testing::Test {
+class YakuConditionValidatorTest : public testing::Test {
  protected:
   YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
                                               const RichiType& richi_type,
@@ -571,7 +573,7 @@ class YakuConditionValidatorTest : public ::testing::Test {
                     ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type validateFieldWind(
+  YakuConditionValidatorResult::Type ValidateFieldWind(
       const YakuCondition& condition,
       const TileType& field_wind) {
     return Validate(condition,
@@ -581,7 +583,7 @@ class YakuConditionValidatorTest : public ::testing::Test {
                     ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type validatePlayerWind(
+  YakuConditionValidatorResult::Type ValidatePlayerWind(
       const YakuCondition& condition,
       const TileType& player_wind) {
     return Validate(condition,
@@ -1113,33 +1115,33 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredFieldWind) {
   YakuCondition condition;
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            validateFieldWind(condition, TileType::WIND_TON));
+            ValidateFieldWind(condition, TileType::WIND_TON));
 
   condition.set_required_field_wind(TileType::WIND_NAN);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
-            validateFieldWind(condition, TileType::WIND_TON));
+            ValidateFieldWind(condition, TileType::WIND_TON));
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            validateFieldWind(condition, TileType::WIND_NAN));
+            ValidateFieldWind(condition, TileType::WIND_NAN));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
-            validateFieldWind(condition, TileType::WIND_SHA));
+            ValidateFieldWind(condition, TileType::WIND_SHA));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
-            validateFieldWind(condition, TileType::WIND_PE));
+            ValidateFieldWind(condition, TileType::WIND_PE));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
   YakuCondition condition;
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            validatePlayerWind(condition, TileType::WIND_TON));
+            ValidatePlayerWind(condition, TileType::WIND_TON));
 
   condition.set_required_player_wind(TileType::WIND_SHA);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
-            validatePlayerWind(condition, TileType::WIND_TON));
+            ValidatePlayerWind(condition, TileType::WIND_TON));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
-            validatePlayerWind(condition, TileType::WIND_NAN));
+            ValidatePlayerWind(condition, TileType::WIND_NAN));
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            validatePlayerWind(condition, TileType::WIND_SHA));
+            ValidatePlayerWind(condition, TileType::WIND_SHA));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
-            validatePlayerWind(condition, TileType::WIND_PE));
+            ValidatePlayerWind(condition, TileType::WIND_PE));
 }
 
 }  // namespace mahjong
