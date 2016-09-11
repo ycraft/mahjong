@@ -5,7 +5,7 @@
  *      Author: yuuki
  */
 
-#include "tests/CommonTestUtil.h"
+#include "common_test_util.h"
 
 namespace ydec {
 namespace mahjong {

@@ -4,14 +4,14 @@
  *  Created on: 2014/02/16
  *      Author: yuuki
  */
-#include "src/HandParser.h"
+#include "hand_parser.h"
 
 #include <iostream>
 #include <algorithm>
 #include <functional>
 #include <set>
 
-#include "MahjongCommonUtils.h"
+#include "mahjong_common_utils.h"
 
 namespace ydec {
 namespace mahjong {

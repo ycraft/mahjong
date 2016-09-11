@@ -1,6 +1,3 @@
-#include <google/protobuf/text_format.h>
-#include <gtest/gtest.h>
-
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -10,8 +7,11 @@
 #include <string>
 #include <vector>
 
-#include "src/YakuApplier.h"
-#include "CommonTestUtil.h"
+#include "google/protobuf/text_format.h"
+#include "gtest/gtest.h"
+
+#include "common_test_util.h"
+#include "src/yaku_applier.h"
 
 using namespace std;
 using namespace ydec::mahjong;

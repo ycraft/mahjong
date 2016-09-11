@@ -1,4 +1,4 @@
-#include "src/MahjongCommonValue.h"
+#include "mahjong_common_value.h"
 
 namespace ydec {
 namespace mahjong {

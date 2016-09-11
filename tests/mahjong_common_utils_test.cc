@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
-#include "src/MahjongCommonUtils.h"
+#include "src/mahjong_common_utils.h"
 
 using namespace std;
 using namespace ydec::mahjong;

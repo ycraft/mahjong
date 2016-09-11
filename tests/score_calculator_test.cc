@@ -1,11 +1,12 @@
-#include <gtest/gtest.h>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 
-#include "src/HandParser.h"
-#include "src/ScoreCalculator.h"
-#include "src/YakuApplier.h"
+#include "gtest/gtest.h"
+
+#include "src/hand_parser.h"
+#include "src/score_calculator.h"
+#include "src/yaku_applier.h"
 
 using namespace std;
 using namespace ydec::mahjong;

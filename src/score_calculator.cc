@@ -1,12 +1,12 @@
-#include "src/ScoreCalculator.h"
+#include "score_calculator.h"
 
 #include <iostream>
 #include <algorithm>
 
-#include "src/HandParser.h"
-#include "src/YakuApplier.h"
-#include "src/MahjongCommonUtils.h"
-#include "src/MahjongCommonValue.h"
+#include "hand_parser.h"
+#include "yaku_applier.h"
+#include "mahjong_common_utils.h"
+#include "mahjong_common_value.h"
 
 using namespace std;
 
@@ -102,7 +102,7 @@ void ScoreCalculator::calculate(const Field& field,
   int dora = 0;
   for (const Element& element : parsed_hand.element()) {
     for (const Tile& tile : element.tile()) {
-      for (int dora_tile : field.dora()) {      
+      for (int dora_tile : field.dora()) {
         if (tile.type() == static_cast<TileType>(dora_tile)) {
           ++dora;
         }
@@ -116,7 +116,7 @@ void ScoreCalculator::calculate(const Field& field,
       player.hand().richi_type())) {
     for (const Element& element : parsed_hand.element()) {
       for (const Tile& tile : element.tile()) {
-        for (int uradora_tile : field.uradora()) {      
+        for (int uradora_tile : field.uradora()) {
           if (tile.type() == static_cast<TileType>(uradora_tile)) {
             ++uradora;
           }

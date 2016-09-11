@@ -1,4 +1,4 @@
-#include "YakuApplier.h"
+#include "yaku_applier.h"
 
 #include <iostream>
 #include <memory>
@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#include "MahjongCommonUtils.h"
+#include "mahjong_common_utils.h"
 
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;

@@ -1,12 +1,12 @@
-#include <gtest/gtest.h>
-#include <stdexcept>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <stdexcept>
 
-#include <google/protobuf/text_format.h>
+#include "google/protobuf/text_format.h"
+#include "gtest/gtest.h"
 
-#include "CommonTestUtil.h"
-#include "src/HandParser.h"
+#include "common_test_util.h"
+#include "src/hand_parser.h"
 
 using namespace std;
 using namespace ydec::mahjong;

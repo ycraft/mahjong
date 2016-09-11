@@ -1,10 +1,10 @@
 cc_library(
     name = "common_test_util_lib",
     srcs = [
-      "CommonTestUtil.cpp",
+      "common_test_util.cc",
     ],
     hdrs = [
-      "CommonTestUtil.h",
+      "common_test_util.h",
     ],
     deps = [
       "//proto:mahjong-scorecalculator",
@@ -14,10 +14,10 @@ cc_library(
 cc_test(
     name = "unit_tests",
     srcs = [
-      "HandParserTest.cpp",
-      "MahjongCommonUtilsTest.cpp",
-      "ScoreCalculatorTest.cpp",
-      "YakuApplierTest.cpp",
+      "hand_parser_test.cc",
+      "mahjong_common_utils_test.cc",
+      "score_calculator_test.cc",
+      "yaku_applier_test.cc",
     ],
     data = [
       "//data:rule_pb",
