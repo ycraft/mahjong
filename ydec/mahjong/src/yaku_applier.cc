@@ -78,7 +78,7 @@ void YakuApplier::apply(const RichiType& richi_type,
                         const TileType& player_wind,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
-  bool is_menzen = isMenzen(parsed_hand);
+  bool is_menzen = IsMenzen(parsed_hand);
 
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_.yaku()) {
@@ -164,7 +164,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
 
   // Validate field wind.
   if (condition_.has_required_field_wind()) {
-    if (!isTileTypeMatched(condition_.required_field_wind(), field_wind_)) {
+    if (!IsTileTypeMatched(condition_.required_field_wind(), field_wind_)) {
       result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_FIELD_WIND);
       return result_->type();
     }
@@ -172,7 +172,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
 
   // Validate player wind.
   if (condition_.has_required_player_wind()) {
-    if (!isTileTypeMatched(condition_.required_player_wind(), player_wind_)) {
+    if (!IsTileTypeMatched(condition_.required_player_wind(), player_wind_)) {
       result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_PLAYER_WIND);
       return result_->type();
     }
@@ -180,7 +180,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
 
   // Validate machi type.
   if (condition_.has_required_machi_type()) {
-    if (!isMachiTypeMatched(condition_.required_machi_type(),
+    if (!IsMachiTypeMatched(condition_.required_machi_type(),
                             parsed_hand_.machi_type())) {
       result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_MACHI_TYPE);
       return result_->type();
@@ -189,7 +189,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
 
   // Validate richi type.
   if (condition_.has_required_richi_type()) {
-    if (!isRichiTypeMatched(condition_.required_richi_type(), richi_type_)) {
+    if (!IsRichiTypeMatched(condition_.required_richi_type(), richi_type_)) {
       result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_RICHI_TYPE);
       return result_->type();
     }
@@ -249,7 +249,7 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
     const Agari& agari) {
   // Check type.
   if (condition.has_required_type()) {
-    if (!isAgariTypeMatched(condition.required_type(), agari.type())) {
+    if (!IsAgariTypeMatched(condition.required_type(), agari.type())) {
       return false;
     }
   }
@@ -259,7 +259,7 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
     bool found = false;
     for (const int allowed_format_int : condition.allowed_format()) {
       AgariFormat allowed_format = static_cast<AgariFormat>(allowed_format_int);
-      if (isAgariFormatMatched(allowed_format, agari.format())) {
+      if (IsAgariFormatMatched(allowed_format, agari.format())) {
         found = true;
         break;
       }
@@ -283,7 +283,7 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
           continue;
         }
 
-        if (!isAgariStateMatched(required_state, agari.state(i))) {
+        if (!IsAgariStateMatched(required_state, agari.state(i))) {
           continue;
         }
 
@@ -310,7 +310,7 @@ bool YakuConditionValidator::validateAllowedHandElementType(
   }
 
   for (auto allowed_type : allowed_types) {
-    if (isHandElementTypeMatched(static_cast<HandElementType>(allowed_type),
+    if (IsHandElementTypeMatched(static_cast<HandElementType>(allowed_type),
                                  type)) {
       return true;
     }
@@ -537,7 +537,7 @@ bool YakuConditionValidator::validateTileCondition(
           continue;
         }
 
-        if (!isTileStateMatched(required_state, tile.state(i))) {
+        if (!IsTileStateMatched(required_state, tile.state(i))) {
           continue;
         }
 
@@ -556,7 +556,7 @@ bool YakuConditionValidator::validateTileCondition(
     TileState disallowed_state = static_cast<TileState>(disallowed_state_int);
     for (const int state_int : tile.state()) {
       TileState state = static_cast<TileState>(state_int);
-      if (isTileStateMatched(disallowed_state, state)) {
+      if (IsTileStateMatched(disallowed_state, state)) {
         return false;
       }
     }
@@ -564,7 +564,7 @@ bool YakuConditionValidator::validateTileCondition(
 
   // Check tile type.
   if (condition.has_required_tile()) {
-    if (!isTileTypeMatched(condition.required_tile(), tile.type())) {
+    if (!IsTileTypeMatched(condition.required_tile(), tile.type())) {
       return false;
     }
   }
@@ -628,7 +628,7 @@ bool YakuConditionValidator::setValiableTile(
       return true;
 
     case TileCondition::VARIABLE_NUMBER:
-      if (!isSequentialTileType(tile)) {
+      if (!IsSequentialTileType(tile)) {
         return false;
       } else {
         defined_tiles.insert(variable_tiles_[type] = tile);
@@ -638,7 +638,7 @@ bool YakuConditionValidator::setValiableTile(
     case TileCondition::VARIABLE_COLOR:
       switch (type) {
         case TileCondition::VARIABLE_COLOR_A:
-          if (!isSequentialTileType(tile)) {
+          if (!IsSequentialTileType(tile)) {
             return false;
           } else {
             defined_tiles.insert(variable_tiles_[type] = tile);
@@ -646,7 +646,7 @@ bool YakuConditionValidator::setValiableTile(
           }
 
         case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
-          if (!isSequentialTileType(tile)) {
+          if (!IsSequentialTileType(tile)) {
             // We don't need to store jihai tile to our variable_tile map since
             // it doesn't have any color.
             return true;
@@ -674,24 +674,24 @@ bool YakuConditionValidator::validateVariableTile(
     case TileCondition::VARIABLE_TILE2:
     case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI:
     case TileCondition::VARIABLE_CONDITIONAL_YAKUHAI_2:
-      return isTileTypeMatched(required, tile);
+      return IsTileTypeMatched(required, tile);
 
     case TileCondition::VARIABLE_NUMBER:
       return
-          isSequentialTileType(tile) &&
-          isTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER);
+          IsSequentialTileType(tile) &&
+          IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER);
 
     case TileCondition::VARIABLE_COLOR:
       switch (type) {
         case TileCondition::VARIABLE_COLOR_A:
           return
-              isSequentialTileType(tile) &&
-              isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+              IsSequentialTileType(tile) &&
+              IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
 
         case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
           return
-              !isSequentialTileType(tile) ||
-              isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+              !IsSequentialTileType(tile) ||
+              IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
 
         default:
           return false;

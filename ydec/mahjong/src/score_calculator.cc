@@ -103,7 +103,7 @@ void ScoreCalculator::calculate(const Field& field,
 
   int han = 0;
   int yakuman = 0;
-  bool is_menzen = isMenzen(parsed_hand);
+  bool is_menzen = IsMenzen(parsed_hand);
   for (const Yaku& yaku : yaku_applier_result.yaku()) {
     if (is_menzen) {
       han += yaku.menzen_fan();
@@ -125,7 +125,7 @@ void ScoreCalculator::calculate(const Field& field,
   }
 
   int uradora = 0;
-  if (isRichiTypeMatched(RichiType::RICHI, player.hand().richi_type())) {
+  if (IsRichiTypeMatched(RichiType::RICHI, player.hand().richi_type())) {
     for (const Element& element : parsed_hand.element()) {
       for (const Tile& tile : element.tile()) {
         for (int uradora_tile : field.uradora()) {
@@ -167,7 +167,7 @@ int FuCalculator::calculate(
     }
   }
 
-  bool is_menzen = isMenzen(parsed_hand);
+  bool is_menzen = IsMenzen(parsed_hand);
 
   // futei is 20.
   int fu = 20;
@@ -197,13 +197,13 @@ int FuCalculator::getAgariFu(AgariType agari_type,
 int FuCalculator::getElementFu(const Element& element) const {
   switch (element.type()) {
     case HandElementType::ANKOUTSU:
-      return isYaochuhai(element.tile(0).type()) ? 8 : 4;
+      return IsYaochuhai(element.tile(0).type()) ? 8 : 4;
     case HandElementType::MINKOUTSU:
-      return isYaochuhai(element.tile(0).type()) ? 4 : 2;
+      return IsYaochuhai(element.tile(0).type()) ? 4 : 2;
     case HandElementType::ANKANTSU:
-      return isYaochuhai(element.tile(0).type()) ? 32 : 16;
+      return IsYaochuhai(element.tile(0).type()) ? 32 : 16;
     case HandElementType::MINKANTSU:
-      return isYaochuhai(element.tile(0).type()) ? 16 : 8;
+      return IsYaochuhai(element.tile(0).type()) ? 16 : 8;
     case HandElementType::ANTOITSU:
     case HandElementType::MINTOITSU:
       return (element.tile(0).type() == field_wind_ ? 2 : 0) +
@@ -217,7 +217,7 @@ int FuCalculator::getElementFu(const Element& element) const {
 }
 
 int FuCalculator::getMachiFu(MachiType machi_type) const {
-  return isMachiTypeMatched(
+  return IsMachiTypeMatched(
       MachiType::MACHI_2FU,
       machi_type,
       MachiType::MASK_MACHI_FU) ? 2 : 0;

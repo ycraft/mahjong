@@ -31,7 +31,7 @@ namespace {
         tile.state().begin(),
         tile.state().end(),
         [&required_state](int state) {
-          return isTileStateMatched(required_state,
+          return IsTileStateMatched(required_state,
                                     static_cast<TileState>(state));
         }) != tile.state().end();
   }
@@ -45,19 +45,19 @@ std::string HandParserResultUtil::getDebugString(
       str += " ";
     }
     str += (
-        isAgariFormatMatched(
+        IsAgariFormatMatched(
             AgariFormat::REGULAR_AGARI,
             parsedHand.agari().format()) ||
-        isAgariFormatMatched(
+        IsAgariFormatMatched(
             AgariFormat::CHITOITSU_AGARI,
             parsedHand.agari().format()) ? "YES: " : " NO: ");
     for (const Element& element : parsedHand.element()) {
       bool is_naki =
-          isHandElementTypeMatched(
+          IsHandElementTypeMatched(
               HandElementType::MINSHUNTSU, element.type()) ||
-          isHandElementTypeMatched(
+          IsHandElementTypeMatched(
               HandElementType::MINKOUTSU, element.type()) ||
-          isHandElementTypeMatched(
+          IsHandElementTypeMatched(
               HandElementType::MINKANTSU, element.type());
       str += "{";
       if (is_naki) {
@@ -184,7 +184,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
   }
 
   // shuntsu
-  if (isSequentialTileType(free_tiles_[i])) {
+  if (IsSequentialTileType(free_tiles_[i])) {
     int counter = 0;
     int using_tile_indices[2];
     free_tile_element_types_[i] = HandElementType::SHUNTSU;
@@ -302,21 +302,21 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
         if (free_tile_group_ids_[i] == id) {
           bool contains_ron_hai =
               (id == agari_group_id
-               && isAgariTypeMatched(
+               && IsAgariTypeMatched(
                    AgariType::RON, hand_->agari().type()));
-          if (isHandElementTypeMatched(
+          if (IsHandElementTypeMatched(
               HandElementType::TOITSU, free_tile_element_types_[i])) {
             element->set_type(
                 contains_ron_hai ?
                     HandElementType::MINTOITSU :
                     HandElementType::ANTOITSU);
-          } else if (isHandElementTypeMatched(
+          } else if (IsHandElementTypeMatched(
               HandElementType::KOUTSU, free_tile_element_types_[i])) {
             element->set_type(
                 contains_ron_hai ?
                     HandElementType::MINKOUTSU :
                     HandElementType::ANKOUTSU);
-          } else if (isHandElementTypeMatched(
+          } else if (IsHandElementTypeMatched(
               HandElementType::SHUNTSU, free_tile_element_types_[i])) {
             element->set_type(
                 contains_ron_hai ?
@@ -348,13 +348,13 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
                 : TileState::AGARI_HAI_RON);
 
             // Set matchi type.
-            if (isHandElementTypeMatched(
+            if (IsHandElementTypeMatched(
                 HandElementType::TOITSU, free_tile_element_types_[i])) {
               parsed_hand->set_machi_type(MachiType::TANKI);
-            } else if (isHandElementTypeMatched(
+            } else if (IsHandElementTypeMatched(
                 HandElementType::KOUTSU, free_tile_element_types_[i])) {
               parsed_hand->set_machi_type(MachiType::SHABO);
-            } else if (isHandElementTypeMatched(
+            } else if (IsHandElementTypeMatched(
                 HandElementType::SHUNTSU, free_tile_element_types_[i])) {
               // free_tiles_[] is sorted in ascendant order and we add tiles
               // into element in the same manner. Thus, if the current element
@@ -363,8 +363,8 @@ void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
               if (element->tile_size() == 2) {
                 parsed_hand->set_machi_type(MachiType::KANCHAN);
               } else {
-                if (isTileTypeMatched(TileType::TILE_3, free_tiles_[i]) ||
-                    isTileTypeMatched(TileType::TILE_7, free_tiles_[i])) {
+                if (IsTileTypeMatched(TileType::TILE_3, free_tiles_[i]) ||
+                    IsTileTypeMatched(TileType::TILE_7, free_tiles_[i])) {
                   parsed_hand->set_machi_type(MachiType::PENCHAN);
                 } else {
                   parsed_hand->set_machi_type(MachiType::RYANMEN);

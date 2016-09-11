@@ -39,63 +39,63 @@ bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
 
 }  // namespace
 
-bool isSequentialTileType(TileType tile) {
+bool IsSequentialTileType(TileType tile) {
   return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
 
 
-bool isTileTypeMatched(TileType required, TileType tile) {
-  return isTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER)
-      && isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND)
-      && isTileTypeMatched(required, tile, TileType::MASK_TILE_SEQUENTIAL);
+bool IsTileTypeMatched(TileType required, TileType tile) {
+  return IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER)
+      && IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND)
+      && IsTileTypeMatched(required, tile, TileType::MASK_TILE_SEQUENTIAL);
 }
 
-bool isTileTypeMatched(TileType required, TileType tile, TileType mask) {
+bool IsTileTypeMatched(TileType required, TileType tile, TileType mask) {
   return isMatched(required, tile, mask);
 }
 
-bool isTileStateMatched(TileState required, TileState actual) {
+bool IsTileStateMatched(TileState required, TileState actual) {
   return isMatchedForHierarchalData(required, actual);
 }
 
-bool isHandElementTypeMatched(HandElementType required,
+bool IsHandElementTypeMatched(HandElementType required,
                               HandElementType element_type) {
   return isMatchedForHierarchalData(required, element_type);
 }
 
-bool isMachiTypeMatched(MachiType required, MachiType type) {
-  return isMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU)
-      && isMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
+bool IsMachiTypeMatched(MachiType required, MachiType type) {
+  return IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU)
+      && IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
 }
 
-bool isMachiTypeMatched(MachiType required, MachiType type, MachiType mask) {
+bool IsMachiTypeMatched(MachiType required, MachiType type, MachiType mask) {
   return isMatched(required, type, mask);
 }
 
-bool isAgariTypeMatched(AgariType required, AgariType type) {
+bool IsAgariTypeMatched(AgariType required, AgariType type) {
   return isMatched(required, type);
 }
 
-bool isAgariStateMatched(AgariState required, AgariState state) {
+bool IsAgariStateMatched(AgariState required, AgariState state) {
   return isMatched(required, state);
 }
 
-bool isAgariFormatMatched(AgariFormat required, AgariFormat actual) {
+bool IsAgariFormatMatched(AgariFormat required, AgariFormat actual) {
   return isMatched(required, actual);
 }
 
-bool isRichiTypeMatched(RichiType required, RichiType actual) {
+bool IsRichiTypeMatched(RichiType required, RichiType actual) {
   return isMatchedForHierarchalData(required, actual);
 }
 
-bool isYaochuhai(TileType tile) {
+bool IsYaochuhai(TileType tile) {
   return
-      !isSequentialTileType(tile) ||
-      isTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
-      isTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
+      !IsSequentialTileType(tile) ||
+      IsTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
+      IsTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
 }
 
-bool isMenzen(const ParsedHand& hand) {
+bool IsMenzen(const ParsedHand& hand) {
   for (const Element& element : hand.element()) {
     if (element.type() == HandElementType::MINSHUNTSU ||
         element.type() == HandElementType::MINKOUTSU ||
@@ -107,7 +107,7 @@ bool isMenzen(const ParsedHand& hand) {
       for (const Tile& tile : element.tile()) {
         for (int state : tile.state()) {
           contains_agari_tile |=
-              isTileStateMatched(TileState::AGARI_HAI,
+              IsTileStateMatched(TileState::AGARI_HAI,
                                  static_cast<TileState>(state));
           if (contains_agari_tile) {
             break;

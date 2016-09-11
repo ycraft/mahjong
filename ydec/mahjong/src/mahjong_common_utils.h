@@ -21,36 +21,36 @@ namespace ydec {
 namespace mahjong {
 
 // Utilities for TileType.
-bool isSequentialTileType(TileType tile);
-bool isTileTypeMatched(TileType required, TileType tile);
-bool isTileTypeMatched(TileType required, TileType tile, TileType mask);
+bool IsSequentialTileType(TileType tile);
+bool IsTileTypeMatched(TileType required, TileType tile);
+bool IsTileTypeMatched(TileType required, TileType tile, TileType mask);
 
 // Utilities for TileState.
-bool isTileStateMatched(TileState required, TileState actual);
+bool IsTileStateMatched(TileState required, TileState actual);
 
 // Utilities for HandElementType
-bool isHandElementTypeMatched(HandElementType required,
+bool IsHandElementTypeMatched(HandElementType required,
                               HandElementType element_type);
 
 // Utilities for MachiType.
-bool isMachiTypeMatched(MachiType required, MachiType type);
-bool isMachiTypeMatched(MachiType required, MachiType type, MachiType mask);
+bool IsMachiTypeMatched(MachiType required, MachiType type);
+bool IsMachiTypeMatched(MachiType required, MachiType type, MachiType mask);
 
 // Utilities for AgariType.
-bool isAgariTypeMatched(AgariType required, AgariType type);
+bool IsAgariTypeMatched(AgariType required, AgariType type);
 
 // Utilities for AgariState.
-bool isAgariStateMatched(AgariState required, AgariState state);
+bool IsAgariStateMatched(AgariState required, AgariState state);
 
 // Utilities for AgariFormat.
-bool isAgariFormatMatched(AgariFormat required, AgariFormat actual);
+bool IsAgariFormatMatched(AgariFormat required, AgariFormat actual);
 
 // Utilities for RichiType.
-bool isRichiTypeMatched(RichiType required, RichiType actual);
+bool IsRichiTypeMatched(RichiType required, RichiType actual);
 
-bool isYaochuhai(TileType tile);
+bool IsYaochuhai(TileType tile);
 
-bool isMenzen(const ParsedHand& parsed_hand);
+bool IsMenzen(const ParsedHand& parsed_hand);
 
 }  // namespace mahjong
 }  // namespace ydec
