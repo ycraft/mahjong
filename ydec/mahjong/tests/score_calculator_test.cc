@@ -40,6 +40,23 @@ namespace {
     copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
     return ss.str();
   }
+}  // namespace
+
+/**
+ * Unit tests for ScoreCalculator.
+ */
+class ScoreCalculatorTest : public testing::Test {
+ protected:
+  ScoreCalculatorTest() :
+      score_calculator_(unique_ptr<Rule>(new Rule(rule_))) {
+  }
+
+  static void SetUpTestCase() {
+    ifstream rule_file;
+    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
+    rule_.ParseFromIstream(&rule_file);
+    rule_file.close();
+  }
 
   void Verify(vector<string> expected_yaku,
               int expected_fu,
@@ -68,23 +85,6 @@ namespace {
     ASSERT_EQ(expected_yakuman, actual.yakuman());
     ASSERT_EQ(expected_dora, actual.dora());
     ASSERT_EQ(expected_uradora, actual.uradora());
-  }
-}  // namespace
-
-/**
- * Unit tests for ScoreCalculator.
- */
-class ScoreCalculatorTest : public testing::Test {
- protected:
-  static void SetUpTestCase() {
-    ifstream rule_file;
-    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
-    rule_.ParseFromIstream(&rule_file);
-    rule_file.close();
-  }
-
-  ScoreCalculatorTest() :
-      score_calculator_(unique_ptr<Rule>(new Rule(rule_))) {
   }
 
   ScoreCalculator score_calculator_;

@@ -30,133 +30,131 @@ using google::protobuf::TextFormat;
 namespace ydec {
 namespace mahjong {
 
-namespace {
-bool CheckTile(const Tile& lhs, const Tile& rhs) {
-  if (lhs.type() != rhs.type()) return false;
-  if (lhs.state_size() != rhs.state_size()) return false;
-
-  vector<int> l_state(lhs.state().begin(), lhs.state().end());
-  vector<int> r_state(rhs.state().begin(), rhs.state().end());
-  sort(l_state.begin(), l_state.end());
-  sort(r_state.begin(), r_state.end());
-
-  return l_state == r_state;
-}
-
-bool CheckElement(const Element& lhs, const Element& rhs) {
-  if (lhs.type() != rhs.type()) return false;
-  if (lhs.tile_size() != rhs.tile_size()) return false;
-
-  vector<bool> used(lhs.tile_size(), false);
-  for (const Tile& tile : lhs.tile()) {
-    bool found = false;
-    for (int i = 0; i < rhs.tile_size(); ++i) {
-      if (used[i]) {
-        continue;
-      }
-      if (!CheckTile(tile, rhs.tile(i))) {
-        continue;
-      }
-      found = used[i] = true;
-      break;
-    }
-    if (!found) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-void VerifyAgari(
-    const AgariType& expected_agari_type,
-    const AgariFormat& expected_agari_format,
-    const vector<AgariState>& expected_agari_state,
-    const Agari& actual) {
-  ASSERT_EQ(expected_agari_type, actual.type());
-  ASSERT_EQ(expected_agari_format, actual.format());
-
-  vector<AgariState> sorted_expected_agari_state(expected_agari_state.begin(),
-                                                 expected_agari_state.end());
-  vector<AgariState> sorted_actual_state(actual.state().size());
-  for (size_t i = 0; i < sorted_actual_state.size(); ++i) {
-    sorted_actual_state[i] = actual.state(i);
-  }
-  sort(sorted_expected_agari_state.begin(), sorted_expected_agari_state.end());
-  sort(sorted_actual_state.begin(), sorted_actual_state.end());
-  ASSERT_EQ(sorted_expected_agari_state, sorted_actual_state);
-}
-
-void VerifyParsedHand(
-    const vector<Element>& expected_elements,
-    const MachiType& expected_machi_type,
-    const AgariType& expected_agari_type,
-    const AgariFormat& expected_agari_format,
-    const vector<AgariState>& expected_agari_state,
-    const ParsedHand& actual_parsed_hand) {
-  ASSERT_EQ(expected_machi_type, actual_parsed_hand.machi_type());
-  ASSERT_NO_FATAL_FAILURE(
-      VerifyAgari(expected_agari_type,
-                  expected_agari_format,
-                  expected_agari_state,
-                  actual_parsed_hand.agari()));
-
-  ASSERT_EQ(expected_elements.size(), actual_parsed_hand.element_size());
-  vector<bool> used(actual_parsed_hand.element_size(), false);
-  for (const Element& expected_element : expected_elements) {
-    bool found = false;
-    for (int i = 0; i < actual_parsed_hand.element_size(); ++i) {
-      if (used[i]) {
-        continue;
-      }
-      if (!CheckElement(expected_element,
-                        actual_parsed_hand.element(i))) {
-        continue;
-      }
-      found = used[i] = true;
-      break;
-    }
-    if (!found) {
-      string expected_element_str;
-      TextFormat::PrintToString(expected_element,
-                                &expected_element_str);
-      FAIL() << "Expected element not found: " << endl << expected_element_str;
-    }
-  }
-}
-
-void VerifyParsedHandForIrregularAgariFormat(
-    const Hand& input_hand,
-    const vector<AgariState>& expected_agari_state,
-    const ParsedHand& actual_parsed_hand) {
-  Element element;
-  element.set_type(HandElementType::UNKNOWN_HAND_ELEMENT_TYPE);
-  for (int i = 0; i < input_hand.closed_tile_size(); ++i) {
-    Tile* tile = element.add_tile();
-    tile->set_type(input_hand.closed_tile(i));
-  }
-  {
-    Tile* tile = element.add_tile();
-    tile->set_type(input_hand.agari_tile());
-    ASSERT_TRUE(input_hand.agari().type() == AgariType::RON ||
-                input_hand.agari().type() == AgariType::TSUMO);
-    tile->add_state(
-        (input_hand.agari().type() == AgariType::RON) ?
-            TileState::AGARI_HAI_RON :
-            TileState::AGARI_HAI_TSUMO);
-  }
-  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
-      {element},
-      MachiType::UNKNOWN_MACHI_TYPE,
-      input_hand.agari().type(),
-      AgariFormat::IRREGULAR_AGARI,
-      expected_agari_state,
-      actual_parsed_hand));
-}
-}  // namespace
-
 class HandParserTest : public testing::Test {
  protected:
+  bool CheckTile(const Tile& lhs, const Tile& rhs) {
+    if (lhs.type() != rhs.type()) return false;
+    if (lhs.state_size() != rhs.state_size()) return false;
+
+    vector<int> l_state(lhs.state().begin(), lhs.state().end());
+    vector<int> r_state(rhs.state().begin(), rhs.state().end());
+    sort(l_state.begin(), l_state.end());
+    sort(r_state.begin(), r_state.end());
+
+    return l_state == r_state;
+  }
+
+  bool CheckElement(const Element& lhs, const Element& rhs) {
+    if (lhs.type() != rhs.type()) return false;
+    if (lhs.tile_size() != rhs.tile_size()) return false;
+
+    vector<bool> used(lhs.tile_size(), false);
+    for (const Tile& tile : lhs.tile()) {
+      bool found = false;
+      for (int i = 0; i < rhs.tile_size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
+        if (!CheckTile(tile, rhs.tile(i))) {
+          continue;
+        }
+        found = used[i] = true;
+        break;
+      }
+      if (!found) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  void VerifyAgari(
+      const AgariType& expected_agari_type,
+      const AgariFormat& expected_agari_format,
+      const vector<AgariState>& expected_agari_state,
+      const Agari& actual) {
+    ASSERT_EQ(expected_agari_type, actual.type());
+    ASSERT_EQ(expected_agari_format, actual.format());
+
+    vector<AgariState> sorted_expected_agari_state(expected_agari_state.begin(),
+                                                   expected_agari_state.end());
+    vector<AgariState> sorted_actual_state(actual.state().size());
+    for (size_t i = 0; i < sorted_actual_state.size(); ++i) {
+      sorted_actual_state[i] = actual.state(i);
+    }
+    sort(sorted_expected_agari_state.begin(), sorted_expected_agari_state.end());
+    sort(sorted_actual_state.begin(), sorted_actual_state.end());
+    ASSERT_EQ(sorted_expected_agari_state, sorted_actual_state);
+  }
+
+  void VerifyParsedHand(
+      const vector<Element>& expected_elements,
+      const MachiType& expected_machi_type,
+      const AgariType& expected_agari_type,
+      const AgariFormat& expected_agari_format,
+      const vector<AgariState>& expected_agari_state,
+      const ParsedHand& actual_parsed_hand) {
+    ASSERT_EQ(expected_machi_type, actual_parsed_hand.machi_type());
+    ASSERT_NO_FATAL_FAILURE(
+        VerifyAgari(expected_agari_type,
+                    expected_agari_format,
+                    expected_agari_state,
+                    actual_parsed_hand.agari()));
+
+    ASSERT_EQ(expected_elements.size(), actual_parsed_hand.element_size());
+    vector<bool> used(actual_parsed_hand.element_size(), false);
+    for (const Element& expected_element : expected_elements) {
+      bool found = false;
+      for (int i = 0; i < actual_parsed_hand.element_size(); ++i) {
+        if (used[i]) {
+          continue;
+        }
+        if (!CheckElement(expected_element,
+                          actual_parsed_hand.element(i))) {
+          continue;
+        }
+        found = used[i] = true;
+        break;
+      }
+      if (!found) {
+        string expected_element_str;
+        TextFormat::PrintToString(expected_element,
+                                  &expected_element_str);
+        FAIL() << "Expected element not found: " << endl << expected_element_str;
+      }
+    }
+  }
+
+  void VerifyParsedHandForIrregularAgariFormat(
+      const Hand& input_hand,
+      const vector<AgariState>& expected_agari_state,
+      const ParsedHand& actual_parsed_hand) {
+    Element element;
+    element.set_type(HandElementType::UNKNOWN_HAND_ELEMENT_TYPE);
+    for (int i = 0; i < input_hand.closed_tile_size(); ++i) {
+      Tile* tile = element.add_tile();
+      tile->set_type(input_hand.closed_tile(i));
+    }
+    {
+      Tile* tile = element.add_tile();
+      tile->set_type(input_hand.agari_tile());
+      ASSERT_TRUE(input_hand.agari().type() == AgariType::RON ||
+                  input_hand.agari().type() == AgariType::TSUMO);
+      tile->add_state(
+          (input_hand.agari().type() == AgariType::RON) ?
+              TileState::AGARI_HAI_RON :
+              TileState::AGARI_HAI_TSUMO);
+    }
+    ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
+        {element},
+        MachiType::UNKNOWN_MACHI_TYPE,
+        input_hand.agari().type(),
+        AgariFormat::IRREGULAR_AGARI,
+        expected_agari_state,
+        actual_parsed_hand));
+  }
+
   HandParser handParser_;
 };
 
