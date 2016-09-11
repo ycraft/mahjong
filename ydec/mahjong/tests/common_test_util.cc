@@ -18,7 +18,7 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-void createToitsu(Element* element,
+void CreateToitsu(Element* element,
                   const TileType& tile_type,
                   bool tsumo,
                   bool include_agari_hai) {
@@ -34,7 +34,7 @@ void createToitsu(Element* element,
   }
 }
 
-void createKantsu(Element* element,
+void CreateKantsu(Element* element,
                   const TileType& tile_type,
                   bool tsumo,
                   bool include_agari_hai) {
@@ -50,7 +50,7 @@ void createKantsu(Element* element,
   }
 }
 
-void createKoutsu(Element* element,
+void CreateKoutsu(Element* element,
                   const TileType& tile_type,
                   bool tsumo,
                   bool include_agari_hai) {
@@ -66,7 +66,7 @@ void createKoutsu(Element* element,
   }
 }
 
-void createShuntsu(Element* element,
+void CreateShuntsu(Element* element,
                    const TileType& smallest_tile_type,
                    bool tsumo,
                    int agari_hai_index) {
@@ -87,16 +87,16 @@ CommonTestUtil::CommonTestUtil() {}
 CommonTestUtil::~CommonTestUtil() {}
 
 Element CommonTestUtil::CreateAntoitsu(const TileType& tile_type,
-                                     bool include_agari_hai) {
+                                       bool include_agari_hai) {
   Element element;
   CreateAntoitsu(&element, tile_type, include_agari_hai);
   return element;
 }
 
 void CommonTestUtil::CreateAntoitsu(Element* element,
-                                  const TileType& tile_type,
-                                  bool include_agari_hai) {
-  createToitsu(element, tile_type, true, include_agari_hai);
+                                    const TileType& tile_type,
+                                    bool include_agari_hai) {
+  CreateToitsu(element, tile_type, true, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateMintoitsu(const TileType& tile_type,
@@ -109,7 +109,7 @@ Element CommonTestUtil::CreateMintoitsu(const TileType& tile_type,
 void CommonTestUtil::CreateMintoitsu(Element* element,
                                      const TileType& tile_type,
                                      bool include_agari_hai) {
-  createToitsu(element, tile_type, false, include_agari_hai);
+  CreateToitsu(element, tile_type, false, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateAnkantsu(const TileType& tile_type,
@@ -122,7 +122,7 @@ Element CommonTestUtil::CreateAnkantsu(const TileType& tile_type,
 void CommonTestUtil::CreateAnkantsu(Element* element,
                                     const TileType& tile_type,
                                     bool include_agari_hai) {
-  createKantsu(element, tile_type, true, include_agari_hai);
+  CreateKantsu(element, tile_type, true, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateMinkantsu(const TileType& tile_type,
@@ -135,7 +135,7 @@ Element CommonTestUtil::CreateMinkantsu(const TileType& tile_type,
 void CommonTestUtil::CreateMinkantsu(Element* element,
                                      const TileType& tile_type,
                                      bool include_agari_hai) {
-  createKantsu(element, tile_type, false, include_agari_hai);
+  CreateKantsu(element, tile_type, false, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateAnkoutsu(const TileType& tile_type,
@@ -148,7 +148,7 @@ Element CommonTestUtil::CreateAnkoutsu(const TileType& tile_type,
 void CommonTestUtil::CreateAnkoutsu(Element* element,
                                     const TileType& tile_type,
                                     bool include_agari_hai) {
-  createKoutsu(element, tile_type, true, include_agari_hai);
+  CreateKoutsu(element, tile_type, true, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateMinkoutsu(const TileType& tile_type,
@@ -161,7 +161,7 @@ Element CommonTestUtil::CreateMinkoutsu(const TileType& tile_type,
 void CommonTestUtil::CreateMinkoutsu(Element* element,
                                      const TileType& tile_type,
                                      bool include_agari_hai) {
-  createKoutsu(element, tile_type, false, include_agari_hai);
+  CreateKoutsu(element, tile_type, false, include_agari_hai);
 }
 
 Element CommonTestUtil::CreateAnshuntsu(const TileType& smallest_tile_type,
@@ -174,7 +174,7 @@ Element CommonTestUtil::CreateAnshuntsu(const TileType& smallest_tile_type,
 void CommonTestUtil::CreateAnshuntsu(Element* element,
                                      const TileType& smallest_tile_type,
                                      int agari_hai_index) {
-  createShuntsu(element, smallest_tile_type, true, agari_hai_index);
+  CreateShuntsu(element, smallest_tile_type, true, agari_hai_index);
 }
 
 Element CommonTestUtil::CreateMinshuntsu(const TileType& smallest_tile_type,
@@ -187,7 +187,7 @@ Element CommonTestUtil::CreateMinshuntsu(const TileType& smallest_tile_type,
 void CommonTestUtil::CreateMinshuntsu(Element* element,
                                       const TileType& smallest_tile_type,
                                       int agari_hai_index) {
-  createShuntsu(element, smallest_tile_type, false, agari_hai_index);
+  CreateShuntsu(element, smallest_tile_type, false, agari_hai_index);
 }
 
 }  // namespace mahjong
