@@ -34,38 +34,20 @@ using std::vector;
 namespace ydec {
 namespace mahjong {
 
-/**
- * Unit tests for ScoreCalculator.
- */
-class ScoreCalculatorTest : public testing::Test {
- protected:
-  static Rule rule_;
-  ScoreCalculator score_calculator_;
-
-  static void SetUpTestCase() {
-    ifstream rule_file;
-    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
-    rule_.ParseFromIstream(&rule_file);
-    rule_file.close();
-  }
-
-  ScoreCalculatorTest() :
-      score_calculator_(unique_ptr<Rule>(new Rule(rule_))) {
-  }
-
-  static string concatStrings(const vector<string>& strings) {
+namespace {
+  string ConcatStrings(const vector<string>& strings) {
     stringstream ss;
     copy(strings.begin(), strings.end(), ostream_iterator<string>(ss, ", "));
     return ss.str();
   }
 
-  static void verify(vector<string> expected_yaku,
-                     int expected_fu,
-                     int expected_han,
-                     int expected_yakuman,
-                     int expected_dora,
-                     int expected_uradora,
-                     const ScoreCalculatorResult& actual) {
+  void Verify(vector<string> expected_yaku,
+              int expected_fu,
+              int expected_han,
+              int expected_yakuman,
+              int expected_dora,
+              int expected_uradora,
+              const ScoreCalculatorResult& actual) {
     SCOPED_TRACE(actual.Utf8DebugString());
 
     sort(expected_yaku.begin(), expected_yaku.end());
@@ -77,8 +59,8 @@ class ScoreCalculatorTest : public testing::Test {
     sort(actual_yaku.begin(), actual_yaku.end());
 
     if (expected_yaku != actual_yaku) {
-      FAIL() << "Expected = {" << concatStrings(expected_yaku) << "}\n"
-             << "Actual = {" << concatStrings(actual_yaku) << "}";
+      FAIL() << "Expected = {" << ConcatStrings(expected_yaku) << "}\n"
+             << "Actual = {" << ConcatStrings(actual_yaku) << "}";
     }
 
     ASSERT_EQ(expected_han, actual.fan());
@@ -87,6 +69,28 @@ class ScoreCalculatorTest : public testing::Test {
     ASSERT_EQ(expected_dora, actual.dora());
     ASSERT_EQ(expected_uradora, actual.uradora());
   }
+}  // namespace
+
+/**
+ * Unit tests for ScoreCalculator.
+ */
+class ScoreCalculatorTest : public testing::Test {
+ protected:
+  static void SetUpTestCase() {
+    ifstream rule_file;
+    rule_file.open("ydec/mahjong/data/rule.pb", istream::in | istream::binary);
+    rule_.ParseFromIstream(&rule_file);
+    rule_file.close();
+  }
+
+  ScoreCalculatorTest() :
+      score_calculator_(unique_ptr<Rule>(new Rule(rule_))) {
+  }
+
+  ScoreCalculator score_calculator_;
+
+ private:
+  static Rule rule_;
 };
 
 Rule ScoreCalculatorTest::rule_;
@@ -119,9 +123,9 @@ TEST_F(ScoreCalculatorTest, TestCalculate) {
   hand->mutable_agari()->set_type(AgariType::RON);
 
   ScoreCalculatorResult result;
-  score_calculator_.calculate(field, player, &result);
+  score_calculator_.Calculate(field, player, &result);
 
-  ASSERT_NO_FATAL_FAILURE(verify({"二盃口", "清一色", "平和"},
+  ASSERT_NO_FATAL_FAILURE(Verify({"二盃口", "清一色", "平和"},
                                  30 /* fu */,
                                  10 /* han */,
                                   0 /* yakuman */,
@@ -159,9 +163,9 @@ TEST_F(ScoreCalculatorTest, TestCalculate_2) {
   hand->set_richi_type(RichiType::NORMAL_RICHI);
 
   ScoreCalculatorResult result;
-  score_calculator_.calculate(field, player, &result);
+  score_calculator_.Calculate(field, player, &result);
 
-  ASSERT_NO_FATAL_FAILURE(verify({"立直", "三暗刻", "場風牌 東", "自風牌 東"},
+  ASSERT_NO_FATAL_FAILURE(Verify({"立直", "三暗刻", "場風牌 東", "自風牌 東"},
                                  60 /* fu */,
                                  11 /* han */,
                                  0 /* yakuman */,
@@ -202,9 +206,9 @@ TEST_F(ScoreCalculatorTest, TestCalculate_3) {
   hand->mutable_agari()->set_type(AgariType::RON);
 
   ScoreCalculatorResult result;
-  score_calculator_.calculate(field, player, &result);
+  score_calculator_.Calculate(field, player, &result);
 
-  ASSERT_NO_FATAL_FAILURE(verify({"役牌 中"},
+  ASSERT_NO_FATAL_FAILURE(Verify({"役牌 中"},
                                  60 /* fu */,
                                  3 /* han */,
                                  0 /* yakuman */,

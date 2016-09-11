@@ -29,12 +29,12 @@ class ScoreCalculator {
  public:
   explicit ScoreCalculator(std::unique_ptr<Rule> rule);
 
-  void calculate(const Field& field,
+  void Calculate(const Field& field,
                  const Player& player,
                  ScoreCalculatorResult* result);
 
  private:
-  void calculate(const Field& field,
+  void Calculate(const Field& field,
                  const Player& player,
                  const ParsedHand& parsed_hand,
                  ScoreCalculatorResult* result);
@@ -46,17 +46,15 @@ class ScoreCalculator {
 
 class FuCalculator {
  public:
-  FuCalculator(TileType field_wind,
-               TileType player_wind);
+  FuCalculator(TileType field_wind, TileType player_wind);
 
-  int calculate(const ParsedHand& parsed_hand,
+  int Calculate(const ParsedHand& parsed_hand,
                 const YakuApplierResult& yaku_applier_result) const;
 
  private:
-  int getAgariFu(AgariType agari_type,
-                 bool is_menzen) const;
-  int getElementFu(const Element& element) const;
-  int getMachiFu(MachiType machi_type) const;
+  int GetAgariFu(AgariType agari_type, bool is_menzen) const;
+  int GetElementFu(const Element& element) const;
+  int GetMachiFu(MachiType machi_type) const;
 
   const TileType field_wind_;
   const TileType player_wind_;

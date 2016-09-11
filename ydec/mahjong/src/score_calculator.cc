@@ -29,7 +29,6 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-
   // Returns -1 if left one has better score.
   // Returns 1 if right one has better score.
   // Returns 0 if both ones have the same score.
@@ -70,7 +69,7 @@ ScoreCalculator::ScoreCalculator(unique_ptr<Rule> rule) :
     yaku_applier_(new YakuApplier(*rule_)) {
 }
 
-void ScoreCalculator::calculate(const Field& field,
+void ScoreCalculator::Calculate(const Field& field,
                                 const Player& player,
                                 ScoreCalculatorResult* result) {
   HandParserResult hand_parser_result;
@@ -78,14 +77,14 @@ void ScoreCalculator::calculate(const Field& field,
 
   for (const ParsedHand& parsed_hand : hand_parser_result.parsed_hand()) {
     ScoreCalculatorResult current_result;
-    calculate(field, player, parsed_hand, &current_result);
+    Calculate(field, player, parsed_hand, &current_result);
     if (Compare(*result, current_result) > 0) {
       *result = current_result;
     }
   }
 }
 
-void ScoreCalculator::calculate(const Field& field,
+void ScoreCalculator::Calculate(const Field& field,
                                 const Player& player,
                                 const ParsedHand& parsed_hand,
                                 ScoreCalculatorResult* result) {
@@ -144,7 +143,7 @@ void ScoreCalculator::calculate(const Field& field,
   *result->mutable_yaku() = yaku_applier_result.yaku();
 
   result->set_fu(FuCalculator(field.wind(), player.wind())
-      .calculate(parsed_hand, yaku_applier_result));
+      .Calculate(parsed_hand, yaku_applier_result));
 }
 
 FuCalculator::FuCalculator(
@@ -154,7 +153,7 @@ FuCalculator::FuCalculator(
       player_wind_(player_wind) {
 }
 
-int FuCalculator::calculate(
+int FuCalculator::Calculate(
     const ParsedHand& parsed_hand,
     const YakuApplierResult& yaku_applier_result) const {
   for (const Yaku& yaku : yaku_applier_result.yaku()) {
@@ -172,18 +171,18 @@ int FuCalculator::calculate(
   // futei is 20.
   int fu = 20;
 
-  fu += getAgariFu(parsed_hand.agari().type(), is_menzen);
+  fu += GetAgariFu(parsed_hand.agari().type(), is_menzen);
 
   for (const Element& element : parsed_hand.element()) {
-    fu += getElementFu(element);
+    fu += GetElementFu(element);
   }
 
-  fu += getMachiFu(parsed_hand.machi_type());
+  fu += GetMachiFu(parsed_hand.machi_type());
 
   return ((fu + 9) / 10) * 10;
 }
 
-int FuCalculator::getAgariFu(AgariType agari_type,
+int FuCalculator::GetAgariFu(AgariType agari_type,
                              bool is_menzen) const {
   if (agari_type == AgariType::RON && is_menzen) {
     return 10;
@@ -194,7 +193,7 @@ int FuCalculator::getAgariFu(AgariType agari_type,
   return 0;
 }
 
-int FuCalculator::getElementFu(const Element& element) const {
+int FuCalculator::GetElementFu(const Element& element) const {
   switch (element.type()) {
     case HandElementType::ANKOUTSU:
       return IsYaochuhai(element.tile(0).type()) ? 8 : 4;
@@ -216,7 +215,7 @@ int FuCalculator::getElementFu(const Element& element) const {
   }
 }
 
-int FuCalculator::getMachiFu(MachiType machi_type) const {
+int FuCalculator::GetMachiFu(MachiType machi_type) const {
   return IsMachiTypeMatched(
       MachiType::MACHI_2FU,
       machi_type,
