@@ -28,9 +28,6 @@
 namespace ydec {
 namespace mahjong {
 
-/**
- * Yaku Applier.
- */
 class YakuApplier {
  public:
   explicit YakuApplier(const Rule& rule);
@@ -49,10 +46,6 @@ class YakuApplier {
       upper_yaku_lookup_table_;
 };
 
-
-/**
- * YakuConditionValidator
- */
 class YakuConditionValidator {
  public:
   YakuConditionValidator(const YakuCondition& condition,
