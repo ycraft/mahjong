@@ -20,17 +20,16 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-
-bool isMatched(unsigned int required, unsigned int actual, unsigned int mask) {
+bool IsMatched(unsigned int required, unsigned int actual, unsigned int mask) {
   return !(required & mask)
       || (required & mask) == (actual & mask);
 }
 
-bool isMatched(unsigned int required, unsigned int actual) {
-  return isMatched(required, actual, 0xffffffff);
+bool IsMatched(unsigned int required, unsigned int actual) {
+  return IsMatched(required, actual, 0xffffffff);
 }
 
-bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
+bool IsMatchedForHierarchalData(unsigned int required, unsigned int actual) {
   while (required < actual) {
     actual >>= 4;
   }
@@ -51,16 +50,16 @@ bool IsTileTypeMatched(TileType required, TileType tile) {
 }
 
 bool IsTileTypeMatched(TileType required, TileType tile, TileType mask) {
-  return isMatched(required, tile, mask);
+  return IsMatched(required, tile, mask);
 }
 
 bool IsTileStateMatched(TileState required, TileState actual) {
-  return isMatchedForHierarchalData(required, actual);
+  return IsMatchedForHierarchalData(required, actual);
 }
 
 bool IsHandElementTypeMatched(HandElementType required,
                               HandElementType element_type) {
-  return isMatchedForHierarchalData(required, element_type);
+  return IsMatchedForHierarchalData(required, element_type);
 }
 
 bool IsMachiTypeMatched(MachiType required, MachiType type) {
@@ -69,23 +68,23 @@ bool IsMachiTypeMatched(MachiType required, MachiType type) {
 }
 
 bool IsMachiTypeMatched(MachiType required, MachiType type, MachiType mask) {
-  return isMatched(required, type, mask);
+  return IsMatched(required, type, mask);
 }
 
 bool IsAgariTypeMatched(AgariType required, AgariType type) {
-  return isMatched(required, type);
+  return IsMatched(required, type);
 }
 
 bool IsAgariStateMatched(AgariState required, AgariState state) {
-  return isMatched(required, state);
+  return IsMatched(required, state);
 }
 
 bool IsAgariFormatMatched(AgariFormat required, AgariFormat actual) {
-  return isMatched(required, actual);
+  return IsMatched(required, actual);
 }
 
 bool IsRichiTypeMatched(RichiType required, RichiType actual) {
-  return isMatchedForHierarchalData(required, actual);
+  return IsMatchedForHierarchalData(required, actual);
 }
 
 bool IsYaochuhai(TileType tile) {
