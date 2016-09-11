@@ -39,71 +39,63 @@ bool isMatchedForHierarchalData(unsigned int required, unsigned int actual) {
 
 }  // namespace
 
-bool MahjongCommonUtils::isSequentialTileType(TileType tile) {
+bool isSequentialTileType(TileType tile) {
   return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
 
 
-bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile) {
+bool isTileTypeMatched(TileType required, TileType tile) {
   return isTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER)
       && isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND)
       && isTileTypeMatched(required, tile, TileType::MASK_TILE_SEQUENTIAL);
 }
 
-bool MahjongCommonUtils::isTileTypeMatched(TileType required, TileType tile,
-                                           TileType mask) {
+bool isTileTypeMatched(TileType required, TileType tile, TileType mask) {
   return isMatched(required, tile, mask);
 }
 
-bool MahjongCommonUtils::isTileStateMatched(TileState required,
-                                            TileState actual) {
+bool isTileStateMatched(TileState required, TileState actual) {
   return isMatchedForHierarchalData(required, actual);
 }
 
-bool MahjongCommonUtils::isHandElementTypeMatched(
-    HandElementType required, HandElementType element_type) {
+bool isHandElementTypeMatched(HandElementType required,
+                              HandElementType element_type) {
   return isMatchedForHierarchalData(required, element_type);
 }
 
-bool MahjongCommonUtils::isMachiTypeMatched(
-    MachiType required, MachiType type) {
+bool isMachiTypeMatched(MachiType required, MachiType type) {
   return isMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU)
       && isMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
 }
 
-bool MahjongCommonUtils::isMachiTypeMatched(MachiType required, MachiType type,
-                                            MachiType mask) {
+bool isMachiTypeMatched(MachiType required, MachiType type, MachiType mask) {
   return isMatched(required, type, mask);
 }
 
-bool MahjongCommonUtils::isAgariTypeMatched(AgariType required,
-                                            AgariType type) {
+bool isAgariTypeMatched(AgariType required, AgariType type) {
   return isMatched(required, type);
 }
 
-bool MahjongCommonUtils::isAgariStateMatched(AgariState required,
-                                             AgariState state) {
+bool isAgariStateMatched(AgariState required, AgariState state) {
   return isMatched(required, state);
 }
 
-bool MahjongCommonUtils::isAgariFormatMatched(AgariFormat required,
-                                              AgariFormat actual) {
+bool isAgariFormatMatched(AgariFormat required, AgariFormat actual) {
   return isMatched(required, actual);
 }
 
-bool MahjongCommonUtils::isRichiTypeMatched(RichiType required,
-                                            RichiType actual) {
+bool isRichiTypeMatched(RichiType required, RichiType actual) {
   return isMatchedForHierarchalData(required, actual);
 }
 
-bool MahjongCommonUtils::isYaochuhai(TileType tile) {
+bool isYaochuhai(TileType tile) {
   return
       !isSequentialTileType(tile) ||
       isTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
       isTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
 }
 
-bool MahjongCommonUtils::isMenzen(const ParsedHand& hand) {
+bool isMenzen(const ParsedHand& hand) {
   for (const Element& element : hand.element()) {
     if (element.type() == HandElementType::MINSHUNTSU ||
         element.type() == HandElementType::MINKOUTSU ||
