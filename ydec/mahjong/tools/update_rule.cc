@@ -15,15 +15,22 @@
 #include <iostream>
 #include <fstream>
 
-#include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <google/protobuf/text_format.h>
+#include "google/protobuf/io/zero_copy_stream_impl.h"
+#include "google/protobuf/text_format.h"
 
 #include "ydec/mahjong/proto/mahjong-rule.pb.h"
 
-using namespace std;
-using namespace google::protobuf;
-using namespace google::protobuf::io;
-using namespace ydec::mahjong;
+using std::cerr;
+using std::endl;
+using std::ifstream;
+using std::istream;
+using std::ofstream;
+using std::ostream;
+
+using google::protobuf::TextFormat;
+using google::protobuf::io::IstreamInputStream;
+
+using ydec::mahjong::Rule;
 
 int main(int argc, char** argv) {
   if (argc != 3) {
