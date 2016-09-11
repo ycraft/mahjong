@@ -25,7 +25,7 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-  bool containsRequiredTileState(const TileState required_state,
+  bool ContainsRequiredTileState(const TileState required_state,
                                  const Tile& tile) {
     return std::find_if(
         tile.state().begin(),
@@ -37,7 +37,7 @@ namespace {
   }
 }  // namespace
 
-std::string HandParserResultUtil::getDebugString(
+std::string HandParserResultUtil::GetDebugString(
     const HandParserResult& result) {
   std::string str;
   for (const ParsedHand& parsedHand : result.parsed_hand()) {
@@ -67,7 +67,7 @@ std::string HandParserResultUtil::getDebugString(
       std::string element_tiles;
       for (const Tile &tile : element.tile()) {
         std::string tile_string = TileType_Name(tile.type());
-        if (containsRequiredTileState(TileState::AGARI_HAI, tile)) {
+        if (ContainsRequiredTileState(TileState::AGARI_HAI, tile)) {
           tile_string = "[" + tile_string + "]";
         }
         if (!element_tiles.empty()) {
@@ -95,15 +95,15 @@ HandParser::HandParser() : hand_(nullptr), num_free_tiles_(0),
 HandParser::~HandParser() {
 }
 
-void HandParser::parse(const Hand& hand, HandParserResult* result) {
-  setup(hand, result);
-  runDfs();
-  checkChiiToitsu();
-  checkIrregular();
-  deduplicateResult();
+void HandParser::Parse(const Hand& hand, HandParserResult* result) {
+  Setup(hand, result);
+  RunDfs();
+  CheckChiiToitsu();
+  CheckIrregular();
+  DeduplicateResult();
 }
 
-void HandParser::setup(const Hand& hand, HandParserResult* result) {
+void HandParser::Setup(const Hand& hand, HandParserResult* result) {
   num_free_tiles_ = hand.closed_tile_size() + 1;
 
   for (int i = 0; i < hand.closed_tile_size(); ++i) {
@@ -120,18 +120,18 @@ void HandParser::setup(const Hand& hand, HandParserResult* result) {
   result_ = result;
 }
 
-void HandParser::runDfs() {
-  dfs(0, 1, false);
+void HandParser::RunDfs() {
+  Dfs(0, 1, false);
 }
 
-void HandParser::dfs(int i, int id, bool has_jantou) {
+void HandParser::Dfs(int i, int id, bool has_jantou) {
   if (i == num_free_tiles_ && has_jantou) {
-    addAgarikeiResult(id - 1, AgariFormat::REGULAR_AGARI);
+    AddAgarikeiResult(id - 1, AgariFormat::REGULAR_AGARI);
     return;
   }
 
   if (free_tile_group_ids_[i]) {
-    dfs(i + 1, id, has_jantou);
+    Dfs(i + 1, id, has_jantou);
     return;
   }
 
@@ -146,7 +146,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
       if (free_tile_group_ids_[j] == 0) {
         free_tile_group_ids_[j] = id;
         free_tile_element_types_[j] = HandElementType::TOITSU;
-        dfs(j + 1, id + 1, true);
+        Dfs(j + 1, id + 1, true);
 
         // Reset id.
         free_tile_group_ids_[j] = 0;
@@ -171,7 +171,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
         free_tile_element_types_[j] = HandElementType::KOUTSU;
 
         if (counter == 2) {
-          dfs(j + 1, id + 1, has_jantou);
+          Dfs(j + 1, id + 1, has_jantou);
           break;
         }
       }
@@ -201,7 +201,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
         free_tile_element_types_[j] = HandElementType::SHUNTSU;
 
         if (counter == 2) {
-          dfs(i + 1, id + 1, has_jantou);
+          Dfs(i + 1, id + 1, has_jantou);
           break;
         }
       }
@@ -217,7 +217,7 @@ void HandParser::dfs(int i, int id, bool has_jantou) {
   free_tile_group_ids_[i] = 0;
 }
 
-void HandParser::checkChiiToitsu() {
+void HandParser::CheckChiiToitsu() {
   if (hand_->chiied_tile_size() != 0
       || hand_->ponned_tile_size() != 0
       || hand_->kanned_tile_size() != 0) {
@@ -243,14 +243,14 @@ void HandParser::checkChiiToitsu() {
         HandElementType::TOITSU;
   }
 
-  addAgarikeiResult(7, AgariFormat::CHITOITSU_AGARI);
+  AddAgarikeiResult(7, AgariFormat::CHITOITSU_AGARI);
 
   // Reset IDs.
   memset(free_tile_group_ids_, 0,
          num_free_tiles_ * sizeof(free_tile_group_ids_[0]));
 }
 
-void HandParser::checkIrregular() {
+void HandParser::CheckIrregular() {
   if (num_free_tiles_ != 14) {
     return;
   }
@@ -273,7 +273,7 @@ void HandParser::checkIrregular() {
       : TileState::AGARI_HAI_RON);
 }
 
-void HandParser::addAgarikeiResult(int last_id, const AgariFormat& format) {
+void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
   for (int agari_group_id = 1; agari_group_id <= last_id; ++agari_group_id) {
     bool valid_agari_group_id = false;
     for (int i = 0; i < num_free_tiles_; ++i) {
@@ -484,7 +484,7 @@ inline bool checkSame(const ParsedHand& lhs, const ParsedHand& rhs) {
   return true;
 }
 
-void HandParser::deduplicateResult() {
+void HandParser::DeduplicateResult() {
   HandParserResult dedupedResult;
   for (const ParsedHand& parsed_hand : result_->parsed_hand()) {
     bool duplicated = false;

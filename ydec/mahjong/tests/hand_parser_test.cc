@@ -31,7 +31,7 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-bool checkTile(const Tile& lhs, const Tile& rhs) {
+bool CheckTile(const Tile& lhs, const Tile& rhs) {
   if (lhs.type() != rhs.type()) return false;
   if (lhs.state_size() != rhs.state_size()) return false;
 
@@ -43,7 +43,7 @@ bool checkTile(const Tile& lhs, const Tile& rhs) {
   return l_state == r_state;
 }
 
-bool checkElement(const Element& lhs, const Element& rhs) {
+bool CheckElement(const Element& lhs, const Element& rhs) {
   if (lhs.type() != rhs.type()) return false;
   if (lhs.tile_size() != rhs.tile_size()) return false;
 
@@ -54,7 +54,7 @@ bool checkElement(const Element& lhs, const Element& rhs) {
       if (used[i]) {
         continue;
       }
-      if (!checkTile(tile, rhs.tile(i))) {
+      if (!CheckTile(tile, rhs.tile(i))) {
         continue;
       }
       found = used[i] = true;
@@ -68,7 +68,7 @@ bool checkElement(const Element& lhs, const Element& rhs) {
   return true;
 }
 
-void verifyAgari(
+void VerifyAgari(
     const AgariType& expected_agari_type,
     const AgariFormat& expected_agari_format,
     const vector<AgariState>& expected_agari_state,
@@ -87,7 +87,7 @@ void verifyAgari(
   ASSERT_EQ(sorted_expected_agari_state, sorted_actual_state);
 }
 
-void verifyParsedHand(
+void VerifyParsedHand(
     const vector<Element>& expected_elements,
     const MachiType& expected_machi_type,
     const AgariType& expected_agari_type,
@@ -96,7 +96,7 @@ void verifyParsedHand(
     const ParsedHand& actual_parsed_hand) {
   ASSERT_EQ(expected_machi_type, actual_parsed_hand.machi_type());
   ASSERT_NO_FATAL_FAILURE(
-      verifyAgari(expected_agari_type,
+      VerifyAgari(expected_agari_type,
                   expected_agari_format,
                   expected_agari_state,
                   actual_parsed_hand.agari()));
@@ -109,7 +109,7 @@ void verifyParsedHand(
       if (used[i]) {
         continue;
       }
-      if (!checkElement(expected_element,
+      if (!CheckElement(expected_element,
                         actual_parsed_hand.element(i))) {
         continue;
       }
@@ -125,7 +125,7 @@ void verifyParsedHand(
   }
 }
 
-void verifyParsedHandForIrregularAgariFormat(
+void VerifyParsedHandForIrregularAgariFormat(
     const Hand& input_hand,
     const vector<AgariState>& expected_agari_state,
     const ParsedHand& actual_parsed_hand) {
@@ -145,7 +145,7 @@ void verifyParsedHandForIrregularAgariFormat(
             TileState::AGARI_HAI_RON :
             TileState::AGARI_HAI_TSUMO);
   }
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {element},
       MachiType::UNKNOWN_MACHI_TYPE,
       input_hand.agari().type(),
@@ -157,13 +157,7 @@ void verifyParsedHandForIrregularAgariFormat(
 
 class HandParserTest : public testing::Test {
  protected:
-  virtual void SetUp() {
-  }
-
-  virtual void TearDown() {
-  }
-
-  HandParser _handParser;
+  HandParser handParser_;
 };
 
 TEST_F(HandParserTest, ParseTest_1) {
@@ -185,12 +179,12 @@ TEST_F(HandParserTest, ParseTest_1) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(4, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
@@ -201,7 +195,7 @@ TEST_F(HandParserTest, ParseTest_1) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnkoutsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::PINZU_2),
        CommonTestUtil::CreateAnkoutsu(TileType::PINZU_3),
@@ -212,7 +206,7 @@ TEST_F(HandParserTest, ParseTest_1) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
@@ -223,7 +217,7 @@ TEST_F(HandParserTest, ParseTest_1) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(2)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(3)));
@@ -249,12 +243,12 @@ TEST_F(HandParserTest, ParseTest_2) {
   hand.mutable_agari()->add_state(AgariState::SOKU);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(6, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateMintoitsu(TileType::PINZU_1, true),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
@@ -265,7 +259,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       AgariFormat::REGULAR_AGARI,
       {AgariState::SOKU},
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateMinshuntsu(TileType::PINZU_1, 0),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
@@ -276,7 +270,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       AgariFormat::REGULAR_AGARI,
       {AgariState::SOKU},
       result.parsed_hand(1)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateMinkoutsu(TileType::PINZU_1, true),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::PINZU_2),
@@ -287,7 +281,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       AgariFormat::REGULAR_AGARI,
       {AgariState::SOKU},
       result.parsed_hand(2)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnkoutsu(TileType::PINZU_1),
        CommonTestUtil::CreateMinshuntsu(TileType::PINZU_1, 0),
        CommonTestUtil::CreateAnkoutsu(TileType::PINZU_2),
@@ -298,7 +292,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       AgariFormat::REGULAR_AGARI,
       {AgariState::SOKU},
       result.parsed_hand(3)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateMinshuntsu(TileType::PINZU_1, 0),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
@@ -309,7 +303,7 @@ TEST_F(HandParserTest, ParseTest_2) {
       AgariFormat::REGULAR_AGARI,
       {AgariState::SOKU},
       result.parsed_hand(4)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {AgariState::SOKU},
       result.parsed_hand(5)));
@@ -334,12 +328,12 @@ TEST_F(HandParserTest, ParseTest_3) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_5),
        CommonTestUtil::CreateAnshuntsu(TileType::SOUZU_1),
@@ -350,7 +344,7 @@ TEST_F(HandParserTest, ParseTest_3) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -375,12 +369,12 @@ TEST_F(HandParserTest, ParseTest_4) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
@@ -405,12 +399,12 @@ TEST_F(HandParserTest, ParseTest_5) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
@@ -435,12 +429,12 @@ TEST_F(HandParserTest, ParseTest_6) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
@@ -465,12 +459,12 @@ TEST_F(HandParserTest, ParseTest_7) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnkoutsu(TileType::PINZU_3),
        CommonTestUtil::CreateAntoitsu(TileType::PINZU_4, true),
        CommonTestUtil::CreateMinkoutsu(TileType::PINZU_2),
@@ -502,12 +496,12 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(3, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_4),
@@ -518,7 +512,7 @@ TEST_F(HandParserTest, ParseTest_Churen) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_4),
@@ -529,7 +523,7 @@ TEST_F(HandParserTest, ParseTest_Churen) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(2)));
@@ -554,12 +548,12 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(5, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_2),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_2),
@@ -570,7 +564,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAntoitsu(TileType::PINZU_4),
@@ -581,7 +575,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_4),
@@ -592,7 +586,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(2)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAntoitsu(TileType::PINZU_2),
        CommonTestUtil::CreateAntoitsu(TileType::PINZU_3),
@@ -605,7 +599,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
       AgariFormat::CHITOITSU_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(3)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(4)));
@@ -630,12 +624,12 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAntoitsu(TileType::PINZU_2),
        CommonTestUtil::CreateAntoitsu(TileType::SANGEN_HAKU),
@@ -648,7 +642,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
       AgariFormat::CHITOITSU_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -673,12 +667,12 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
@@ -703,12 +697,12 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -719,7 +713,7 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -744,12 +738,12 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -760,7 +754,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -785,12 +779,12 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -801,7 +795,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -826,12 +820,12 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -842,7 +836,7 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -867,12 +861,12 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -883,7 +877,7 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -908,12 +902,12 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAnkoutsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAnkoutsu(TileType::SANGEN_HATSU),
@@ -924,7 +918,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
       AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -949,12 +943,12 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
       {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
        CommonTestUtil::CreateAntoitsu(TileType::SANGEN_HAKU),
        CommonTestUtil::CreateAntoitsu(TileType::SANGEN_HATSU),
@@ -967,7 +961,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
       AgariFormat::CHITOITSU_AGARI,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(1)));
@@ -992,12 +986,12 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
-  _handParser.parse(hand, &result);
+  handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
-  ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+  ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
       hand,
       {} /* expected_agari_state */,
       result.parsed_hand(0)));
@@ -1024,12 +1018,12 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
 
   {
     HandParserResult result;
-    _handParser.parse(hand, &result);
+    handParser_.Parse(hand, &result);
 
-    SCOPED_TRACE(HandParserResultUtil::getDebugString(result));
+    SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
 
     ASSERT_EQ(2, result.parsed_hand_size());
-    ASSERT_NO_FATAL_FAILURE(verifyParsedHand(
+    ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
         {CommonTestUtil::CreateAntoitsu(TileType::PINZU_1),
          CommonTestUtil::CreateAntoitsu(TileType::SANGEN_HAKU),
          CommonTestUtil::CreateAntoitsu(TileType::SANGEN_HATSU),
@@ -1042,7 +1036,7 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
         AgariFormat::CHITOITSU_AGARI,
         {} /* expected_agari_state */,
         result.parsed_hand(0)));
-    ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+    ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
         hand,
         {} /* expected_agari_state */,
         result.parsed_hand(1)));
@@ -1068,12 +1062,12 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
     hand2.mutable_agari()->set_type(AgariType::RON);
 
     HandParserResult result2;
-    _handParser.parse(hand2, &result2);
+    handParser_.Parse(hand2, &result2);
 
-    SCOPED_TRACE(HandParserResultUtil::getDebugString(result2));
+    SCOPED_TRACE(HandParserResultUtil::GetDebugString(result2));
 
     ASSERT_EQ(1, result2.parsed_hand_size());
-    ASSERT_NO_FATAL_FAILURE(verifyParsedHandForIrregularAgariFormat(
+    ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
         hand2,
         {} /* expected_agari_state */,
         result2.parsed_hand(0)));

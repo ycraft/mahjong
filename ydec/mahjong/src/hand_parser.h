@@ -24,7 +24,7 @@ namespace mahjong {
 
 class HandParserResultUtil {
  public:
-  static std::string getDebugString(const HandParserResult& result);
+  static std::string GetDebugString(const HandParserResult& result);
 };
 
 class HandParser {
@@ -36,16 +36,16 @@ class HandParser {
    * Parses given hand and saves the result into the given result
    * variable. You can use this method repeatedly.
    */
-  void parse(const Hand& hand, HandParserResult* result);
+  void Parse(const Hand& hand, HandParserResult* result);
 
  private:
-  void setup(const Hand& hand, HandParserResult* result);
-  void runDfs();
-  void dfs(int i, int id, bool has_jantou);
-  void checkChiiToitsu();
-  void checkIrregular();
-  void addAgarikeiResult(int last_id, const AgariFormat& format);
-  void deduplicateResult();
+  void Setup(const Hand& hand, HandParserResult* result);
+  void RunDfs();
+  void Dfs(int i, int id, bool has_jantou);
+  void CheckChiiToitsu();
+  void CheckIrregular();
+  void AddAgarikeiResult(int last_id, const AgariFormat& format);
+  void DeduplicateResult();
 
   const Hand* hand_;
   int num_free_tiles_;

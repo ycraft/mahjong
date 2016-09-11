@@ -33,7 +33,7 @@ namespace {
   // Returns -1 if left one has better score.
   // Returns 1 if right one has better score.
   // Returns 0 if both ones have the same score.
-  int compare(const ScoreCalculatorResult& left,
+  int Compare(const ScoreCalculatorResult& left,
               const ScoreCalculatorResult& right) {
     if (left.yakuman() > right.yakuman()) {
       return -1;
@@ -74,12 +74,12 @@ void ScoreCalculator::calculate(const Field& field,
                                 const Player& player,
                                 ScoreCalculatorResult* result) {
   HandParserResult hand_parser_result;
-  hand_parser_->parse(player.hand(), &hand_parser_result);
+  hand_parser_->Parse(player.hand(), &hand_parser_result);
 
   for (const ParsedHand& parsed_hand : hand_parser_result.parsed_hand()) {
     ScoreCalculatorResult current_result;
     calculate(field, player, parsed_hand, &current_result);
-    if (compare(*result, current_result) > 0) {
+    if (Compare(*result, current_result) > 0) {
       *result = current_result;
     }
   }
