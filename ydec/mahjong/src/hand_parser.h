@@ -22,11 +22,6 @@
 namespace ydec {
 namespace mahjong {
 
-class HandParserResultUtil {
- public:
-  static std::string GetDebugString(const HandParserResult& result);
-};
-
 class HandParser {
  public:
   HandParser();

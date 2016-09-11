@@ -20,6 +20,7 @@
 #include "gtest/gtest.h"
 
 #include "ydec/mahjong/src/hand_parser.h"
+#include "ydec/mahjong/src/mahjong_common_util.h"
 #include "ydec/mahjong/tests/common_test_util.h"
 
 using std::endl;
@@ -179,7 +180,7 @@ TEST_F(HandParserTest, ParseTest_1) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(4, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -243,7 +244,7 @@ TEST_F(HandParserTest, ParseTest_2) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(6, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -328,7 +329,7 @@ TEST_F(HandParserTest, ParseTest_3) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -369,7 +370,7 @@ TEST_F(HandParserTest, ParseTest_4) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -399,7 +400,7 @@ TEST_F(HandParserTest, ParseTest_5) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -429,7 +430,7 @@ TEST_F(HandParserTest, ParseTest_6) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -459,7 +460,7 @@ TEST_F(HandParserTest, ParseTest_7) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -496,7 +497,7 @@ TEST_F(HandParserTest, ParseTest_Churen) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(3, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -548,7 +549,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(5, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -624,7 +625,7 @@ TEST_F(HandParserTest, ParseTest_Chitoitsu_2) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -667,7 +668,7 @@ TEST_F(HandParserTest, ParseTest_NotChitoitsu) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -697,7 +698,7 @@ TEST_F(HandParserTest, ParseTest_Ryanmen) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -738,7 +739,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_1) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -779,7 +780,7 @@ TEST_F(HandParserTest, ParseTest_Penchan_2) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -820,7 +821,7 @@ TEST_F(HandParserTest, ParseTest_Kanchan) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -861,7 +862,7 @@ TEST_F(HandParserTest, ParseTest_Shabo) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -902,7 +903,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_1) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -943,7 +944,7 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(2, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -986,7 +987,7 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   HandParserResult result;
   handParser_.Parse(hand, &result);
 
-  SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+  SCOPED_TRACE(GetDebugString(result));
 
   ASSERT_EQ(1, result.parsed_hand_size());
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -1018,7 +1019,7 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
     HandParserResult result;
     handParser_.Parse(hand, &result);
 
-    SCOPED_TRACE(HandParserResultUtil::GetDebugString(result));
+    SCOPED_TRACE(GetDebugString(result));
 
     ASSERT_EQ(2, result.parsed_hand_size());
     ASSERT_NO_FATAL_FAILURE(VerifyParsedHand(
@@ -1062,7 +1063,7 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
     HandParserResult result2;
     handParser_.Parse(hand2, &result2);
 
-    SCOPED_TRACE(HandParserResultUtil::GetDebugString(result2));
+    SCOPED_TRACE(GetDebugString(result2));
 
     ASSERT_EQ(1, result2.parsed_hand_size());
     ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(

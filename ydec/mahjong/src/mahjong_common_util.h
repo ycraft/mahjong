@@ -52,6 +52,8 @@ bool IsYaochuhai(TileType tile);
 
 bool IsMenzen(const ParsedHand& parsed_hand);
 
+std::string GetDebugString(const HandParserResult& result);
+
 }  // namespace mahjong
 }  // namespace ydec
 
