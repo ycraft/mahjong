@@ -1,3 +1,17 @@
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "ydec/mahjong/src/yaku_applier.h"
 
 #include <iostream>
@@ -8,15 +22,15 @@
 
 #include "ydec/mahjong/src/mahjong_common_utils.h"
 
-using google::protobuf::RepeatedField;
-using google::protobuf::RepeatedPtrField;
-
 using std::make_pair;
 using std::move;
 using std::set;
 using std::string;
 using std::unique_ptr;
 using std::vector;
+
+using google::protobuf::RepeatedField;
+using google::protobuf::RepeatedPtrField;
 
 namespace ydec {
 namespace mahjong {
@@ -36,15 +50,16 @@ YakuApplier::YakuApplier(const Rule& rule) :
   for (const Yaku& yaku : rule_.yaku()) {
     upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<string>()));
     for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
-      if (yaku_lookup_table_.find(upper_yaku_name) == yaku_lookup_table_.end()) {
+      if (yaku_lookup_table_.find(upper_yaku_name) ==
+              yaku_lookup_table_.end()) {
         std::abort();
       }
       upper_yaku_lookup_table_[yaku.name()].push_back(upper_yaku_name);
     }
 
-    // Add all yakuman yakus as a upper yaku of this yaku, if this yaku is not a yakuman.
-    // For example, if both suanko and tanyao are maiden concurrently, we don't count
-    // tanyao because suanko is dominant.
+    // Add all yakuman yakus as a upper yaku of this yaku, if this yaku is not a
+    // yakuman. For example, if both suanko and tanyao are maiden concurrently,
+    // we don't count tanyao because suanko is dominant.
     if (yaku.yakuman() == 0) {
       for (const Yaku& r_yaku : rule_.yaku()) {
         if (r_yaku.yakuman() > 0) {
@@ -67,7 +82,6 @@ void YakuApplier::apply(const RichiType& richi_type,
 
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_.yaku()) {
-
     // Check if hansuu is not zero.
     bool is_applicable =
         yaku.kuisagari_fan() > 0 ||
@@ -85,15 +99,16 @@ void YakuApplier::apply(const RichiType& richi_type,
     YakuConditionValidatorResult validator_result;
     validator.validate(&validator_result);
 
-    if (validator_result.type() == YakuConditionValidatorResult_Type_OK) {
+    if (validator_result.type() == YakuConditionValidatorResult::OK) {
       applied_yaku_names.insert(yaku.name());
     }
   }
 
-  for (const string& yaku_name : applied_yaku_names) {
+  for (const auto& yaku_name : applied_yaku_names) {
     bool upper_yaku_found = false;
-    for (const string& upper_yaku_name : upper_yaku_lookup_table_.at(yaku_name)) {
-      upper_yaku_found = (applied_yaku_names.find(upper_yaku_name) != applied_yaku_names.end());
+    for (const auto& upper_yaku_name : upper_yaku_lookup_table_.at(yaku_name)) {
+      upper_yaku_found = (applied_yaku_names.find(upper_yaku_name) !=
+          applied_yaku_names.end());
       if (upper_yaku_found) {
         break;
       }
@@ -131,7 +146,8 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate() {
   return validate(&result);
 }
 
-YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditionValidatorResult* result) {
+YakuConditionValidatorResult::Type YakuConditionValidator::validate(
+    YakuConditionValidatorResult* result) {
   result_ = result;
 
   if (!setValiableTile(TileCondition::VARIABLE_BAKAZE_TILE, field_wind_)) {
@@ -150,34 +166,34 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
   if (condition_.has_required_field_wind()) {
     if (!MahjongCommonUtils::isTileTypeMatched(condition_.required_field_wind(),
                                                field_wind_)) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND);
+      result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_FIELD_WIND);
       return result_->type();
     }
   }
 
   // Validate player wind.
   if (condition_.has_required_player_wind()) {
-    if (!MahjongCommonUtils::isTileTypeMatched(condition_.required_player_wind(),
-                                               player_wind_)) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND);
+    if (!MahjongCommonUtils::isTileTypeMatched(
+            condition_.required_player_wind(), player_wind_)) {
+      result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_PLAYER_WIND);
       return result_->type();
     }
   }
 
   // Validate machi type.
   if (condition_.has_required_machi_type()) {
-    if (!MahjongCommonUtils::isMachiTypeMatched(condition_.required_machi_type(),
-                                                parsed_hand_.machi_type())) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_MACHI_TYPE);
+    if (!MahjongCommonUtils::isMachiTypeMatched(
+            condition_.required_machi_type(), parsed_hand_.machi_type())) {
+      result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_MACHI_TYPE);
       return result_->type();
     }
   }
 
   // Validate richi type.
   if (condition_.has_required_richi_type()) {
-    if (!MahjongCommonUtils::isRichiTypeMatched(condition_.required_richi_type(),
-                                                richi_type_)) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE);
+    if (!MahjongCommonUtils::isRichiTypeMatched(
+            condition_.required_richi_type(), richi_type_)) {
+      result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_RICHI_TYPE);
       return result_->type();
     }
   }
@@ -186,7 +202,8 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
   if (condition_.has_required_agari_condition()) {
     if (!validateRequiredAgariCondition(condition_.required_agari_condition(),
                                         parsed_hand_.agari())) {
-      result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION);
+      result_->set_type(
+          YakuConditionValidatorResult::NG_REQUIRED_AGARI_CONDITION);
       return result_->type();
     }
   }
@@ -195,14 +212,15 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
   if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
                                     hand_tiles_,
                                     true /* allow_defining_new_variable */)) {
-    result_->set_type(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION);
+    result_->set_type(YakuConditionValidatorResult::NG_ALLOWED_TILE_CONDITION);
     return result_->type();
   }
 
   // Validate disallowed tile condition
   if (!validateDisallowedTileCondition(condition_.disallowed_tile_condition(),
                                        hand_tiles_)) {
-    result_->set_type(YakuConditionValidatorResult_Type_NG_DISALLOWED_TILE_CONDITION);
+    result_->set_type(
+        YakuConditionValidatorResult::NG_DISALLOWED_TILE_CONDITION);
     return result_->type();
   }
 
@@ -210,19 +228,22 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(YakuConditio
   if (!validateRequiredTileCondition(condition_.required_tile_condition(),
                                      hand_tiles_,
                                      true /* allow_defining_new_variable */)) {
-    result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION);
+    result_->set_type(
+        YakuConditionValidatorResult::NG_REQUIRED_TILE_CONDITION);
     return result_->type();
   }
 
   // Validate element conditions
-  if (!validateRequiredElementCondition(condition_.required_element_condition(),
-                                        parsed_hand_.element(),
-                                        true /* allow_defining_new_variable */)) {
-    result_->set_type(YakuConditionValidatorResult_Type_NG_REQUIRED_ELEMENT_CONDITION);
+  if (!validateRequiredElementCondition(
+      condition_.required_element_condition(),
+      parsed_hand_.element(),
+      true /* allow_defining_new_variable */)) {
+    result_->set_type(
+        YakuConditionValidatorResult::NG_REQUIRED_ELEMENT_CONDITION);
     return result_->type();
   }
 
-  result_->set_type(YakuConditionValidatorResult_Type_OK);
+  result_->set_type(YakuConditionValidatorResult::OK);
   return result_->type();
 }
 
@@ -242,7 +263,8 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
     bool found = false;
     for (const int allowed_format_int : condition.allowed_format()) {
       AgariFormat allowed_format = static_cast<AgariFormat>(allowed_format_int);
-      if (MahjongCommonUtils::isAgariFormatMatched(allowed_format, agari.format())) {
+      if (MahjongCommonUtils::isAgariFormatMatched(allowed_format,
+                                                   agari.format())) {
         found = true;
         break;
       }
@@ -258,14 +280,16 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
     memset(used.get(), 0, sizeof(used[0]) * agari.state_size());
 
     for (const int required_state_int : condition.required_state()) {
-      const AgariState required_state = static_cast<AgariState>(required_state_int);
+      const AgariState required_state =
+          static_cast<AgariState>(required_state_int);
       bool found = false;
       for (int i = 0; i < agari.state_size(); ++i) {
         if (used[i]) {
           continue;
         }
 
-        if (!MahjongCommonUtils::isAgariStateMatched(required_state, agari.state(i))) {
+        if (!MahjongCommonUtils::isAgariStateMatched(required_state,
+                                                     agari.state(i))) {
           continue;
         }
 
@@ -316,7 +340,8 @@ bool YakuConditionValidator::validateRequiredElementCondition(
   memset(used.get(), 0, sizeof(used[0]) * elements.size());
 
   // Search applicable condition without defining a new variable first.
-  // If there are no applicable condition, we will allow to define a new variable.
+  // If there are no applicable condition, we will allow to define a new
+  // variable.
   for (const ElementCondition& condition : conditions) {
     bool found = false;
     for (int new_variable = 0;
@@ -392,7 +417,8 @@ bool YakuConditionValidator::validateAllowedTileCondition(
   }
 
   // Search applicable condition without defining a new variable first.
-  // If there are no applicable condition, we will allow to define a new variable.
+  // If there are no applicable condition, we will allow to define a new
+  // variable.
   for (const Tile& tile : tiles) {
     bool found = false;
     for (int new_variable = 0;
@@ -427,7 +453,8 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
 
   for (const Tile& tile : tiles) {
     for (const TileCondition& condition : conditions) {
-      if (validateTileCondition(condition, tile, false /* allow_defining_new_variable */)) {
+      if (validateTileCondition(condition, tile,
+                                /*allow_defining_new_variable=*/false)) {
         return false;
       }
     }
@@ -450,7 +477,8 @@ bool YakuConditionValidator::validateRequiredTileCondition(
   memset(used.get(), 0, sizeof(used[0]) * tiles.size());
 
   // Search applicable condition without defining a new variable first.
-  // If there are no applicable condition, we will allow to define a new variable.
+  // If there are no applicable condition, we will allow to define a new
+  // variable.
   for (const TileCondition& condition : conditions) {
     bool found = false;
     for (int new_variable = 0;
@@ -501,9 +529,10 @@ bool YakuConditionValidator::validateEitherTileCondition(
   return false;
 }
 
-bool YakuConditionValidator::validateTileCondition(const TileCondition& condition,
-                                                   const Tile& tile,
-                                                   bool allow_defining_new_variable) {
+bool YakuConditionValidator::validateTileCondition(
+    const TileCondition& condition,
+    const Tile& tile,
+    bool allow_defining_new_variable) {
   // Check required tile state.
   {
     vector<bool> used(tile.state_size(), false);
@@ -515,7 +544,8 @@ bool YakuConditionValidator::validateTileCondition(const TileCondition& conditio
           continue;
         }
 
-        if (!MahjongCommonUtils::isTileStateMatched(required_state, tile.state(i))) {
+        if (!MahjongCommonUtils::isTileStateMatched(required_state,
+                                                    tile.state(i))) {
           continue;
         }
 
@@ -542,14 +572,15 @@ bool YakuConditionValidator::validateTileCondition(const TileCondition& conditio
 
   // Check tile type.
   if (condition.has_required_tile()) {
-    if (!MahjongCommonUtils::isTileTypeMatched(condition.required_tile(), tile.type())) {
+    if (!MahjongCommonUtils::isTileTypeMatched(condition.required_tile(),
+                                               tile.type())) {
       return false;
     }
   }
 
   // Check variable tile type.
-  // We should do this check at the last step of this method because we might define
-  // a new variable in this step if allow_defining_new_variable is true.
+  // We should do this check at the last step of this method because we might
+  // define a new variable in this step if allow_defining_new_variable is true.
   if (condition.has_required_variable_tile()) {
     const auto& iter = variable_tiles_.find(condition.required_variable_tile());
 
@@ -564,7 +595,8 @@ bool YakuConditionValidator::validateTileCondition(const TileCondition& conditio
       }
     }
 
-    if (!validateVariableTile(condition.required_variable_tile(), iter->second, tile.type())) {
+    if (!validateVariableTile(condition.required_variable_tile(),
+                              iter->second, tile.type())) {
       return false;
     }
   }
@@ -575,8 +607,8 @@ bool YakuConditionValidator::validateTileCondition(const TileCondition& conditio
 bool YakuConditionValidator::setValiableTile(
     const TileCondition::VariableTileType& type,
     const TileType& tile) {
-  // If the given variable_tile_type is already defined with other tile, this method just return
-  // false.
+  // If the given variable_tile_type is already defined with other tile, this
+  // method just return false.
   {
     const auto& iter = variable_tiles_.find(type);
     if (iter != variable_tiles_.end()) {
@@ -585,11 +617,13 @@ bool YakuConditionValidator::setValiableTile(
   }
 
   TileCondition::VariableTileType variable_type =
-      static_cast<TileCondition::VariableTileType>(type & TileCondition_VariableTileType_MASK_VARIABLE_TYPE);
+      static_cast<TileCondition::VariableTileType>(
+          type & TileCondition::MASK_VARIABLE_TYPE);
 
   set<TileType>& defined_tiles = defined_tiles_[variable_type];
 
-  // Check whether the given tile is already defined as other variable_tile in the same variable_type.
+  // Check whether the given tile is already defined as other variable_tile in
+  // the same variable_type.
   if (defined_tiles.find(tile) != defined_tiles.end()) {
     return false;
   }
@@ -652,18 +686,24 @@ bool YakuConditionValidator::validateVariableTile(
       return MahjongCommonUtils::isTileTypeMatched(required, tile);
 
     case TileCondition::VARIABLE_NUMBER:
-      return MahjongCommonUtils::isSequentialTileType(tile)
-          && MahjongCommonUtils::isTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER);
+      return
+          MahjongCommonUtils::isSequentialTileType(tile) &&
+          MahjongCommonUtils::isTileTypeMatched(required, tile,
+                                                TileType::MASK_TILE_NUMBER);
 
     case TileCondition::VARIABLE_COLOR:
       switch (type) {
         case TileCondition::VARIABLE_COLOR_A:
-          return MahjongCommonUtils::isSequentialTileType(tile)
-              && MahjongCommonUtils::isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+          return
+              MahjongCommonUtils::isSequentialTileType(tile) &&
+              MahjongCommonUtils::isTileTypeMatched(
+                  required, tile, TileType::MASK_TILE_KIND);
 
         case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
-          return !MahjongCommonUtils::isSequentialTileType(tile)
-              || MahjongCommonUtils::isTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+          return
+              !MahjongCommonUtils::isSequentialTileType(tile) ||
+              MahjongCommonUtils::isTileTypeMatched(required, tile,
+                                                    TileType::MASK_TILE_KIND);
 
         default:
           return false;

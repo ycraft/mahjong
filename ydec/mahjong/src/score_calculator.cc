@@ -1,14 +1,29 @@
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "ydec/mahjong/src/score_calculator.h"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <utility>
 
 #include "ydec/mahjong/src/hand_parser.h"
 #include "ydec/mahjong/src/yaku_applier.h"
 #include "ydec/mahjong/src/mahjong_common_utils.h"
 #include "ydec/mahjong/src/mahjong_common_value.h"
 
-using namespace std;
+using std::unique_ptr;
 
 namespace ydec {
 namespace mahjong {
@@ -49,18 +64,17 @@ namespace {
 
 }  // namespace
 
-ScoreCalculator::ScoreCalculator(
-    HandParser& hand_parser,
-    YakuApplier& yaku_applier) :
-        hand_parser_(hand_parser),
-        yaku_applier_(yaku_applier) {
+ScoreCalculator::ScoreCalculator(unique_ptr<Rule> rule) :
+    rule_(move(rule)),
+    hand_parser_(new HandParser),
+    yaku_applier_(new YakuApplier(*rule_)) {
 }
 
 void ScoreCalculator::calculate(const Field& field,
                                 const Player& player,
                                 ScoreCalculatorResult* result) {
   HandParserResult hand_parser_result;
-  hand_parser_.parse(player.hand(), &hand_parser_result);
+  hand_parser_->parse(player.hand(), &hand_parser_result);
 
   for (const ParsedHand& parsed_hand : hand_parser_result.parsed_hand()) {
     ScoreCalculatorResult current_result;
@@ -76,7 +90,7 @@ void ScoreCalculator::calculate(const Field& field,
                                 const ParsedHand& parsed_hand,
                                 ScoreCalculatorResult* result) {
   YakuApplierResult yaku_applier_result;
-  yaku_applier_.apply(
+  yaku_applier_->apply(
       player.hand().richi_type(),
       field.wind(),
       player.wind(),
@@ -142,8 +156,9 @@ FuCalculator::FuCalculator(
       player_wind_(player_wind) {
 }
 
-int FuCalculator::calculate(const ParsedHand& parsed_hand,
-                            const YakuApplierResult& yaku_applier_result) const {
+int FuCalculator::calculate(
+    const ParsedHand& parsed_hand,
+    const YakuApplierResult& yaku_applier_result) const {
   for (const Yaku& yaku : yaku_applier_result.yaku()) {
     if (parsed_hand.agari().type() == AgariType::TSUMO &&
         yaku.has_force_fu_tsumo()) {

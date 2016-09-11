@@ -1,5 +1,19 @@
-#ifndef YDEC_MAHJONG_YAKU_APPLIER_H_
-#define YDEC_MAHJONG_YAKU_APPLIER_H_
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef YDEC_MAHJONG_SRC_YAKU_APPLIER_H_
+#define YDEC_MAHJONG_SRC_YAKU_APPLIER_H_
 
 #include <map>
 #include <memory>
@@ -19,7 +33,7 @@ namespace mahjong {
  */
 class YakuApplier {
  public:
-  YakuApplier(const Rule& rule);
+  explicit YakuApplier(const Rule& rule);
   virtual ~YakuApplier();
 
   void apply(const RichiType& richi_type,
@@ -31,7 +45,8 @@ class YakuApplier {
  private:
   const Rule& rule_;
   std::map<const std::string, const Yaku*> yaku_lookup_table_;
-  std::map<const std::string, std::vector<std::string>> upper_yaku_lookup_table_;
+  std::map<const std::string, std::vector<std::string>>
+      upper_yaku_lookup_table_;
 };
 
 
@@ -47,21 +62,10 @@ class YakuConditionValidator {
                          const ParsedHand& parsed_hand);
 
   YakuConditionValidatorResult::Type validate();
-  YakuConditionValidatorResult::Type validate(YakuConditionValidatorResult* result);
+  YakuConditionValidatorResult::Type validate(
+      YakuConditionValidatorResult* result);
 
  private:
-  const YakuCondition& condition_;
-  const RichiType& richi_type_;
-  const TileType& field_wind_;
-  const TileType& player_wind_;
-  const ParsedHand& parsed_hand_;
-
-  YakuConditionValidatorResult* result_;
-
-  ::google::protobuf::RepeatedPtrField<Tile> hand_tiles_;
-  std::map<TileCondition::VariableTileType, TileType> variable_tiles_;
-  std::map<TileCondition::VariableTileType, std::set<TileType>> defined_tiles_;
-
   // Agari conditions.
   bool validateRequiredAgariCondition(
       const AgariCondition& condition,
@@ -115,9 +119,21 @@ class YakuConditionValidator {
       const TileCondition::VariableTileType& type,
       const TileType& required,
       const TileType& tile);
+
+  const YakuCondition& condition_;
+  const RichiType& richi_type_;
+  const TileType& field_wind_;
+  const TileType& player_wind_;
+  const ParsedHand& parsed_hand_;
+
+  YakuConditionValidatorResult* result_;
+
+  ::google::protobuf::RepeatedPtrField<Tile> hand_tiles_;
+  std::map<TileCondition::VariableTileType, TileType> variable_tiles_;
+  std::map<TileCondition::VariableTileType, std::set<TileType>> defined_tiles_;
 };
 
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_YAKU_APPLIER_H_
+#endif  // YDEC_MAHJONG_SRC_YAKU_APPLIER_H_

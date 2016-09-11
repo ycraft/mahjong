@@ -1,3 +1,17 @@
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
@@ -8,11 +22,15 @@
 #include "ydec/mahjong/src/hand_parser.h"
 #include "ydec/mahjong/tests/common_test_util.h"
 
-using namespace std;
-using namespace ydec::mahjong;
-using namespace google::protobuf;
+using std::endl;
+using std::vector;
+using std::string;
+using google::protobuf::TextFormat;
 
+namespace ydec {
+namespace mahjong {
 
+namespace {
 bool checkTile(const Tile& lhs, const Tile& rhs) {
   if (lhs.type() != rhs.type()) return false;
   if (lhs.state_size() != rhs.state_size()) return false;
@@ -61,7 +79,7 @@ void verifyAgari(
   vector<AgariState> sorted_expected_agari_state(expected_agari_state.begin(),
                                                  expected_agari_state.end());
   vector<AgariState> sorted_actual_state(actual.state().size());
-  for (int i = 0; i < sorted_actual_state.size(); ++i) {
+  for (size_t i = 0; i < sorted_actual_state.size(); ++i) {
     sorted_actual_state[i] = actual.state(i);
   }
   sort(sorted_expected_agari_state.begin(), sorted_expected_agari_state.end());
@@ -135,9 +153,9 @@ void verifyParsedHandForIrregularAgariFormat(
       expected_agari_state,
       actual_parsed_hand));
 }
+}  // namespace
 
-
-class HandParserTest : public ::testing::Test {
+class HandParserTest : public testing::Test {
  protected:
   virtual void SetUp() {
   }
@@ -1061,3 +1079,6 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
         result2.parsed_hand(0)));
   }
 }
+
+}  // namespace mahjong
+}  // namespace ydec

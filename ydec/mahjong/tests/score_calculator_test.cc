@@ -1,3 +1,17 @@
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -8,17 +22,24 @@
 #include "ydec/mahjong/src/score_calculator.h"
 #include "ydec/mahjong/src/yaku_applier.h"
 
-using namespace std;
-using namespace ydec::mahjong;
+using std::copy;
+using std::ifstream;
+using std::istream;
+using std::ostream_iterator;
+using std::string;
+using std::stringstream;
+using std::unique_ptr;
+using std::vector;
+
+namespace ydec {
+namespace mahjong {
 
 /**
  * Unit tests for ScoreCalculator.
  */
-class ScoreCalculatorTest : public ::testing::Test {
+class ScoreCalculatorTest : public testing::Test {
  protected:
   static Rule rule_;
-  HandParser hand_parser_;
-  YakuApplier yaku_applier_;
   ScoreCalculator score_calculator_;
 
   static void SetUpTestCase() {
@@ -29,10 +50,7 @@ class ScoreCalculatorTest : public ::testing::Test {
   }
 
   ScoreCalculatorTest() :
-      hand_parser_(),
-      yaku_applier_(rule_),
-      score_calculator_(hand_parser_,
-                  yaku_applier_) {
+      score_calculator_(unique_ptr<Rule>(new Rule(rule_))) {
   }
 
   static string concatStrings(const vector<string>& strings) {
@@ -194,3 +212,6 @@ TEST_F(ScoreCalculatorTest, TestCalculate_3) {
                                  0 /* uradora */,
                                  result));
 }
+
+}  // namespace mahjong
+}  // namespace ydec

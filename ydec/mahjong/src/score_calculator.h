@@ -1,5 +1,19 @@
-#ifndef YDEC_MAHJONG_SCORE_CALCULATOR_H_
-#define YDEC_MAHJONG_SCORE_CALCULATOR_H_
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef YDEC_MAHJONG_SRC_SCORE_CALCULATOR_H_
+#define YDEC_MAHJONG_SRC_SCORE_CALCULATOR_H_
 
 #include <memory>
 
@@ -12,13 +26,8 @@ class HandParser;
 class YakuApplier;
 
 class ScoreCalculator {
- private:
-  HandParser& hand_parser_;
-  YakuApplier& yaku_applier_;
-
  public:
-  ScoreCalculator(HandParser& hand_parser,
-                  YakuApplier& yaku_applier);
+  explicit ScoreCalculator(std::unique_ptr<Rule> rule);
 
   void calculate(const Field& field,
                  const Player& player,
@@ -29,13 +38,13 @@ class ScoreCalculator {
                  const Player& player,
                  const ParsedHand& parsed_hand,
                  ScoreCalculatorResult* result);
+
+  std::unique_ptr<Rule> rule_;
+  std::unique_ptr<HandParser> hand_parser_;
+  std::unique_ptr<YakuApplier> yaku_applier_;
 };
 
 class FuCalculator {
- private:
-  const TileType field_wind_;
-  const TileType player_wind_;
-
  public:
   FuCalculator(TileType field_wind,
                TileType player_wind);
@@ -48,9 +57,12 @@ class FuCalculator {
                  bool is_menzen) const;
   int getElementFu(const Element& element) const;
   int getMachiFu(MachiType machi_type) const;
+
+  const TileType field_wind_;
+  const TileType player_wind_;
 };
 
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_SCORE_CALCULATOR_H_
+#endif  // YDEC_MAHJONG_SRC_SCORE_CALCULATOR_H_

@@ -1,3 +1,17 @@
+// Copyright 2016 Yuki Hamada
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -13,15 +27,21 @@
 #include "ydec/mahjong/src/yaku_applier.h"
 #include "ydec/mahjong/tests/common_test_util.h"
 
-using namespace std;
-using namespace ydec::mahjong;
-
+using std::ifstream;
+using std::istream;
+using std::ostream_iterator;
+using std::string;
+using std::stringstream;
+using std::vector;
 using google::protobuf::TextFormat;
+
+namespace ydec {
+namespace mahjong {
 
 /**
  * Unit tests for YakuApplier.
  */
-class YakuApplierTest : public ::testing::Test {
+class YakuApplierTest : public testing::Test {
  protected:
   static Rule rule_;
   YakuApplier yaku_applier_;
@@ -68,7 +88,8 @@ Rule YakuApplierTest::rule_;
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_1, true);
+  CommonTestUtil::createAntoitsu(
+      parsed_hand.add_element(), TileType::PINZU_1, true);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_3);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_5);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_7);
@@ -88,7 +109,8 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_1, true);
+  CommonTestUtil::createAntoitsu(
+      parsed_hand.add_element(), TileType::PINZU_1, true);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_5);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::PINZU_7);
@@ -103,12 +125,14 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({}, result));  // We cannot use same tile kind for two-toitsu.
+  // We cannot use same tile kind for two-toitsu.
+  ASSERT_NO_FATAL_FAILURE(assertEquals({}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
@@ -123,12 +147,14 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "二盃口", "平和"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"門前清自摸和", "二盃口", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createMinkoutsu(parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::createMinkoutsu(
+      parsed_hand.add_element(), TileType::SOUZU_1, true);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
@@ -148,7 +174,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::createAnkoutsu(
+      parsed_hand.add_element(), TileType::SOUZU_1, true);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
@@ -172,7 +199,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
-  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3, true);
+  CommonTestUtil::createAntoitsu(
+      parsed_hand.add_element(), TileType::SOUZU_3, true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::TANKI);
@@ -188,7 +216,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::SOUZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
@@ -203,12 +232,14 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::createMinshuntsu(
+      parsed_hand.add_element(), TileType::SOUZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
@@ -225,13 +256,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
                       &result);
   // This hand contains min-shuntsu but this is still menzen hand because
   // that min-shuntsu has ron tile, not a chii.
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1, 0);
-  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::createMinshuntsu(
+      parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::createMinshuntsu(
+      parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
@@ -254,7 +288,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
   CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_NAN);
   CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_SHA);
   CommonTestUtil::createAnkantsu(parsed_hand.add_element(), TileType::WIND_PE);
-  CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::SANGEN_HAKU, true);
+  CommonTestUtil::createAntoitsu(
+      parsed_hand.add_element(), TileType::SANGEN_HAKU, true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::TANKI);
@@ -265,12 +300,14 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
@@ -290,7 +327,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
@@ -310,7 +348,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnkoutsu(parsed_hand.add_element(), TileType::WIND_NAN);
@@ -325,12 +364,14 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -350,7 +391,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 1);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 1);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -370,7 +412,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -390,7 +433,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -410,7 +454,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -430,7 +475,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
@@ -445,14 +491,17 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
                       TileType::WIND_NAN /* player_wind */,
                       parsed_hand,
                       &result);
-  ASSERT_NO_FATAL_FAILURE(assertEquals({"門前清自摸和", "一盃口", "平和"}, result));
+  ASSERT_NO_FATAL_FAILURE(
+      assertEquals({"門前清自摸和", "一盃口", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::createAnshuntsu(
+      parsed_hand.add_element(), TileType::PINZU_1, 0);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
-  CommonTestUtil::createMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
+  CommonTestUtil::createMinshuntsu(
+      parsed_hand.add_element(), TileType::SOUZU_2);
   CommonTestUtil::createAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
   CommonTestUtil::createAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
@@ -489,16 +538,16 @@ class YakuConditionValidatorTest : public ::testing::Test {
                                               const ParsedHand& parsed_hand) {
     return validate(condition,
                     RichiType::NO_RICHI,
-                    TileType::WIND_TON /* field_wind */,
-                    TileType::WIND_NAN /* player_wind */,
+                    /*field_wind=*/TileType::WIND_TON,
+                    /*player_wind=*/TileType::WIND_NAN,
                     parsed_hand);
   }
 
   YakuConditionValidatorResult::Type validate(const YakuCondition& condition) {
     return validate(condition,
                     RichiType::NO_RICHI,
-                    TileType::WIND_TON /* field_wind */,
-                    TileType::WIND_NAN /* player_wind */,
+                    /*field_wind=*/TileType::WIND_TON,
+                    /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
   }
 
@@ -508,36 +557,38 @@ class YakuConditionValidatorTest : public ::testing::Test {
     parsed_hand.mutable_agari()->CopyFrom(agari);
     return validate(condition,
                     RichiType::NO_RICHI,
-                    TileType::WIND_TON /* field_wind */,
-                    TileType::WIND_NAN /* player_wind */,
+                    /*field_wind=*/TileType::WIND_TON,
+                    /*player_wind=*/TileType::WIND_NAN,
                     parsed_hand);
   }
 
   YakuConditionValidatorResult::Type validate(const YakuCondition& condition,
                                               const RichiType& richi_type) {
-      return validate(condition,
-                      richi_type,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      ParsedHand::default_instance());
+    return validate(condition,
+                    richi_type,
+                    /*field_wind=*/TileType::WIND_TON,
+                    /*player_wind=*/TileType::WIND_NAN,
+                    ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type validateFieldWind(const YakuCondition& condition,
-                                                       const TileType& field_wind) {
-      return validate(condition,
-                      RichiType::NO_RICHI,
-                      field_wind,
-                      TileType::WIND_NAN /* player_wind */,
-                      ParsedHand::default_instance());
+  YakuConditionValidatorResult::Type validateFieldWind(
+      const YakuCondition& condition,
+      const TileType& field_wind) {
+    return validate(condition,
+                    RichiType::NO_RICHI,
+                    field_wind,
+                    /*player_wind=*/TileType::WIND_NAN,
+                    ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type validatePlayerWind(const YakuCondition& condition,
-                                                        const TileType& player_wind) {
-      return validate(condition,
-                      RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      player_wind,
-                      ParsedHand::default_instance());
+  YakuConditionValidatorResult::Type validatePlayerWind(
+      const YakuCondition& condition,
+      const TileType& player_wind) {
+    return validate(condition,
+                    RichiType::NO_RICHI,
+                    /*field_wind=*/TileType::WIND_TON,
+                    player_wind,
+                    ParsedHand::default_instance());
   }
 };
 
@@ -1090,3 +1141,6 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
             validatePlayerWind(condition, TileType::WIND_PE));
 }
+
+}  // namespace mahjong
+}  // namespace ydec
