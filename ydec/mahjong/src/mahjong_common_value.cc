@@ -17,7 +17,7 @@
 namespace ydec {
 namespace mahjong {
 
-const int MahjongCommonValue::KAZOE_YAKUMAN_FAN = 13;
+extern const int KAZOE_YAKUMAN_HAN = 13;
 
 }  // namespace mahjong
 }  // namespace ydec

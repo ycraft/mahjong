@@ -18,14 +18,7 @@
 namespace ydec {
 namespace mahjong {
 
-class MahjongCommonValue {
- private:
-  MahjongCommonValue() {}
-  virtual ~MahjongCommonValue() = 0;
-
- public:
-  static const int KAZOE_YAKUMAN_FAN;
-};
+extern const int KAZOE_YAKUMAN_HAN;
 
 }  // namespace mahjong
 }  // namespace ydec

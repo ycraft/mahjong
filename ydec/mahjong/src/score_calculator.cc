@@ -41,8 +41,8 @@ namespace {
       return 1;
     }
 
-    bool l_kazoe = left.fan() >= MahjongCommonValue::KAZOE_YAKUMAN_FAN;
-    bool r_kazoe = right.fan() >= MahjongCommonValue::KAZOE_YAKUMAN_FAN;
+    bool l_kazoe = left.fan() >= KAZOE_YAKUMAN_HAN;
+    bool r_kazoe = right.fan() >= KAZOE_YAKUMAN_HAN;
 
     if (l_kazoe && !r_kazoe) {
       return -1;
