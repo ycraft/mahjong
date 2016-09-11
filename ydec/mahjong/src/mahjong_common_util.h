@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTILS_H_
-#define YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTILS_H_
+#ifndef YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
+#define YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
 
 #include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
@@ -55,4 +55,4 @@ bool IsMenzen(const ParsedHand& parsed_hand);
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTILS_H_
+#endif  // YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_

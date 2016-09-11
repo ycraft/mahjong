@@ -19,7 +19,7 @@
 #include <functional>
 #include <set>
 
-#include "ydec/mahjong/src/mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_util.h"
 
 namespace ydec {
 namespace mahjong {

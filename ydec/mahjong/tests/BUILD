@@ -15,7 +15,7 @@ cc_test(
     name = "unit_tests",
     srcs = [
       "hand_parser_test.cc",
-      "mahjong_common_utils_test.cc",
+      "mahjong_common_util_test.cc",
       "score_calculator_test.cc",
       "yaku_applier_test.cc",
     ],

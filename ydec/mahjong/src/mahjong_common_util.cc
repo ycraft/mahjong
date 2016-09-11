@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/src/mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_util.h"
 
 #include "ydec/mahjong/src/mahjong_common_value.h"
 

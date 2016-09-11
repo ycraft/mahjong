@@ -20,7 +20,7 @@
 
 #include "ydec/mahjong/src/hand_parser.h"
 #include "ydec/mahjong/src/yaku_applier.h"
-#include "ydec/mahjong/src/mahjong_common_utils.h"
+#include "ydec/mahjong/src/mahjong_common_util.h"
 #include "ydec/mahjong/src/mahjong_common_value.h"
 
 using std::unique_ptr;
