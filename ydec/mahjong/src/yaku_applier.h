@@ -33,7 +33,7 @@ class YakuApplier {
   explicit YakuApplier(const Rule& rule);
   virtual ~YakuApplier();
 
-  void apply(const RichiType& richi_type,
+  void Apply(const RichiType& richi_type,
              const TileType& field_wind,
              const TileType& player_wind,
              const ParsedHand& parsed_hand,
@@ -41,8 +41,8 @@ class YakuApplier {
 
  private:
   const Rule& rule_;
-  std::map<const std::string, const Yaku*> yaku_lookup_table_;
-  std::map<const std::string, std::vector<std::string>>
+  std::map<std::string, const Yaku*> yaku_lookup_table_;
+  std::map<std::string, std::vector<std::string>>
       upper_yaku_lookup_table_;
 };
 
@@ -54,61 +54,61 @@ class YakuConditionValidator {
                          const TileType& player_wind,
                          const ParsedHand& parsed_hand);
 
-  YakuConditionValidatorResult::Type validate();
-  YakuConditionValidatorResult::Type validate(
+  YakuConditionValidatorResult::Type Validate();
+  YakuConditionValidatorResult::Type Validate(
       YakuConditionValidatorResult* result);
 
  private:
   // Agari conditions.
-  bool validateRequiredAgariCondition(
+  bool ValidateRequiredAgariCondition(
       const AgariCondition& condition,
       const Agari& agari);
 
   // Hand Element Type
-  bool validateAllowedHandElementType(
-      const ::google::protobuf::RepeatedField<int>& allowed_types,
+  bool ValidateAllowedHandElementType(
+      const google::protobuf::RepeatedField<int>& allowed_types,
       const HandElementType& type);
 
   // Element Conditions
-  bool validateRequiredElementCondition(
-      const ::google::protobuf::RepeatedPtrField<ElementCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Element >& elements,
+  bool ValidateRequiredElementCondition(
+      const google::protobuf::RepeatedPtrField<ElementCondition>& conditions,
+      const google::protobuf::RepeatedPtrField<Element>& elements,
       bool allow_defining_new_variable);
 
-  bool validateElementCondition(
+  bool ValidateElementCondition(
       const ElementCondition& condition,
       const Element& element,
       bool allow_defining_new_variable);
 
   // TileConditions
-  bool validateAllowedTileCondition(
-      const ::google::protobuf::RepeatedPtrField<TileCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Tile>& tiles,
+  bool ValidateAllowedTileCondition(
+      const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
+      const google::protobuf::RepeatedPtrField<Tile>& tiles,
       bool allow_defining_new_variable);
 
-  bool validateDisallowedTileCondition(
-      const ::google::protobuf::RepeatedPtrField<TileCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Tile>& tiles);
+  bool ValidateDisallowedTileCondition(
+      const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
+      const google::protobuf::RepeatedPtrField<Tile>& tiles);
 
-  bool validateRequiredTileCondition(
-      const ::google::protobuf::RepeatedPtrField<TileCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Tile>& tiles,
+  bool ValidateRequiredTileCondition(
+      const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
+      const google::protobuf::RepeatedPtrField<Tile>& tiles,
       bool allow_defining_new_variable);
 
-  bool validateEitherTileCondition(
-      const ::google::protobuf::RepeatedPtrField<TileCondition >& conditions,
-      const ::google::protobuf::RepeatedPtrField<Tile>& tiles);
+  bool ValidateEitherTileCondition(
+      const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
+      const google::protobuf::RepeatedPtrField<Tile>& tiles);
 
-  bool validateTileCondition(
+  bool ValidateTileCondition(
       const TileCondition& condition,
       const Tile& tile,
       bool allow_defining_new_variable);
 
-  bool setValiableTile(
+  bool SetValiableTile(
       const TileCondition::VariableTileType& type,
       const TileType& tile);
 
-  bool validateVariableTile(
+  bool ValidateVariableTile(
       const TileCondition::VariableTileType& type,
       const TileType& required,
       const TileType& tile);
@@ -121,7 +121,7 @@ class YakuConditionValidator {
 
   YakuConditionValidatorResult* result_;
 
-  ::google::protobuf::RepeatedPtrField<Tile> hand_tiles_;
+  google::protobuf::RepeatedPtrField<Tile> hand_tiles_;
   std::map<TileCondition::VariableTileType, TileType> variable_tiles_;
   std::map<TileCondition::VariableTileType, std::set<TileType>> defined_tiles_;
 };

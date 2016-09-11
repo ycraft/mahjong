@@ -90,7 +90,7 @@ void ScoreCalculator::calculate(const Field& field,
                                 const ParsedHand& parsed_hand,
                                 ScoreCalculatorResult* result) {
   YakuApplierResult yaku_applier_result;
-  yaku_applier_->apply(
+  yaku_applier_->Apply(
       player.hand().richi_type(),
       field.wind(),
       player.wind(),

@@ -73,7 +73,7 @@ YakuApplier::YakuApplier(const Rule& rule) :
 YakuApplier::~YakuApplier() {
 }
 
-void YakuApplier::apply(const RichiType& richi_type,
+void YakuApplier::Apply(const RichiType& richi_type,
                         const TileType& field_wind,
                         const TileType& player_wind,
                         const ParsedHand& parsed_hand,
@@ -97,7 +97,7 @@ void YakuApplier::apply(const RichiType& richi_type,
                                      player_wind,
                                      parsed_hand);
     YakuConditionValidatorResult validator_result;
-    validator.validate(&validator_result);
+    validator.Validate(&validator_result);
 
     if (validator_result.type() == YakuConditionValidatorResult::OK) {
       applied_yaku_names.insert(yaku.name());
@@ -141,22 +141,22 @@ YakuConditionValidator::YakuConditionValidator(const YakuCondition& condition,
   }
 }
 
-YakuConditionValidatorResult::Type YakuConditionValidator::validate() {
+YakuConditionValidatorResult::Type YakuConditionValidator::Validate() {
   YakuConditionValidatorResult result;
-  return validate(&result);
+  return Validate(&result);
 }
 
-YakuConditionValidatorResult::Type YakuConditionValidator::validate(
+YakuConditionValidatorResult::Type YakuConditionValidator::Validate(
     YakuConditionValidatorResult* result) {
   result_ = result;
 
-  if (!setValiableTile(TileCondition::VARIABLE_BAKAZE_TILE, field_wind_)) {
+  if (!SetValiableTile(TileCondition::VARIABLE_BAKAZE_TILE, field_wind_)) {
     std::cerr << "Failed to set bakaze variable tile." << std::endl;
     result_->set_type(YakuConditionValidatorResult::ERROR_INTERNAL_ERROR);
     return result_->type();
   }
 
-  if (!setValiableTile(TileCondition::VARIABLE_JIKAZE_TILE, player_wind_)) {
+  if (!SetValiableTile(TileCondition::VARIABLE_JIKAZE_TILE, player_wind_)) {
     std::cerr << "Failed to set jikaze variable tile." << std::endl;
     result_->set_type(YakuConditionValidatorResult::ERROR_INTERNAL_ERROR);
     return result_->type();
@@ -197,7 +197,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
 
   // Validate agari condition.
   if (condition_.has_required_agari_condition()) {
-    if (!validateRequiredAgariCondition(condition_.required_agari_condition(),
+    if (!ValidateRequiredAgariCondition(condition_.required_agari_condition(),
                                         parsed_hand_.agari())) {
       result_->set_type(
           YakuConditionValidatorResult::NG_REQUIRED_AGARI_CONDITION);
@@ -206,7 +206,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
   }
 
   // Validate allowed tile condition
-  if (!validateAllowedTileCondition(condition_.allowed_tile_condition(),
+  if (!ValidateAllowedTileCondition(condition_.allowed_tile_condition(),
                                     hand_tiles_,
                                     true /* allow_defining_new_variable */)) {
     result_->set_type(YakuConditionValidatorResult::NG_ALLOWED_TILE_CONDITION);
@@ -214,7 +214,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
   }
 
   // Validate disallowed tile condition
-  if (!validateDisallowedTileCondition(condition_.disallowed_tile_condition(),
+  if (!ValidateDisallowedTileCondition(condition_.disallowed_tile_condition(),
                                        hand_tiles_)) {
     result_->set_type(
         YakuConditionValidatorResult::NG_DISALLOWED_TILE_CONDITION);
@@ -222,7 +222,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
   }
 
   // Validate required tile condition
-  if (!validateRequiredTileCondition(condition_.required_tile_condition(),
+  if (!ValidateRequiredTileCondition(condition_.required_tile_condition(),
                                      hand_tiles_,
                                      true /* allow_defining_new_variable */)) {
     result_->set_type(
@@ -231,7 +231,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
   }
 
   // Validate element conditions
-  if (!validateRequiredElementCondition(
+  if (!ValidateRequiredElementCondition(
       condition_.required_element_condition(),
       parsed_hand_.element(),
       true /* allow_defining_new_variable */)) {
@@ -244,7 +244,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::validate(
   return result_->type();
 }
 
-bool YakuConditionValidator::validateRequiredAgariCondition(
+bool YakuConditionValidator::ValidateRequiredAgariCondition(
     const AgariCondition& condition,
     const Agari& agari) {
   // Check type.
@@ -300,7 +300,7 @@ bool YakuConditionValidator::validateRequiredAgariCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateAllowedHandElementType(
+bool YakuConditionValidator::ValidateAllowedHandElementType(
     const RepeatedField<int>& allowed_types,
     const HandElementType& type) {
   // If the number of the given conditions is zero, this method construes as
@@ -319,7 +319,7 @@ bool YakuConditionValidator::validateAllowedHandElementType(
   return false;
 }
 
-bool YakuConditionValidator::validateRequiredElementCondition(
+bool YakuConditionValidator::ValidateRequiredElementCondition(
     const RepeatedPtrField<ElementCondition>& conditions,
     const RepeatedPtrField<Element>& elements,
     bool allow_defining_new_variable) {
@@ -344,7 +344,7 @@ bool YakuConditionValidator::validateRequiredElementCondition(
         if (used[i]) {
           continue;
         }
-        if (!validateElementCondition(condition,
+        if (!ValidateElementCondition(condition,
                                       elements.Get(i),
                                       new_variable)) {
           continue;
@@ -366,32 +366,32 @@ bool YakuConditionValidator::validateRequiredElementCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateElementCondition(
+bool YakuConditionValidator::ValidateElementCondition(
     const ElementCondition& condition,
     const Element& element,
     bool allow_defining_new_variable) {
   // Check Hand Element Type
-  if (!validateAllowedHandElementType(condition.allowed_element_type(),
+  if (!ValidateAllowedHandElementType(condition.allowed_element_type(),
                                       element.type())) {
     return false;
   }
 
   // Validate allowed_tile_condition.
-  if (!validateAllowedTileCondition(condition.allowed_tile_condition(),
+  if (!ValidateAllowedTileCondition(condition.allowed_tile_condition(),
                                     element.tile(),
                                     allow_defining_new_variable)) {
     return false;
   }
 
   // Validate required_tile_condition.
-  if (!validateRequiredTileCondition(condition.required_tile_condition(),
+  if (!ValidateRequiredTileCondition(condition.required_tile_condition(),
                                      element.tile(),
                                      allow_defining_new_variable)) {
     return false;
   }
 
   // Validate either_tile_condition.
-  if (!validateEitherTileCondition(condition.either_tile_condition(),
+  if (!ValidateEitherTileCondition(condition.either_tile_condition(),
                                    element.tile())) {
     return false;
   }
@@ -399,7 +399,7 @@ bool YakuConditionValidator::validateElementCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateAllowedTileCondition(
+bool YakuConditionValidator::ValidateAllowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const RepeatedPtrField<Tile >& tiles,
     bool allow_defining_new_variable) {
@@ -418,7 +418,7 @@ bool YakuConditionValidator::validateAllowedTileCondition(
         new_variable <= (allow_defining_new_variable ? 1 : 0);
         ++new_variable) {
       for (const TileCondition& condition : conditions) {
-        if (validateTileCondition(condition, tile, new_variable)) {
+        if (ValidateTileCondition(condition, tile, new_variable)) {
           found = true;
           break;
         }
@@ -435,7 +435,7 @@ bool YakuConditionValidator::validateAllowedTileCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateDisallowedTileCondition(
+bool YakuConditionValidator::ValidateDisallowedTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const RepeatedPtrField<Tile >& tiles) {
   // If the number of the given conditions is zero, this method construes as
@@ -446,7 +446,7 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
 
   for (const Tile& tile : tiles) {
     for (const TileCondition& condition : conditions) {
-      if (validateTileCondition(condition, tile,
+      if (ValidateTileCondition(condition, tile,
                                 /*allow_defining_new_variable=*/false)) {
         return false;
       }
@@ -456,7 +456,7 @@ bool YakuConditionValidator::validateDisallowedTileCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateRequiredTileCondition(
+bool YakuConditionValidator::ValidateRequiredTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const RepeatedPtrField<Tile >& tiles,
     bool allow_defining_new_variable) {
@@ -481,7 +481,7 @@ bool YakuConditionValidator::validateRequiredTileCondition(
         if (used[i]) {
           continue;
         }
-        if (!validateTileCondition(condition, tiles.Get(i),
+        if (!ValidateTileCondition(condition, tiles.Get(i),
                                    new_variable)) {
           continue;
         }
@@ -501,7 +501,7 @@ bool YakuConditionValidator::validateRequiredTileCondition(
   return true;
 }
 
-bool YakuConditionValidator::validateEitherTileCondition(
+bool YakuConditionValidator::ValidateEitherTileCondition(
     const RepeatedPtrField<TileCondition >& conditions,
     const RepeatedPtrField<Tile >& tiles) {
   // If the number of the given conditions is zero, this method construes as
@@ -512,7 +512,7 @@ bool YakuConditionValidator::validateEitherTileCondition(
 
   for (const TileCondition& condition : conditions) {
     for (const Tile& tile : tiles) {
-      if (validateTileCondition(condition, tile,
+      if (ValidateTileCondition(condition, tile,
                                 false /* allow_defining_new_variable */)) {
         return true;
       }
@@ -522,7 +522,7 @@ bool YakuConditionValidator::validateEitherTileCondition(
   return false;
 }
 
-bool YakuConditionValidator::validateTileCondition(
+bool YakuConditionValidator::ValidateTileCondition(
     const TileCondition& condition,
     const Tile& tile,
     bool allow_defining_new_variable) {
@@ -580,13 +580,13 @@ bool YakuConditionValidator::validateTileCondition(
     //   - return false if allow_defining_new_variable is false.
     if (iter == variable_tiles_.end()) {
       if (allow_defining_new_variable) {
-        return setValiableTile(condition.required_variable_tile(), tile.type());
+        return SetValiableTile(condition.required_variable_tile(), tile.type());
       } else {
         return false;
       }
     }
 
-    if (!validateVariableTile(condition.required_variable_tile(),
+    if (!ValidateVariableTile(condition.required_variable_tile(),
                               iter->second, tile.type())) {
       return false;
     }
@@ -595,7 +595,7 @@ bool YakuConditionValidator::validateTileCondition(
   return true;
 }
 
-bool YakuConditionValidator::setValiableTile(
+bool YakuConditionValidator::SetValiableTile(
     const TileCondition::VariableTileType& type,
     const TileType& tile) {
   // If the given variable_tile_type is already defined with other tile, this
@@ -603,7 +603,7 @@ bool YakuConditionValidator::setValiableTile(
   {
     const auto& iter = variable_tiles_.find(type);
     if (iter != variable_tiles_.end()) {
-      return validateVariableTile(type, iter->second, tile);
+      return ValidateVariableTile(type, iter->second, tile);
     }
   }
 
@@ -665,7 +665,7 @@ bool YakuConditionValidator::setValiableTile(
   }
 }
 
-bool YakuConditionValidator::validateVariableTile(
+bool YakuConditionValidator::ValidateVariableTile(
     const TileCondition::VariableTileType& type,
     const TileType& required,
     const TileType& tile) {
