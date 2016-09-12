@@ -15,6 +15,8 @@
 #ifndef YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
 #define YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
 
+#include <string>
+
 #include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
 
 namespace ydec {

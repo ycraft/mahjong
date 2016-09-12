@@ -15,6 +15,7 @@
 #include "ydec/mahjong/src/mahjong_common_util.h"
 
 #include <algorithm>
+#include <string>
 
 #include "ydec/mahjong/src/mahjong_common_value.h"
 

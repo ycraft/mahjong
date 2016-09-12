@@ -84,7 +84,8 @@ class HandParserTest : public testing::Test {
     for (size_t i = 0; i < sorted_actual_state.size(); ++i) {
       sorted_actual_state[i] = actual.state(i);
     }
-    sort(sorted_expected_agari_state.begin(), sorted_expected_agari_state.end());
+    sort(sorted_expected_agari_state.begin(),
+         sorted_expected_agari_state.end());
     sort(sorted_actual_state.begin(), sorted_actual_state.end());
     ASSERT_EQ(sorted_expected_agari_state, sorted_actual_state);
   }
@@ -122,7 +123,8 @@ class HandParserTest : public testing::Test {
         string expected_element_str;
         TextFormat::PrintToString(expected_element,
                                   &expected_element_str);
-        FAIL() << "Expected element not found: " << endl << expected_element_str;
+        FAIL() << "Expected element not found: " << endl
+               << expected_element_str;
       }
     }
   }

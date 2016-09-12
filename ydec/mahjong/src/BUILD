@@ -1,3 +1,5 @@
+load("//ydec/mahjong/tools:cc_lint_test.bzl", "cc_lint_test")
+
 cc_library(
     name = "mahjong_score_calculator_lib",
     srcs = [
@@ -18,4 +20,9 @@ cc_library(
       "//ydec/mahjong/proto:mahjong-scorecalculator",
     ],
     visibility = ["//visibility:public"],
+)
+
+cc_lint_test(
+    name = "cc_lint_test",
+    srcs = glob(["*.h", "*.cc"]),
 )

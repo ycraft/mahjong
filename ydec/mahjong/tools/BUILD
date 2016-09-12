@@ -1,3 +1,5 @@
+load("//ydec/mahjong/tools:cc_lint_test.bzl", "cc_lint_test")
+
 cc_binary(
     name = "update_rule",
     srcs = ["update_rule.cc"],
@@ -5,4 +7,9 @@ cc_binary(
       "//ydec/mahjong/proto:mahjong-rule",
     ],
     visibility = ["//visibility:public"],
+)
+
+cc_lint_test(
+    name = "cc_lint_test",
+    srcs = glob(["*.h", "*.cc"]),
 )
