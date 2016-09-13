@@ -24,6 +24,73 @@
 namespace ydec {
 namespace mahjong {
 
+namespace {
+inline bool CheckSame(const Tile& lhs, const Tile& rhs) {
+  if (lhs.type() != rhs.type() || lhs.state_size() != rhs.state_size()) {
+    return false;
+  }
+
+  // This equality check is designed by assuming that the given state does not
+  // contain duplicated objects.
+  for (const int state : lhs.state()) {
+    if (std::find(rhs.state().begin(),
+                  rhs.state().end(),
+                  static_cast<TileState>(state)) == rhs.state().end()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+inline bool CheckSame(const Element& lhs, const Element& rhs) {
+  static bool is_used[10];
+
+  if (lhs.type() != rhs.type()) return false;
+  if (lhs.tile_size() != rhs.tile_size()) return false;
+
+  memset(is_used, 0, sizeof(is_used));
+  for (const Tile& tile : lhs.tile()) {
+    bool found = false;
+    for (int i = 0; i < rhs.tile_size(); ++i) {
+      if (is_used[i]) continue;
+      if (!CheckSame(tile, rhs.tile(i))) continue;
+      is_used[i] = true;
+      found = true;
+      break;
+    }
+    if (!found) return false;
+  }
+
+  return true;
+}
+
+inline bool CheckSame(const ParsedHand& lhs, const ParsedHand& rhs) {
+  static bool is_used[10];
+
+  if (lhs.element_size() != rhs.element_size()
+      || lhs.agari().format() != rhs.agari().format()
+      || lhs.machi_type() != rhs.machi_type()) {
+    return false;
+  }
+
+  memset(is_used, 0, sizeof(is_used));
+  for (const Element& element : lhs.element()) {
+    bool found = false;
+    for (int i = 0; i < rhs.element_size(); ++i) {
+      if (is_used[i]) continue;
+      if (!CheckSame(element, rhs.element(i))) continue;
+      is_used[i] = true;
+      found = true;
+      break;
+    }
+    if (!found) return false;
+  }
+
+  return true;
+}
+}  // namespace
+
 HandParser::HandParser() : hand_(nullptr), num_free_tiles_(0),
     result_(nullptr) {
 }
@@ -355,77 +422,12 @@ void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
   }
 }
 
-inline bool checkSame(const Tile& lhs, const Tile& rhs) {
-  if (lhs.type() != rhs.type() || lhs.state_size() != rhs.state_size()) {
-    return false;
-  }
-
-  // This equality check is designed by assuming that the given state does not
-  // contain duplicated objects.
-  for (const int state : lhs.state()) {
-    if (std::find(rhs.state().begin(),
-                  rhs.state().end(),
-                  static_cast<TileState>(state)) == rhs.state().end()) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-inline bool checkSame(const Element& lhs, const Element& rhs) {
-  static bool is_used[10];
-
-  if (lhs.type() != rhs.type()) return false;
-  if (lhs.tile_size() != rhs.tile_size()) return false;
-
-  memset(is_used, 0, sizeof(is_used));
-  for (const Tile& tile : lhs.tile()) {
-    bool found = false;
-    for (int i = 0; i < rhs.tile_size(); ++i) {
-      if (is_used[i]) continue;
-      if (!checkSame(tile, rhs.tile(i))) continue;
-      is_used[i] = true;
-      found = true;
-      break;
-    }
-    if (!found) return false;
-  }
-
-  return true;
-}
-
-inline bool checkSame(const ParsedHand& lhs, const ParsedHand& rhs) {
-  static bool is_used[10];
-
-  if (lhs.element_size() != rhs.element_size()
-      || lhs.agari().format() != rhs.agari().format()
-      || lhs.machi_type() != rhs.machi_type()) {
-    return false;
-  }
-
-  memset(is_used, 0, sizeof(is_used));
-  for (const Element& element : lhs.element()) {
-    bool found = false;
-    for (int i = 0; i < rhs.element_size(); ++i) {
-      if (is_used[i]) continue;
-      if (!checkSame(element, rhs.element(i))) continue;
-      is_used[i] = true;
-      found = true;
-      break;
-    }
-    if (!found) return false;
-  }
-
-  return true;
-}
-
 void HandParser::DeduplicateResult() {
   HandParserResult dedupedResult;
   for (const ParsedHand& parsed_hand : result_->parsed_hand()) {
     bool duplicated = false;
     for (const ParsedHand& entry : dedupedResult.parsed_hand()) {
-      duplicated |= checkSame(parsed_hand, entry);
+      duplicated |= CheckSame(parsed_hand, entry);
       if (duplicated) break;
     }
     if (!duplicated) dedupedResult.add_parsed_hand()->CopyFrom(parsed_hand);
