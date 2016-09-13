@@ -30,38 +30,32 @@ class CommonTestUtil {
  public:
   static Element CreateAntoitsu(const TileType& tile_type,
                                 bool include_agari_hai = false);
-  static void CreateAntoitsu(Element* element,
-                             const TileType& tile_type,
+  static void CreateAntoitsu(Element* element, const TileType& tile_type,
                              bool include_agari_hai = false);
 
   static Element CreateMintoitsu(const TileType& tile_type,
                                  bool include_agari_hai = false);
-  static void CreateMintoitsu(Element* element,
-                              const TileType& tile_type,
+  static void CreateMintoitsu(Element* element, const TileType& tile_type,
                               bool include_agari_hai = false);
 
   static Element CreateAnkantsu(const TileType& tile_type,
                                 bool include_agari_hai = false);
-  static void CreateAnkantsu(Element* element,
-                             const TileType& tile_type,
+  static void CreateAnkantsu(Element* element, const TileType& tile_type,
                              bool include_agari_hai = false);
 
   static Element CreateMinkantsu(const TileType& tile_type,
                                  bool include_agari_hai = false);
-  static void CreateMinkantsu(Element* element,
-                              const TileType& tile_type,
+  static void CreateMinkantsu(Element* element, const TileType& tile_type,
                               bool include_agari_hai = false);
 
   static Element CreateAnkoutsu(const TileType& tile_type,
                                 bool include_agari_hai = false);
-  static void CreateAnkoutsu(Element* element,
-                             const TileType& tile_type,
+  static void CreateAnkoutsu(Element* element, const TileType& tile_type,
                              bool include_agari_hai = false);
 
   static Element CreateMinkoutsu(const TileType& tile_type,
                                  bool include_agari_hai = false);
-  static void CreateMinkoutsu(Element* element,
-                              const TileType& tile_type,
+  static void CreateMinkoutsu(Element* element, const TileType& tile_type,
                               bool include_agari_hai = false);
 
   static Element CreateAnshuntsu(const TileType& smallest_tile_type,

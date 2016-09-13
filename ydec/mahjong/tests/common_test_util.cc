@@ -18,66 +18,58 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-void CreateToitsu(Element* element,
-                  const TileType& tile_type,
-                  bool tsumo,
+void CreateToitsu(Element* element, const TileType& tile_type, bool tsumo,
                   bool include_agari_hai) {
-  element->set_type(
-      tsumo ? HandElementType::ANTOITSU : HandElementType::MINTOITSU);
+  element->set_type(tsumo ? HandElementType::ANTOITSU
+                          : HandElementType::MINTOITSU);
   for (int i = 0; i < 2; ++i) {
     Tile* tile = element->add_tile();
     tile->set_type(tile_type);
     if (include_agari_hai && i == 0) {
-      tile->add_state(
-          tsumo ? TileState::AGARI_HAI_TSUMO : TileState::AGARI_HAI_RON);
+      tile->add_state(tsumo ? TileState::AGARI_HAI_TSUMO
+                            : TileState::AGARI_HAI_RON);
     }
   }
 }
 
-void CreateKantsu(Element* element,
-                  const TileType& tile_type,
-                  bool tsumo,
+void CreateKantsu(Element* element, const TileType& tile_type, bool tsumo,
                   bool include_agari_hai) {
-  element->set_type(
-      tsumo ? HandElementType::ANKANTSU : HandElementType::MINKANTSU);
+  element->set_type(tsumo ? HandElementType::ANKANTSU
+                          : HandElementType::MINKANTSU);
   for (int i = 0; i < 4; ++i) {
     Tile* tile = element->add_tile();
     tile->set_type(tile_type);
     if (include_agari_hai && i == 0) {
-      tile->add_state(
-          tsumo ? TileState::AGARI_HAI_TSUMO : TileState::AGARI_HAI_RON);
+      tile->add_state(tsumo ? TileState::AGARI_HAI_TSUMO
+                            : TileState::AGARI_HAI_RON);
     }
   }
 }
 
-void CreateKoutsu(Element* element,
-                  const TileType& tile_type,
-                  bool tsumo,
+void CreateKoutsu(Element* element, const TileType& tile_type, bool tsumo,
                   bool include_agari_hai) {
-  element->set_type(
-      tsumo ? HandElementType::ANKOUTSU : HandElementType::MINKOUTSU);
+  element->set_type(tsumo ? HandElementType::ANKOUTSU
+                          : HandElementType::MINKOUTSU);
   for (int i = 0; i < 3; ++i) {
     Tile* tile = element->add_tile();
     tile->set_type(tile_type);
     if (include_agari_hai && i == 0) {
-      tile->add_state(
-          tsumo ? TileState::AGARI_HAI_TSUMO : TileState::AGARI_HAI_RON);
+      tile->add_state(tsumo ? TileState::AGARI_HAI_TSUMO
+                            : TileState::AGARI_HAI_RON);
     }
   }
 }
 
-void CreateShuntsu(Element* element,
-                   const TileType& smallest_tile_type,
-                   bool tsumo,
-                   int agari_hai_index) {
-  element->set_type(
-      tsumo ? HandElementType::ANSHUNTSU : HandElementType::MINSHUNTSU);
+void CreateShuntsu(Element* element, const TileType& smallest_tile_type,
+                   bool tsumo, int agari_hai_index) {
+  element->set_type(tsumo ? HandElementType::ANSHUNTSU
+                          : HandElementType::MINSHUNTSU);
   for (int i = 0; i < 3; ++i) {
     Tile* tile = element->add_tile();
     tile->set_type(static_cast<TileType>(smallest_tile_type + i));
     if (i == agari_hai_index) {
-      tile->add_state(
-          tsumo ? TileState::AGARI_HAI_TSUMO : TileState::AGARI_HAI_RON);
+      tile->add_state(tsumo ? TileState::AGARI_HAI_TSUMO
+                            : TileState::AGARI_HAI_RON);
     }
   }
 }
@@ -93,8 +85,7 @@ Element CommonTestUtil::CreateAntoitsu(const TileType& tile_type,
   return element;
 }
 
-void CommonTestUtil::CreateAntoitsu(Element* element,
-                                    const TileType& tile_type,
+void CommonTestUtil::CreateAntoitsu(Element* element, const TileType& tile_type,
                                     bool include_agari_hai) {
   CreateToitsu(element, tile_type, true, include_agari_hai);
 }
@@ -119,8 +110,7 @@ Element CommonTestUtil::CreateAnkantsu(const TileType& tile_type,
   return element;
 }
 
-void CommonTestUtil::CreateAnkantsu(Element* element,
-                                    const TileType& tile_type,
+void CommonTestUtil::CreateAnkantsu(Element* element, const TileType& tile_type,
                                     bool include_agari_hai) {
   CreateKantsu(element, tile_type, true, include_agari_hai);
 }
@@ -145,8 +135,7 @@ Element CommonTestUtil::CreateAnkoutsu(const TileType& tile_type,
   return element;
 }
 
-void CommonTestUtil::CreateAnkoutsu(Element* element,
-                                    const TileType& tile_type,
+void CommonTestUtil::CreateAnkoutsu(Element* element, const TileType& tile_type,
                                     bool include_agari_hai) {
   CreateKoutsu(element, tile_type, true, include_agari_hai);
 }

@@ -33,17 +33,14 @@ class YakuApplier {
   explicit YakuApplier(const Rule& rule);
   virtual ~YakuApplier();
 
-  void Apply(const RichiType& richi_type,
-             const TileType& field_wind,
-             const TileType& player_wind,
-             const ParsedHand& parsed_hand,
+  void Apply(const RichiType& richi_type, const TileType& field_wind,
+             const TileType& player_wind, const ParsedHand& parsed_hand,
              YakuApplierResult* result) const;
 
  private:
   const Rule& rule_;
   std::map<std::string, const Yaku*> yaku_lookup_table_;
-  std::map<std::string, std::vector<std::string>>
-      upper_yaku_lookup_table_;
+  std::map<std::string, std::vector<std::string>> upper_yaku_lookup_table_;
 };
 
 class YakuConditionValidator {
@@ -60,9 +57,8 @@ class YakuConditionValidator {
 
  private:
   // Agari conditions.
-  bool ValidateRequiredAgariCondition(
-      const AgariCondition& condition,
-      const Agari& agari);
+  bool ValidateRequiredAgariCondition(const AgariCondition& condition,
+                                      const Agari& agari);
 
   // Hand Element Type
   bool ValidateAllowedHandElementType(
@@ -75,10 +71,9 @@ class YakuConditionValidator {
       const google::protobuf::RepeatedPtrField<Element>& elements,
       bool allow_defining_new_variable);
 
-  bool ValidateElementCondition(
-      const ElementCondition& condition,
-      const Element& element,
-      bool allow_defining_new_variable);
+  bool ValidateElementCondition(const ElementCondition& condition,
+                                const Element& element,
+                                bool allow_defining_new_variable);
 
   // TileConditions
   bool ValidateAllowedTileCondition(
@@ -99,19 +94,14 @@ class YakuConditionValidator {
       const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
       const google::protobuf::RepeatedPtrField<Tile>& tiles);
 
-  bool ValidateTileCondition(
-      const TileCondition& condition,
-      const Tile& tile,
-      bool allow_defining_new_variable);
+  bool ValidateTileCondition(const TileCondition& condition, const Tile& tile,
+                             bool allow_defining_new_variable);
 
-  bool SetValiableTile(
-      const TileCondition::VariableTileType& type,
-      const TileType& tile);
+  bool SetValiableTile(const TileCondition::VariableTileType& type,
+                       const TileType& tile);
 
-  bool ValidateVariableTile(
-      const TileCondition::VariableTileType& type,
-      const TileType& required,
-      const TileType& tile);
+  bool ValidateVariableTile(const TileCondition::VariableTileType& type,
+                            const TileType& required, const TileType& tile);
 
   const YakuCondition& condition_;
   const RichiType& richi_type_;

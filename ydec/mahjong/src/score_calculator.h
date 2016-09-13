@@ -29,15 +29,12 @@ class ScoreCalculator {
  public:
   explicit ScoreCalculator(std::unique_ptr<Rule> rule);
 
-  void Calculate(const Field& field,
-                 const Player& player,
+  void Calculate(const Field& field, const Player& player,
                  ScoreCalculatorResult* result);
 
  private:
-  void Calculate(const Field& field,
-                 const Player& player,
-                 const ParsedHand& parsed_hand,
-                 ScoreCalculatorResult* result);
+  void Calculate(const Field& field, const Player& player,
+                 const ParsedHand& parsed_hand, ScoreCalculatorResult* result);
 
   std::unique_ptr<Rule> rule_;
   std::unique_ptr<HandParser> hand_parser_;

@@ -19,9 +19,9 @@
 #include <utility>
 
 #include "ydec/mahjong/src/hand_parser.h"
-#include "ydec/mahjong/src/yaku_applier.h"
 #include "ydec/mahjong/src/mahjong_common_util.h"
 #include "ydec/mahjong/src/mahjong_common_value.h"
+#include "ydec/mahjong/src/yaku_applier.h"
 
 using std::unique_ptr;
 
@@ -29,48 +29,46 @@ namespace ydec {
 namespace mahjong {
 
 namespace {
-  // Returns -1 if left one has better score.
-  // Returns 1 if right one has better score.
-  // Returns 0 if both ones have the same score.
-  int Compare(const ScoreCalculatorResult& left,
-              const ScoreCalculatorResult& right) {
-    if (left.yakuman() > right.yakuman()) {
-      return -1;
-    } else if (left.yakuman() < right.yakuman()) {
-      return 1;
-    }
-
-    bool l_kazoe = left.fan() >= KAZOE_YAKUMAN_HAN;
-    bool r_kazoe = right.fan() >= KAZOE_YAKUMAN_HAN;
-
-    if (l_kazoe && !r_kazoe) {
-      return -1;
-    } else if (!l_kazoe && r_kazoe) {
-      return 1;
-    }
-
-    int l_score = left.fu() * (1 << left.fan());
-    int r_score = right.fu() * (1 << right.fan());
-
-    if (l_score > r_score) {
-      return -1;
-    } else if (l_score < r_score) {
-      return 1;
-    }
-
-    return 0;
+// Returns -1 if left one has better score.
+// Returns 1 if right one has better score.
+// Returns 0 if both ones have the same score.
+int Compare(const ScoreCalculatorResult& left,
+            const ScoreCalculatorResult& right) {
+  if (left.yakuman() > right.yakuman()) {
+    return -1;
+  } else if (left.yakuman() < right.yakuman()) {
+    return 1;
   }
+
+  bool l_kazoe = left.fan() >= KAZOE_YAKUMAN_HAN;
+  bool r_kazoe = right.fan() >= KAZOE_YAKUMAN_HAN;
+
+  if (l_kazoe && !r_kazoe) {
+    return -1;
+  } else if (!l_kazoe && r_kazoe) {
+    return 1;
+  }
+
+  int l_score = left.fu() * (1 << left.fan());
+  int r_score = right.fu() * (1 << right.fan());
+
+  if (l_score > r_score) {
+    return -1;
+  } else if (l_score < r_score) {
+    return 1;
+  }
+
+  return 0;
+}
 
 }  // namespace
 
-ScoreCalculator::ScoreCalculator(unique_ptr<Rule> rule) :
-    rule_(move(rule)),
-    hand_parser_(new HandParser),
-    yaku_applier_(new YakuApplier(*rule_)) {
-}
+ScoreCalculator::ScoreCalculator(unique_ptr<Rule> rule)
+    : rule_(move(rule)),
+      hand_parser_(new HandParser),
+      yaku_applier_(new YakuApplier(*rule_)) {}
 
-void ScoreCalculator::Calculate(const Field& field,
-                                const Player& player,
+void ScoreCalculator::Calculate(const Field& field, const Player& player,
                                 ScoreCalculatorResult* result) {
   HandParserResult hand_parser_result;
   hand_parser_->Parse(player.hand(), &hand_parser_result);
@@ -84,17 +82,12 @@ void ScoreCalculator::Calculate(const Field& field,
   }
 }
 
-void ScoreCalculator::Calculate(const Field& field,
-                                const Player& player,
+void ScoreCalculator::Calculate(const Field& field, const Player& player,
                                 const ParsedHand& parsed_hand,
                                 ScoreCalculatorResult* result) {
   YakuApplierResult yaku_applier_result;
-  yaku_applier_->Apply(
-      player.hand().richi_type(),
-      field.wind(),
-      player.wind(),
-      parsed_hand,
-      &yaku_applier_result);
+  yaku_applier_->Apply(player.hand().richi_type(), field.wind(), player.wind(),
+                       parsed_hand, &yaku_applier_result);
 
   if (yaku_applier_result.yaku_size() == 0) {
     return;
@@ -143,15 +136,11 @@ void ScoreCalculator::Calculate(const Field& field,
   *result->mutable_yaku() = yaku_applier_result.yaku();
 
   result->set_fu(FuCalculator(field.wind(), player.wind())
-      .Calculate(parsed_hand, yaku_applier_result));
+                     .Calculate(parsed_hand, yaku_applier_result));
 }
 
-FuCalculator::FuCalculator(
-    TileType field_wind,
-    TileType player_wind)
-    : field_wind_(field_wind),
-      player_wind_(player_wind) {
-}
+FuCalculator::FuCalculator(TileType field_wind, TileType player_wind)
+    : field_wind_(field_wind), player_wind_(player_wind) {}
 
 int FuCalculator::Calculate(
     const ParsedHand& parsed_hand,
@@ -182,8 +171,7 @@ int FuCalculator::Calculate(
   return ((fu + 9) / 10) * 10;
 }
 
-int FuCalculator::GetAgariFu(AgariType agari_type,
-                             bool is_menzen) const {
+int FuCalculator::GetAgariFu(AgariType agari_type, bool is_menzen) const {
   if (agari_type == AgariType::RON && is_menzen) {
     return 10;
   }
@@ -216,10 +204,10 @@ int FuCalculator::GetElementFu(const Element& element) const {
 }
 
 int FuCalculator::GetMachiFu(MachiType machi_type) const {
-  return IsMachiTypeMatched(
-      MachiType::MACHI_2FU,
-      machi_type,
-      MachiType::MASK_MACHI_FU) ? 2 : 0;
+  return IsMachiTypeMatched(MachiType::MACHI_2FU, machi_type,
+                            MachiType::MASK_MACHI_FU)
+             ? 2
+             : 0;
 }
 
 }  // namespace mahjong

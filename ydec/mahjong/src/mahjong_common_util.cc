@@ -28,8 +28,7 @@ namespace mahjong {
 namespace {
 
 bool IsMatched(unsigned int required, unsigned int actual, unsigned int mask) {
-  return !(required & mask)
-      || (required & mask) == (actual & mask);
+  return !(required & mask) || (required & mask) == (actual & mask);
 }
 
 bool IsMatched(unsigned int required, unsigned int actual) {
@@ -45,13 +44,11 @@ bool IsMatchedForHierarchalData(unsigned int required, unsigned int actual) {
 
 bool ContainsRequiredTileState(const TileState required_state,
                                const Tile& tile) {
-  return std::find_if(
-      tile.state().begin(),
-      tile.state().end(),
-      [&required_state](int state) {
-        return IsTileStateMatched(required_state,
-                                  static_cast<TileState>(state));
-      }) != tile.state().end();
+  return std::find_if(tile.state().begin(), tile.state().end(),
+                      [&required_state](int state) {
+                        return IsTileStateMatched(
+                            required_state, static_cast<TileState>(state));
+                      }) != tile.state().end();
 }
 
 }  // namespace
@@ -60,11 +57,10 @@ bool IsSequentialTileType(TileType tile) {
   return (tile & MASK_TILE_SEQUENTIAL) == SEQUENTIAL_TILE;
 }
 
-
 bool IsTileTypeMatched(TileType required, TileType tile) {
-  return IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER)
-      && IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND)
-      && IsTileTypeMatched(required, tile, TileType::MASK_TILE_SEQUENTIAL);
+  return IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER) &&
+         IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND) &&
+         IsTileTypeMatched(required, tile, TileType::MASK_TILE_SEQUENTIAL);
 }
 
 bool IsTileTypeMatched(TileType required, TileType tile, TileType mask) {
@@ -81,8 +77,8 @@ bool IsHandElementTypeMatched(HandElementType required,
 }
 
 bool IsMachiTypeMatched(MachiType required, MachiType type) {
-  return IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU)
-      && IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
+  return IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_FU) &&
+         IsMachiTypeMatched(required, type, MachiType::MASK_MACHI_KIND);
 }
 
 bool IsMachiTypeMatched(MachiType required, MachiType type, MachiType mask) {
@@ -106,10 +102,10 @@ bool IsRichiTypeMatched(RichiType required, RichiType actual) {
 }
 
 bool IsYaochuhai(TileType tile) {
-  return
-      !IsSequentialTileType(tile) ||
-      IsTileTypeMatched(TileType::TILE_1, tile, TileType::MASK_TILE_NUMBER) ||
-      IsTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
+  return !IsSequentialTileType(tile) ||
+         IsTileTypeMatched(TileType::TILE_1, tile,
+                           TileType::MASK_TILE_NUMBER) ||
+         IsTileTypeMatched(TileType::TILE_9, tile, TileType::MASK_TILE_NUMBER);
 }
 
 bool IsMenzen(const ParsedHand& hand) {
@@ -123,9 +119,8 @@ bool IsMenzen(const ParsedHand& hand) {
       bool contains_agari_tile = false;
       for (const Tile& tile : element.tile()) {
         for (int state : tile.state()) {
-          contains_agari_tile |=
-              IsTileStateMatched(TileState::AGARI_HAI,
-                                 static_cast<TileState>(state));
+          contains_agari_tile |= IsTileStateMatched(
+              TileState::AGARI_HAI, static_cast<TileState>(state));
           if (contains_agari_tile) {
             break;
           }
@@ -148,28 +143,26 @@ string GetDebugString(const HandParserResult& result) {
     if (!(str.empty() || str.back() == '\r' || str.back() == '\n')) {
       str += " ";
     }
-    str += (
-        IsAgariFormatMatched(
-            AgariFormat::REGULAR_AGARI,
-            parsedHand.agari().format()) ||
-        IsAgariFormatMatched(
-            AgariFormat::CHITOITSU_AGARI,
-            parsedHand.agari().format()) ? "YES: " : " NO: ");
+    str += (IsAgariFormatMatched(AgariFormat::REGULAR_AGARI,
+                                 parsedHand.agari().format()) ||
+                    IsAgariFormatMatched(AgariFormat::CHITOITSU_AGARI,
+                                         parsedHand.agari().format())
+                ? "YES: "
+                : " NO: ");
     for (const Element& element : parsedHand.element()) {
       bool is_naki =
-          IsHandElementTypeMatched(
-              HandElementType::MINSHUNTSU, element.type()) ||
-          IsHandElementTypeMatched(
-              HandElementType::MINKOUTSU, element.type()) ||
-          IsHandElementTypeMatched(
-              HandElementType::MINKANTSU, element.type());
+          IsHandElementTypeMatched(HandElementType::MINSHUNTSU,
+                                   element.type()) ||
+          IsHandElementTypeMatched(HandElementType::MINKOUTSU,
+                                   element.type()) ||
+          IsHandElementTypeMatched(HandElementType::MINKANTSU, element.type());
       str += "{";
       if (is_naki) {
         str += "(";
       }
 
       string element_tiles;
-      for (const Tile &tile : element.tile()) {
+      for (const Tile& tile : element.tile()) {
         string tile_string = TileType_Name(tile.type());
         if (ContainsRequiredTileState(TileState::AGARI_HAI, tile)) {
           tile_string = "[" + tile_string + "]";

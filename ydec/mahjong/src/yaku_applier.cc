@@ -38,8 +38,7 @@ namespace mahjong {
 /**
  * Implementations for Yaku Applier.
  */
-YakuApplier::YakuApplier(const Rule& rule) :
-    rule_(rule) {
+YakuApplier::YakuApplier(const Rule& rule) : rule_(rule) {
   for (const Yaku& yaku : rule_.yaku()) {
     if (!yaku_lookup_table_.insert(make_pair(yaku.name(), &yaku)).second) {
       std::cerr << "Duplicated yaku definition found." << std::endl;
@@ -51,7 +50,7 @@ YakuApplier::YakuApplier(const Rule& rule) :
     upper_yaku_lookup_table_.insert(make_pair(yaku.name(), vector<string>()));
     for (const string& upper_yaku_name : yaku.upper_version_yaku_name()) {
       if (yaku_lookup_table_.find(upper_yaku_name) ==
-              yaku_lookup_table_.end()) {
+          yaku_lookup_table_.end()) {
         std::abort();
       }
       upper_yaku_lookup_table_[yaku.name()].push_back(upper_yaku_name);
@@ -70,11 +69,9 @@ YakuApplier::YakuApplier(const Rule& rule) :
   }
 }
 
-YakuApplier::~YakuApplier() {
-}
+YakuApplier::~YakuApplier() {}
 
-void YakuApplier::Apply(const RichiType& richi_type,
-                        const TileType& field_wind,
+void YakuApplier::Apply(const RichiType& richi_type, const TileType& field_wind,
                         const TileType& player_wind,
                         const ParsedHand& parsed_hand,
                         YakuApplierResult* result) const {
@@ -83,19 +80,14 @@ void YakuApplier::Apply(const RichiType& richi_type,
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_.yaku()) {
     // Check if hansuu is not zero.
-    bool is_applicable =
-        yaku.kuisagari_fan() > 0 ||
-        yaku.yakuman() > 0 ||
-        (is_menzen && yaku.menzen_fan() > 0);
+    bool is_applicable = yaku.kuisagari_fan() > 0 || yaku.yakuman() > 0 ||
+                         (is_menzen && yaku.menzen_fan() > 0);
     if (!is_applicable) {
       continue;
     }
 
-    YakuConditionValidator validator(yaku.yaku_condition(),
-                                     richi_type,
-                                     field_wind,
-                                     player_wind,
-                                     parsed_hand);
+    YakuConditionValidator validator(yaku.yaku_condition(), richi_type,
+                                     field_wind, player_wind, parsed_hand);
     YakuConditionValidatorResult validator_result;
     validator.Validate(&validator_result);
 
@@ -108,7 +100,7 @@ void YakuApplier::Apply(const RichiType& richi_type,
     bool upper_yaku_found = false;
     for (const auto& upper_yaku_name : upper_yaku_lookup_table_.at(yaku_name)) {
       upper_yaku_found = (applied_yaku_names.find(upper_yaku_name) !=
-          applied_yaku_names.end());
+                          applied_yaku_names.end());
       if (upper_yaku_found) {
         break;
       }
@@ -118,7 +110,6 @@ void YakuApplier::Apply(const RichiType& richi_type,
     }
   }
 }
-
 
 /**
  * Implementations for YakuConditionValidator.
@@ -225,16 +216,14 @@ YakuConditionValidatorResult::Type YakuConditionValidator::Validate(
   if (!ValidateRequiredTileCondition(condition_.required_tile_condition(),
                                      hand_tiles_,
                                      true /* allow_defining_new_variable */)) {
-    result_->set_type(
-        YakuConditionValidatorResult::NG_REQUIRED_TILE_CONDITION);
+    result_->set_type(YakuConditionValidatorResult::NG_REQUIRED_TILE_CONDITION);
     return result_->type();
   }
 
   // Validate element conditions
   if (!ValidateRequiredElementCondition(
-      condition_.required_element_condition(),
-      parsed_hand_.element(),
-      true /* allow_defining_new_variable */)) {
+          condition_.required_element_condition(), parsed_hand_.element(),
+          true /* allow_defining_new_variable */)) {
     result_->set_type(
         YakuConditionValidatorResult::NG_REQUIRED_ELEMENT_CONDITION);
     return result_->type();
@@ -245,8 +234,7 @@ YakuConditionValidatorResult::Type YakuConditionValidator::Validate(
 }
 
 bool YakuConditionValidator::ValidateRequiredAgariCondition(
-    const AgariCondition& condition,
-    const Agari& agari) {
+    const AgariCondition& condition, const Agari& agari) {
   // Check type.
   if (condition.has_required_type()) {
     if (!IsAgariTypeMatched(condition.required_type(), agari.type())) {
@@ -301,8 +289,7 @@ bool YakuConditionValidator::ValidateRequiredAgariCondition(
 }
 
 bool YakuConditionValidator::ValidateAllowedHandElementType(
-    const RepeatedField<int>& allowed_types,
-    const HandElementType& type) {
+    const RepeatedField<int>& allowed_types, const HandElementType& type) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (allowed_types.size() == 0) {
@@ -338,14 +325,13 @@ bool YakuConditionValidator::ValidateRequiredElementCondition(
   for (const ElementCondition& condition : conditions) {
     bool found = false;
     for (int new_variable = 0;
-        new_variable <= (allow_defining_new_variable ? 1 : 0);
-        ++new_variable) {
+         new_variable <= (allow_defining_new_variable ? 1 : 0);
+         ++new_variable) {
       for (int i = 0; i < elements.size(); ++i) {
         if (used[i]) {
           continue;
         }
-        if (!ValidateElementCondition(condition,
-                                      elements.Get(i),
+        if (!ValidateElementCondition(condition, elements.Get(i),
                                       new_variable)) {
           continue;
         }
@@ -367,8 +353,7 @@ bool YakuConditionValidator::ValidateRequiredElementCondition(
 }
 
 bool YakuConditionValidator::ValidateElementCondition(
-    const ElementCondition& condition,
-    const Element& element,
+    const ElementCondition& condition, const Element& element,
     bool allow_defining_new_variable) {
   // Check Hand Element Type
   if (!ValidateAllowedHandElementType(condition.allowed_element_type(),
@@ -400,9 +385,8 @@ bool YakuConditionValidator::ValidateElementCondition(
 }
 
 bool YakuConditionValidator::ValidateAllowedTileCondition(
-    const RepeatedPtrField<TileCondition >& conditions,
-    const RepeatedPtrField<Tile >& tiles,
-    bool allow_defining_new_variable) {
+    const RepeatedPtrField<TileCondition>& conditions,
+    const RepeatedPtrField<Tile>& tiles, bool allow_defining_new_variable) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -415,8 +399,8 @@ bool YakuConditionValidator::ValidateAllowedTileCondition(
   for (const Tile& tile : tiles) {
     bool found = false;
     for (int new_variable = 0;
-        new_variable <= (allow_defining_new_variable ? 1 : 0);
-        ++new_variable) {
+         new_variable <= (allow_defining_new_variable ? 1 : 0);
+         ++new_variable) {
       for (const TileCondition& condition : conditions) {
         if (ValidateTileCondition(condition, tile, new_variable)) {
           found = true;
@@ -436,8 +420,8 @@ bool YakuConditionValidator::ValidateAllowedTileCondition(
 }
 
 bool YakuConditionValidator::ValidateDisallowedTileCondition(
-    const RepeatedPtrField<TileCondition >& conditions,
-    const RepeatedPtrField<Tile >& tiles) {
+    const RepeatedPtrField<TileCondition>& conditions,
+    const RepeatedPtrField<Tile>& tiles) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -457,9 +441,8 @@ bool YakuConditionValidator::ValidateDisallowedTileCondition(
 }
 
 bool YakuConditionValidator::ValidateRequiredTileCondition(
-    const RepeatedPtrField<TileCondition >& conditions,
-    const RepeatedPtrField<Tile >& tiles,
-    bool allow_defining_new_variable) {
+    const RepeatedPtrField<TileCondition>& conditions,
+    const RepeatedPtrField<Tile>& tiles, bool allow_defining_new_variable) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -475,14 +458,13 @@ bool YakuConditionValidator::ValidateRequiredTileCondition(
   for (const TileCondition& condition : conditions) {
     bool found = false;
     for (int new_variable = 0;
-      new_variable <= (allow_defining_new_variable ? 1 : 0);
-      ++new_variable) {
+         new_variable <= (allow_defining_new_variable ? 1 : 0);
+         ++new_variable) {
       for (int i = 0; i < tiles.size(); ++i) {
         if (used[i]) {
           continue;
         }
-        if (!ValidateTileCondition(condition, tiles.Get(i),
-                                   new_variable)) {
+        if (!ValidateTileCondition(condition, tiles.Get(i), new_variable)) {
           continue;
         }
 
@@ -502,8 +484,8 @@ bool YakuConditionValidator::ValidateRequiredTileCondition(
 }
 
 bool YakuConditionValidator::ValidateEitherTileCondition(
-    const RepeatedPtrField<TileCondition >& conditions,
-    const RepeatedPtrField<Tile >& tiles) {
+    const RepeatedPtrField<TileCondition>& conditions,
+    const RepeatedPtrField<Tile>& tiles) {
   // If the number of the given conditions is zero, this method construes as
   // there's no restrictions. So it will always return true.
   if (conditions.size() == 0) {
@@ -523,8 +505,7 @@ bool YakuConditionValidator::ValidateEitherTileCondition(
 }
 
 bool YakuConditionValidator::ValidateTileCondition(
-    const TileCondition& condition,
-    const Tile& tile,
+    const TileCondition& condition, const Tile& tile,
     bool allow_defining_new_variable) {
   // Check required tile state.
   {
@@ -586,8 +567,8 @@ bool YakuConditionValidator::ValidateTileCondition(
       }
     }
 
-    if (!ValidateVariableTile(condition.required_variable_tile(),
-                              iter->second, tile.type())) {
+    if (!ValidateVariableTile(condition.required_variable_tile(), iter->second,
+                              tile.type())) {
       return false;
     }
   }
@@ -596,8 +577,7 @@ bool YakuConditionValidator::ValidateTileCondition(
 }
 
 bool YakuConditionValidator::SetValiableTile(
-    const TileCondition::VariableTileType& type,
-    const TileType& tile) {
+    const TileCondition::VariableTileType& type, const TileType& tile) {
   // If the given variable_tile_type is already defined with other tile, this
   // method just return false.
   {
@@ -666,8 +646,7 @@ bool YakuConditionValidator::SetValiableTile(
 }
 
 bool YakuConditionValidator::ValidateVariableTile(
-    const TileCondition::VariableTileType& type,
-    const TileType& required,
+    const TileCondition::VariableTileType& type, const TileType& required,
     const TileType& tile) {
   switch (type & TileCondition::MASK_VARIABLE_TYPE) {
     case TileCondition::VARIABLE_TILE:
@@ -677,21 +656,18 @@ bool YakuConditionValidator::ValidateVariableTile(
       return IsTileTypeMatched(required, tile);
 
     case TileCondition::VARIABLE_NUMBER:
-      return
-          IsSequentialTileType(tile) &&
-          IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER);
+      return IsSequentialTileType(tile) &&
+             IsTileTypeMatched(required, tile, TileType::MASK_TILE_NUMBER);
 
     case TileCondition::VARIABLE_COLOR:
       switch (type) {
         case TileCondition::VARIABLE_COLOR_A:
-          return
-              IsSequentialTileType(tile) &&
-              IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+          return IsSequentialTileType(tile) &&
+                 IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
 
         case TileCondition::VARIABLE_COLOR_A_OR_JIHAI:
-          return
-              !IsSequentialTileType(tile) ||
-              IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
+          return !IsSequentialTileType(tile) ||
+                 IsTileTypeMatched(required, tile, TileType::MASK_TILE_KIND);
 
         default:
           return false;

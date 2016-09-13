@@ -70,7 +70,7 @@ class YakuApplierTest : public testing::Test {
   }
 
   void AssertEquals(const vector<string>& expected,
-                  const YakuApplierResult& actual) {
+                    const YakuApplierResult& actual) {
     vector<string> e = expected, a = GetYakuNames(actual);
     sort(e.begin(), e.end());
     sort(a.begin(), a.end());
@@ -90,8 +90,8 @@ Rule YakuApplierTest::rule_;
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAntoitsu(
-      parsed_hand.add_element(), TileType::PINZU_1, true);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                 true);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_3);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_5);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_7);
@@ -101,18 +101,16 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_1) {
   parsed_hand.mutable_agari()->set_format(AgariFormat::CHITOITSU_AGARI);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"七対子"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAntoitsu(
-      parsed_hand.add_element(), TileType::PINZU_1, true);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                 true);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_5);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::PINZU_7);
@@ -122,10 +120,8 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
   parsed_hand.mutable_agari()->set_format(AgariFormat::CHITOITSU_AGARI);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   // We cannot use same tile kind for two-toitsu.
   ASSERT_NO_FATAL_FAILURE(AssertEquals({}, result));
@@ -133,8 +129,8 @@ TEST_F(YakuApplierTest, ApplyTest_Chitoitsu_2) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
@@ -144,10 +140,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
       AssertEquals({"門前清自摸和", "二盃口", "平和"}, result));
@@ -155,8 +149,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_1) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateMinkoutsu(
-      parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::CreateMinkoutsu(parsed_hand.add_element(), TileType::SOUZU_1,
+                                  true);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
@@ -166,18 +160,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_2) {
   parsed_hand.set_machi_type(MachiType::SHABO);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"三暗刻", "対々和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnkoutsu(
-      parsed_hand.add_element(), TileType::SOUZU_1, true);
+  CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::SOUZU_1,
+                                 true);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
@@ -187,10 +179,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_3) {
   parsed_hand.set_machi_type(MachiType::SHABO);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"四暗刻"}, result));
 }
@@ -201,25 +191,23 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_4) {
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_2);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::PINZU_6);
-  CommonTestUtil::CreateAntoitsu(
-      parsed_hand.add_element(), TileType::SOUZU_3, true);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3,
+                                 true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::TANKI);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"四暗刻単騎待ち"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
@@ -229,10 +217,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
       AssertEquals({"一気通貫", "一盃口", "平和", "清一色"}, result));
@@ -240,8 +226,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateMinshuntsu(
-      parsed_hand.add_element(), TileType::SOUZU_1, 0);
+  CommonTestUtil::CreateMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1,
+                                   0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
@@ -251,10 +237,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   // This hand contains min-shuntsu but this is still menzen hand because
   // that min-shuntsu has ron tile, not a chii.
@@ -264,10 +248,10 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_2) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_5_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateMinshuntsu(
-      parsed_hand.add_element(), TileType::SOUZU_1, 0);
-  CommonTestUtil::CreateMinshuntsu(
-      parsed_hand.add_element(), TileType::SOUZU_4);
+  CommonTestUtil::CreateMinshuntsu(parsed_hand.add_element(), TileType::SOUZU_1,
+                                   0);
+  CommonTestUtil::CreateMinshuntsu(parsed_hand.add_element(),
+                                   TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::SOUZU_3);
@@ -276,10 +260,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_5_3) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"一気通貫", "清一色"}, result));
 }
@@ -290,17 +272,15 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
   CommonTestUtil::CreateAnkantsu(parsed_hand.add_element(), TileType::WIND_NAN);
   CommonTestUtil::CreateAnkantsu(parsed_hand.add_element(), TileType::WIND_SHA);
   CommonTestUtil::CreateAnkantsu(parsed_hand.add_element(), TileType::WIND_PE);
-  CommonTestUtil::CreateAntoitsu(
-      parsed_hand.add_element(), TileType::SANGEN_HAKU, true);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(),
+                                 TileType::SANGEN_HAKU, true);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::TANKI);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
       AssertEquals({"四暗刻単騎待ち", "四槓子", "大四喜", "字一色"}, result));
@@ -308,8 +288,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_6) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
@@ -319,18 +299,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_7) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "場風牌 東"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::WIND_TON);
@@ -340,18 +318,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_8) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_NAN /* field_wind */,
-                      TileType::WIND_TON /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_TON /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "自風牌 東"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnkoutsu(parsed_hand.add_element(), TileType::WIND_NAN);
@@ -361,10 +337,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_NAN /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
       AssertEquals({"門前清自摸和", "自風牌 南", "場風牌 南"}, result));
@@ -372,8 +346,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_9) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -383,18 +357,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 1);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  1);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -404,18 +376,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
   parsed_hand.set_machi_type(MachiType::KANCHAN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -425,18 +395,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_3) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -446,18 +414,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_4) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
@@ -467,18 +433,16 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_5) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_NAN /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_NAN /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({"門前清自摸和", "平和"}, result));
 }
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
@@ -488,10 +452,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(
       AssertEquals({"門前清自摸和", "一盃口", "平和"}, result));
@@ -499,11 +461,11 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
 
 TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
   ParsedHand parsed_hand;
-  CommonTestUtil::CreateAnshuntsu(
-      parsed_hand.add_element(), TileType::PINZU_1, 0);
+  CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1,
+                                  0);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
-  CommonTestUtil::CreateMinshuntsu(
-      parsed_hand.add_element(), TileType::SOUZU_2);
+  CommonTestUtil::CreateMinshuntsu(parsed_hand.add_element(),
+                                   TileType::SOUZU_2);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
   CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
@@ -511,10 +473,8 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
   parsed_hand.set_machi_type(MachiType::RYANMEN);
 
   YakuApplierResult result;
-  yaku_applier_.Apply(RichiType::NO_RICHI,
-                      TileType::WIND_TON /* field_wind */,
-                      TileType::WIND_NAN /* player_wind */,
-                      parsed_hand,
+  yaku_applier_.Apply(RichiType::NO_RICHI, TileType::WIND_TON /* field_wind */,
+                      TileType::WIND_NAN /* player_wind */, parsed_hand,
                       &result);
   ASSERT_NO_FATAL_FAILURE(AssertEquals({}, result));
 }
@@ -529,25 +489,20 @@ class YakuConditionValidatorTest : public testing::Test {
                                               const TileType& field_wind,
                                               const TileType& player_wind,
                                               const ParsedHand& parsed_hand) {
-    return YakuConditionValidator(condition,
-                                  richi_type,
-                                  field_wind,
-                                  player_wind,
-                                  parsed_hand).Validate();
+    return YakuConditionValidator(condition, richi_type, field_wind,
+                                  player_wind, parsed_hand)
+        .Validate();
   }
 
   YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
                                               const ParsedHand& parsed_hand) {
-    return Validate(condition,
-                    RichiType::NO_RICHI,
+    return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON,
-                    /*player_wind=*/TileType::WIND_NAN,
-                    parsed_hand);
+                    /*player_wind=*/TileType::WIND_NAN, parsed_hand);
   }
 
   YakuConditionValidatorResult::Type Validate(const YakuCondition& condition) {
-    return Validate(condition,
-                    RichiType::NO_RICHI,
+    return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON,
                     /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
@@ -557,39 +512,30 @@ class YakuConditionValidatorTest : public testing::Test {
                                               const Agari& agari) {
     ParsedHand parsed_hand;
     parsed_hand.mutable_agari()->CopyFrom(agari);
-    return Validate(condition,
-                    RichiType::NO_RICHI,
+    return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON,
-                    /*player_wind=*/TileType::WIND_NAN,
-                    parsed_hand);
+                    /*player_wind=*/TileType::WIND_NAN, parsed_hand);
   }
 
   YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
                                               const RichiType& richi_type) {
-    return Validate(condition,
-                    richi_type,
+    return Validate(condition, richi_type,
                     /*field_wind=*/TileType::WIND_TON,
                     /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
   }
 
   YakuConditionValidatorResult::Type ValidateFieldWind(
-      const YakuCondition& condition,
-      const TileType& field_wind) {
-    return Validate(condition,
-                    RichiType::NO_RICHI,
-                    field_wind,
+      const YakuCondition& condition, const TileType& field_wind) {
+    return Validate(condition, RichiType::NO_RICHI, field_wind,
                     /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
   }
 
   YakuConditionValidatorResult::Type ValidatePlayerWind(
-      const YakuCondition& condition,
-      const TileType& player_wind) {
-    return Validate(condition,
-                    RichiType::NO_RICHI,
-                    /*field_wind=*/TileType::WIND_TON,
-                    player_wind,
+      const YakuCondition& condition, const TileType& player_wind) {
+    return Validate(condition, RichiType::NO_RICHI,
+                    /*field_wind=*/TileType::WIND_TON, player_wind,
                     ParsedHand::default_instance());
   }
 };
@@ -599,11 +545,11 @@ class YakuConditionValidatorTest : public testing::Test {
  */
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_1"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_tile: PINZU_1"
+                                  "}",
+                                  &condition));
 
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             Validate(condition, ParsedHand::default_instance()));
@@ -611,26 +557,25 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_1"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_tile: PINZU_1"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnkoutsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_1"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_tile: PINZU_1"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
@@ -641,35 +586,34 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_3"
-      "}"
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_2"
-      "}"
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_TILE_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_tile: PINZU_3"
+                                  "}"
+                                  "allowed_tile_condition {"
+                                  "  required_tile: PINZU_2"
+                                  "}"
+                                  "allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_TILE_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_tile: PINZU_3"
-      "}"
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_TILE_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_tile: PINZU_3"
+                                  "}"
+                                  "allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_TILE_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
@@ -680,44 +624,42 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_NUMBER_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_NUMBER_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::WANZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_COLOR_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_2);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_COLOR_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
@@ -729,11 +671,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("allowed_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_COLOR_A"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
@@ -754,8 +696,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_2);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
@@ -770,8 +711,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
@@ -786,8 +726,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::WIND_TON);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
@@ -812,11 +751,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
  */
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "disallowed_tile_condition {"
-      "  required_tile: PINZU_8"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("disallowed_tile_condition {"
+                                  "  required_tile: PINZU_8"
+                                  "}",
+                                  &condition));
 
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             Validate(condition, ParsedHand::default_instance()));
@@ -824,26 +763,25 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "disallowed_tile_condition {"
-      "  required_tile: PINZU_8"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("disallowed_tile_condition {"
+                                  "  required_tile: PINZU_8"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "disallowed_tile_condition {"
-      "  required_tile: PINZU_8"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("disallowed_tile_condition {"
+                                  "  required_tile: PINZU_8"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_7);
@@ -857,11 +795,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
  */
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  required_tile: PINZU_8"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  required_tile: PINZU_8"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::SOUZU_1);
@@ -872,29 +810,28 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  required_tile: SOUZU_1"
-      "}"
-      "required_tile_condition {"
-      "  required_tile: SOUZU_3"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  required_tile: SOUZU_1"
+                                  "}"
+                                  "required_tile_condition {"
+                                  "  required_tile: SOUZU_3"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::SOUZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  required_state: AGARI_HAI"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  required_state: AGARI_HAI"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
@@ -906,17 +843,16 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
             Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  required_state: AGARI_HAI_TSUMO"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  required_state: AGARI_HAI_TSUMO"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
@@ -932,17 +868,16 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
             Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_TSUMO);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  disallowed_state: AGARI_HAI"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  disallowed_state: AGARI_HAI"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
@@ -950,28 +885,26 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_tile_condition {"
-      "  required_variable_tile: VARIABLE_TILE_A"
-      "}"
-      "required_tile_condition {"
-      "  required_variable_tile: VARIABLE_TILE_B"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_TILE_A"
+                                  "}"
+                                  "required_tile_condition {"
+                                  "  required_variable_tile: VARIABLE_TILE_B"
+                                  "}",
+                                  &condition));
 
   ParsedHand hand;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
@@ -982,28 +915,24 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
             Validate(condition, hand));
 
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_2);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_machi_type: MACHI_2FU ",
-      &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString("required_machi_type: MACHI_2FU ",
+                                          &condition));
 
   ParsedHand hand;
   hand.set_machi_type(MachiType::KANCHAN);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, hand));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_machi_type: MACHI_2FU ",
-      &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString("required_machi_type: MACHI_2FU ",
+                                          &condition));
 
   ParsedHand hand;
   hand.set_machi_type(MachiType::RYANMEN);
@@ -1014,16 +943,15 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agari_condition {"
-      "  required_type: RON"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_agari_condition {"
+                                  "  required_type: RON"
+                                  "}",
+                                  &condition));
 
   Agari agari;
   agari.set_type(AgariType::RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, agari));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.set_type(AgariType::TSUMO);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
@@ -1032,12 +960,12 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agari_condition {"
-      "  required_state: SOKU"
-      "  required_state: HAITEI"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_agari_condition {"
+                                  "  required_state: SOKU"
+                                  "  required_state: HAITEI"
+                                  "}",
+                                  &condition));
 
   Agari agari;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
@@ -1048,22 +976,20 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
             Validate(condition, agari));
 
   agari.add_state(AgariState::HAITEI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, agari));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.add_state(AgariState::RINSHAN);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, agari));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
   YakuCondition condition;
-  EXPECT_TRUE(TextFormat::ParseFromString(
-      "required_agari_condition {"
-      "  allowed_format: REGULAR_AGARI"
-      "  allowed_format: CHITOITSU_AGARI"
-      "}",
-      &condition));
+  EXPECT_TRUE(
+      TextFormat::ParseFromString("required_agari_condition {"
+                                  "  allowed_format: REGULAR_AGARI"
+                                  "  allowed_format: CHITOITSU_AGARI"
+                                  "}",
+                                  &condition));
 
   Agari agari;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
@@ -1074,12 +1000,10 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
             Validate(condition, agari));
 
   agari.set_format(AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, agari));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.set_format(AgariFormat::CHITOITSU_AGARI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, agari));
+  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {

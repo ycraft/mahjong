@@ -14,9 +14,9 @@
 
 #include "ydec/mahjong/src/hand_parser.h"
 
-#include <iostream>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <set>
 
 #include "ydec/mahjong/src/mahjong_common_util.h"
@@ -33,8 +33,7 @@ inline bool CheckSame(const Tile& lhs, const Tile& rhs) {
   // This equality check is designed by assuming that the given state does not
   // contain duplicated objects.
   for (const int state : lhs.state()) {
-    if (std::find(rhs.state().begin(),
-                  rhs.state().end(),
+    if (std::find(rhs.state().begin(), rhs.state().end(),
                   static_cast<TileState>(state)) == rhs.state().end()) {
       return false;
     }
@@ -68,9 +67,9 @@ inline bool CheckSame(const Element& lhs, const Element& rhs) {
 inline bool CheckSame(const ParsedHand& lhs, const ParsedHand& rhs) {
   static bool is_used[10];
 
-  if (lhs.element_size() != rhs.element_size()
-      || lhs.agari().format() != rhs.agari().format()
-      || lhs.machi_type() != rhs.machi_type()) {
+  if (lhs.element_size() != rhs.element_size() ||
+      lhs.agari().format() != rhs.agari().format() ||
+      lhs.machi_type() != rhs.machi_type()) {
     return false;
   }
 
@@ -91,12 +90,10 @@ inline bool CheckSame(const ParsedHand& lhs, const ParsedHand& rhs) {
 }
 }  // namespace
 
-HandParser::HandParser() : hand_(nullptr), num_free_tiles_(0),
-    result_(nullptr) {
-}
+HandParser::HandParser()
+    : hand_(nullptr), num_free_tiles_(0), result_(nullptr) {}
 
-HandParser::~HandParser() {
-}
+HandParser::~HandParser() {}
 
 void HandParser::Parse(const Hand& hand, HandParserResult* result) {
   Setup(hand, result);
@@ -123,9 +120,7 @@ void HandParser::Setup(const Hand& hand, HandParserResult* result) {
   result_ = result;
 }
 
-void HandParser::RunDfs() {
-  Dfs(0, 1, false);
-}
+void HandParser::RunDfs() { Dfs(0, 1, false); }
 
 void HandParser::Dfs(int i, int id, bool has_jantou) {
   if (i == num_free_tiles_ && has_jantou) {
@@ -143,8 +138,7 @@ void HandParser::Dfs(int i, int id, bool has_jantou) {
   // toitsu
   if (!has_jantou) {
     free_tile_element_types_[i] = HandElementType::TOITSU;
-    for (int j = i + 1;
-         j < num_free_tiles_ && free_tiles_[i] == free_tiles_[j];
+    for (int j = i + 1; j < num_free_tiles_ && free_tiles_[i] == free_tiles_[j];
          ++j) {
       if (free_tile_group_ids_[j] == 0) {
         free_tile_group_ids_[j] = id;
@@ -163,8 +157,7 @@ void HandParser::Dfs(int i, int id, bool has_jantou) {
     int counter = 0;
     int using_tile_indices[2];
     free_tile_element_types_[i] = HandElementType::KOUTSU;
-    for (int j = i + 1;
-         j < num_free_tiles_ && free_tiles_[i] == free_tiles_[j];
+    for (int j = i + 1; j < num_free_tiles_ && free_tiles_[i] == free_tiles_[j];
          ++j) {
       if (free_tile_group_ids_[j] == 0) {
         using_tile_indices[counter] = j;
@@ -192,8 +185,7 @@ void HandParser::Dfs(int i, int id, bool has_jantou) {
     int using_tile_indices[2];
     free_tile_element_types_[i] = HandElementType::SHUNTSU;
     TileType prev = free_tiles_[i];
-    for (int j = i + 1;
-         j < num_free_tiles_ && free_tiles_[j] - prev <= 1;
+    for (int j = i + 1; j < num_free_tiles_ && free_tiles_[j] - prev <= 1;
          ++j) {
       if (free_tile_group_ids_[j] == 0 && free_tiles_[j] - prev == 1) {
         using_tile_indices[counter] = j;
@@ -221,9 +213,8 @@ void HandParser::Dfs(int i, int id, bool has_jantou) {
 }
 
 void HandParser::CheckChiiToitsu() {
-  if (hand_->chiied_tile_size() != 0
-      || hand_->ponned_tile_size() != 0
-      || hand_->kanned_tile_size() != 0) {
+  if (hand_->chiied_tile_size() != 0 || hand_->ponned_tile_size() != 0 ||
+      hand_->kanned_tile_size() != 0) {
     return;
   }
 
@@ -270,18 +261,17 @@ void HandParser::CheckIrregular() {
   }
   Tile* tile = element->add_tile();
   tile->set_type(hand_->agari_tile());
-  tile->add_state(
-      (hand_->agari().type() == AgariType::TSUMO)
-      ? TileState::AGARI_HAI_TSUMO
-      : TileState::AGARI_HAI_RON);
+  tile->add_state((hand_->agari().type() == AgariType::TSUMO)
+                      ? TileState::AGARI_HAI_TSUMO
+                      : TileState::AGARI_HAI_RON);
 }
 
 void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
   for (int agari_group_id = 1; agari_group_id <= last_id; ++agari_group_id) {
     bool valid_agari_group_id = false;
     for (int i = 0; i < num_free_tiles_; ++i) {
-      if (free_tile_group_ids_[i] == agari_group_id
-          && free_tiles_[i] == hand_->agari_tile()) {
+      if (free_tile_group_ids_[i] == agari_group_id &&
+          free_tiles_[i] == hand_->agari_tile()) {
         valid_agari_group_id = true;
         break;
       }
@@ -304,27 +294,20 @@ void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
       for (int i = 0; i < num_free_tiles_; ++i) {
         if (free_tile_group_ids_[i] == id) {
           bool contains_ron_hai =
-              (id == agari_group_id
-               && IsAgariTypeMatched(
-                   AgariType::RON, hand_->agari().type()));
-          if (IsHandElementTypeMatched(
-              HandElementType::TOITSU, free_tile_element_types_[i])) {
-            element->set_type(
-                contains_ron_hai ?
-                    HandElementType::MINTOITSU :
-                    HandElementType::ANTOITSU);
-          } else if (IsHandElementTypeMatched(
-              HandElementType::KOUTSU, free_tile_element_types_[i])) {
-            element->set_type(
-                contains_ron_hai ?
-                    HandElementType::MINKOUTSU :
-                    HandElementType::ANKOUTSU);
-          } else if (IsHandElementTypeMatched(
-              HandElementType::SHUNTSU, free_tile_element_types_[i])) {
-            element->set_type(
-                contains_ron_hai ?
-                    HandElementType::MINSHUNTSU :
-                    HandElementType::ANSHUNTSU);
+              (id == agari_group_id &&
+               IsAgariTypeMatched(AgariType::RON, hand_->agari().type()));
+          if (IsHandElementTypeMatched(HandElementType::TOITSU,
+                                       free_tile_element_types_[i])) {
+            element->set_type(contains_ron_hai ? HandElementType::MINTOITSU
+                                               : HandElementType::ANTOITSU);
+          } else if (IsHandElementTypeMatched(HandElementType::KOUTSU,
+                                              free_tile_element_types_[i])) {
+            element->set_type(contains_ron_hai ? HandElementType::MINKOUTSU
+                                               : HandElementType::ANKOUTSU);
+          } else if (IsHandElementTypeMatched(HandElementType::SHUNTSU,
+                                              free_tile_element_types_[i])) {
+            element->set_type(contains_ron_hai ? HandElementType::MINSHUNTSU
+                                               : HandElementType::ANSHUNTSU);
           } else {
             std::cerr << "Unexpected HandElementType: "
                       << HandElementType_Name(free_tile_element_types_[i])
@@ -341,24 +324,22 @@ void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
           Tile* tile = element->add_tile();
           tile->set_type(free_tiles_[i]);
 
-          if (!has_set_agari_tile
-              && free_tiles_[i] == hand_->agari_tile()
-              && id == agari_group_id) {
+          if (!has_set_agari_tile && free_tiles_[i] == hand_->agari_tile() &&
+              id == agari_group_id) {
             has_set_agari_tile = true;
-            tile->add_state(
-                (hand_->agari().type() == AgariType::TSUMO)
-                ? TileState::AGARI_HAI_TSUMO
-                : TileState::AGARI_HAI_RON);
+            tile->add_state((hand_->agari().type() == AgariType::TSUMO)
+                                ? TileState::AGARI_HAI_TSUMO
+                                : TileState::AGARI_HAI_RON);
 
             // Set matchi type.
-            if (IsHandElementTypeMatched(
-                HandElementType::TOITSU, free_tile_element_types_[i])) {
+            if (IsHandElementTypeMatched(HandElementType::TOITSU,
+                                         free_tile_element_types_[i])) {
               parsed_hand->set_machi_type(MachiType::TANKI);
-            } else if (IsHandElementTypeMatched(
-                HandElementType::KOUTSU, free_tile_element_types_[i])) {
+            } else if (IsHandElementTypeMatched(HandElementType::KOUTSU,
+                                                free_tile_element_types_[i])) {
               parsed_hand->set_machi_type(MachiType::SHABO);
-            } else if (IsHandElementTypeMatched(
-                HandElementType::SHUNTSU, free_tile_element_types_[i])) {
+            } else if (IsHandElementTypeMatched(HandElementType::SHUNTSU,
+                                                free_tile_element_types_[i])) {
               // free_tiles_[] is sorted in ascendant order and we add tiles
               // into element in the same manner. Thus, if the current element
               // tile size is 2, that means this tile is the middle tile of
@@ -375,8 +356,7 @@ void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
               }
             } else {
               std::cerr << "Unexpected hand element type: "
-                        << free_tile_element_types_[i]
-                        << std::endl;
+                        << free_tile_element_types_[i] << std::endl;
             }
           }
         }
@@ -410,10 +390,8 @@ void HandParser::AddAgarikeiResult(int last_id, const AgariFormat& format) {
       const Hand_Kan& kanned_tile = hand_->kanned_tile(i);
 
       Element* element = parsed_hand->add_element();
-      element->set_type(
-          kanned_tile.is_closed()
-          ? HandElementType::ANKANTSU
-          : HandElementType::MINKANTSU);
+      element->set_type(kanned_tile.is_closed() ? HandElementType::ANKANTSU
+                                                : HandElementType::MINKANTSU);
       for (int j = 0; j < 4; ++j) {
         Tile* tile = element->add_tile();
         tile->set_type(kanned_tile.tile());
