@@ -27,3 +27,26 @@ cc_lint_test = rule(
     test = True,
     implementation = cc_lint_test_impl,
 )
+
+def clang_format_test_impl(ctx):
+  cmds = []
+  cmds.append("for src in %s; do" % (
+      " ".join([src.short_path for src in ctx.files.srcs])))
+  cmds.append("clang-format -style=google $src > /tmp/formatted_src ;")
+  cmds.append("diff -u $src /tmp/formatted_src ;")
+  cmds.append("done")
+  ctx.file_action(
+      content = " ".join(cmds),
+      output = ctx.outputs.executable,
+      executable = True)
+  return struct(
+      runfiles = ctx.runfiles(files = ctx.files.srcs),
+  )
+
+clang_format_test = rule(
+    attrs = {
+      "srcs": attr.label_list(allow_files = True),
+    },
+    test = True,
+    implementation = clang_format_test_impl,
+)
