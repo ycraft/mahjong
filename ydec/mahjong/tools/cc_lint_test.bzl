@@ -28,7 +28,7 @@ cc_lint_test = rule(
     implementation = cc_lint_test_impl,
 )
 
-def clang_format_test_impl(ctx):
+def cc_clang_format_test_impl(ctx):
   cmds = []
   cmds.append("for src in %s; do" % (
       " ".join([src.short_path for src in ctx.files.srcs])))
@@ -43,10 +43,10 @@ def clang_format_test_impl(ctx):
       runfiles = ctx.runfiles(files = ctx.files.srcs),
   )
 
-clang_format_test = rule(
+cc_clang_format_test = rule(
     attrs = {
       "srcs": attr.label_list(allow_files = True),
     },
     test = True,
-    implementation = clang_format_test_impl,
+    implementation = cc_clang_format_test_impl,
 )
