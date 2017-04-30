@@ -20,7 +20,7 @@ cc_lint_test = rule(
       "linter": attr.label(
           default = Label("@styleguide//:cpplint"),
           executable = True,
-          cfg = HOST_CFG),
+          cfg = "host"),
       "linter_args": attr.string_list(
           default=["--root=$$(pwd)"]),
     },
