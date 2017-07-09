@@ -15,9 +15,9 @@
 #ifndef YDEC_MAHJONG_TESTS_COMMON_TEST_UTIL_H_
 #define YDEC_MAHJONG_TESTS_COMMON_TEST_UTIL_H_
 
-#include "ydec/mahjong/proto/mahjong-common.pb.h"
-#include "ydec/mahjong/proto/mahjong-rule.pb.h"
-#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
+#include "ydec/mahjong/proto/mahjong_common.pb.h"
+#include "ydec/mahjong/proto/mahjong_rule.pb.h"
+#include "ydec/mahjong/proto/mahjong_scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {

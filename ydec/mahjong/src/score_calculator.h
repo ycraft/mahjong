@@ -17,7 +17,7 @@
 
 #include <memory>
 
-#include "ydec/mahjong/proto/mahjong-scorecalculator.pb.h"
+#include "ydec/mahjong/proto/mahjong_scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {

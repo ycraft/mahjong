@@ -1,32 +1,31 @@
-load("@protobuf//:protobuf.bzl", "cc_proto_library")
-
 package(default_visibility = ["//visibility:public"])
 
-cc_proto_library(
-    name = "mahjong-common",
-    srcs = ["mahjong-common.proto"],
-    include = "",
-    protoc = "@protobuf//:protoc",
-    default_runtime = "@protobuf//:protobuf",
+proto_library(
+    name = "mahjong_common_proto",
+    srcs = ["mahjong_common.proto"],
+)
+
+proto_library(
+    name = "mahjong_rule_proto",
+    srcs = ["mahjong_rule.proto"],
+    deps = [":mahjong_common_proto"],
 )
 
 cc_proto_library(
-    name = "mahjong-rule",
-    srcs = ["mahjong-rule.proto"],
-    deps = [":mahjong-common"],
-    include = "",
-    protoc = "@protobuf//:protoc",
-    default_runtime = "@protobuf//:protobuf",
+    name = "mahjong_rule_cc_proto",
+    deps = [":mahjong_rule_proto"],
 )
 
-cc_proto_library(
-    name = "mahjong-scorecalculator",
-    srcs = ["mahjong-scorecalculator.proto"],
+proto_library(
+    name = "mahjong_scorecalculator_proto",
+    srcs = ["mahjong_scorecalculator.proto"],
     deps = [
-      ":mahjong-common",
-      ":mahjong-rule",
+      ":mahjong_common_proto",
+      ":mahjong_rule_proto",
     ],
-    include = "",
-    protoc = "@protobuf//:protoc",
-    default_runtime = "@protobuf//:protobuf",
+)
+
+cc_proto_library(
+    name = "mahjong_scorecalculator_cc_proto",
+    deps = [":mahjong_scorecalculator_proto"],
 )

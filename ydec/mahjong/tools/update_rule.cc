@@ -18,7 +18,7 @@
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/text_format.h"
 
-#include "ydec/mahjong/proto/mahjong-rule.pb.h"
+#include "ydec/mahjong/proto/mahjong_rule.pb.h"
 
 using std::cerr;
 using std::endl;

@@ -18,7 +18,7 @@ cc_library(
       "yaku_applier.h",
     ],
     deps = [
-      "//ydec/mahjong/proto:mahjong-scorecalculator",
+      "//ydec/mahjong/proto:mahjong_scorecalculator_cc_proto",
     ],
     visibility = ["//visibility:public"],
 )

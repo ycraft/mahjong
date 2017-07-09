@@ -10,7 +10,7 @@ cc_library(
       "common_test_util.h",
     ],
     deps = [
-      "//ydec/mahjong/proto:mahjong-scorecalculator",
+      "//ydec/mahjong/proto:mahjong_scorecalculator_cc_proto",
     ],
 )
 

@@ -5,7 +5,7 @@ cc_binary(
     name = "update_rule",
     srcs = ["update_rule.cc"],
     deps = [
-      "//ydec/mahjong/proto:mahjong-rule",
+      "//ydec/mahjong/proto:mahjong_rule_cc_proto",
     ],
     visibility = ["//visibility:public"],
 )
