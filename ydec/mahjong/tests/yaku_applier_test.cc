@@ -547,7 +547,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile: PINZU_1"
+                                  "  required_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
@@ -559,7 +559,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile: PINZU_1"
+                                  "  required_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
@@ -573,7 +573,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile: PINZU_1"
+                                  "  required_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
@@ -586,17 +586,17 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile: PINZU_3"
-                                  "}"
-                                  "allowed_tile_condition {"
-                                  "  required_tile: PINZU_2"
-                                  "}"
-                                  "allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_TILE_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_tile_type: PINZU_3"
+      "}"
+      "allowed_tile_condition {"
+      "  required_tile_type: PINZU_2"
+      "}"
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_TILE_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
@@ -606,14 +606,14 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile: PINZU_3"
-                                  "}"
-                                  "allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_TILE_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_tile_type: PINZU_3"
+      "}"
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_TILE_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
@@ -624,11 +624,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_NUMBER_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_NUMBER_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
@@ -640,11 +640,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_COLOR_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_COLOR_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
@@ -655,11 +655,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_COLOR_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_COLOR_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
@@ -671,11 +671,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_COLOR_A"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "allowed_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_COLOR_A"
+      "}",
+      &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
@@ -688,7 +688,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
+      "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
       "}",
       &condition));
 
@@ -703,7 +703,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
+      "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
       "}",
       &condition));
 
@@ -718,7 +718,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
+      "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
       "}",
       &condition));
 
@@ -733,7 +733,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
   YakuCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI"
+      "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
       "}",
       &condition));
 
@@ -753,7 +753,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("disallowed_tile_condition {"
-                                  "  required_tile: PINZU_8"
+                                  "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
@@ -765,7 +765,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("disallowed_tile_condition {"
-                                  "  required_tile: PINZU_8"
+                                  "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
@@ -779,7 +779,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("disallowed_tile_condition {"
-                                  "  required_tile: PINZU_8"
+                                  "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
@@ -797,7 +797,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
-                                  "  required_tile: PINZU_8"
+                                  "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
@@ -812,10 +812,10 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
-                                  "  required_tile: SOUZU_1"
+                                  "  required_tile_type: SOUZU_1"
                                   "}"
                                   "required_tile_condition {"
-                                  "  required_tile: SOUZU_3"
+                                  "  required_tile_type: SOUZU_3"
                                   "}",
                                   &condition));
 
@@ -897,14 +897,14 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
   YakuCondition condition;
-  EXPECT_TRUE(
-      TextFormat::ParseFromString("required_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_TILE_A"
-                                  "}"
-                                  "required_tile_condition {"
-                                  "  required_variable_tile: VARIABLE_TILE_B"
-                                  "}",
-                                  &condition));
+  EXPECT_TRUE(TextFormat::ParseFromString(
+      "required_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_TILE_A"
+      "}"
+      "required_tile_condition {"
+      "  required_variable_tile_type: VARIABLE_TILE_B"
+      "}",
+      &condition));
 
   ParsedHand hand;
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,

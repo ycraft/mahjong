@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package ydec.mahjong;
 
@@ -85,7 +85,7 @@ enum TileState {
 }
 
 message Tile {
-  optional TileType type = 1;
+  TileType type = 1;
   repeated TileState state = 2;
 }
 
@@ -111,7 +111,7 @@ enum HandElementType {
 }
 
 message Element {
-  optional HandElementType type = 1;
+  HandElementType type = 1;
   repeated Tile tile = 2;
 }
 
@@ -138,9 +138,9 @@ enum AgariFormat {
 }
 
 message Agari {
-  optional AgariType type = 1;
+  AgariType type = 1;
   repeated AgariState state = 2;
-  optional AgariFormat format = 3;
+  AgariFormat format = 3;
 }
 
 enum RichiType {
@@ -178,7 +178,7 @@ enum MachiType {
 
 message Hand {
   repeated TileType closed_tile = 1;  // not includes Agari-tile
-  optional TileType agari_tile = 2;
+  TileType agari_tile = 2;
 
   message Chii {
     repeated TileType tile = 1;
@@ -186,28 +186,28 @@ message Hand {
   repeated Chii chiied_tile = 3;
 
   message Pon {
-    optional TileType tile = 1;
+    TileType tile = 1;
   }
   repeated Pon ponned_tile = 4;
 
   message Kan {
-    optional TileType tile = 1;
-    optional bool is_closed = 2;
+    TileType tile = 1;
+    bool is_closed = 2;
   }
   repeated Kan Kanned_tile = 5;
 
-  optional Agari agari = 6;
-  optional RichiType richi_type = 7;
+  Agari agari = 6;
+  RichiType richi_type = 7;
 }
 
 message Player {
-  optional TileType wind = 1;
-  optional Hand hand = 2;
+  TileType wind = 1;
+  Hand hand = 2;
 }
 
 message Field {
-  optional TileType wind = 1; // Ton-ba, Nan-ba
+  TileType wind = 1; // Ton-ba, Nan-ba
   repeated TileType dora = 2; // Not dora hyouji hai
   repeated TileType uradora = 3;
-  optional int32 honba = 4;
+  int32 honba = 4;
 }

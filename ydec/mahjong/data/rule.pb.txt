@@ -79,25 +79,25 @@ yaku {
   kuisagari_fan: 1
   yaku_condition {
     allowed_tile_condition {
-      required_tile: TILE_2
+      required_tile_type: TILE_2
     }
     allowed_tile_condition {
-      required_tile: TILE_3
+      required_tile_type: TILE_3
     }
     allowed_tile_condition {
-      required_tile: TILE_4
+      required_tile_type: TILE_4
     }
     allowed_tile_condition {
-      required_tile: TILE_5
+      required_tile_type: TILE_5
     }
     allowed_tile_condition {
-      required_tile: TILE_6
+      required_tile_type: TILE_6
     }
     allowed_tile_condition {
-      required_tile: TILE_7
+      required_tile_type: TILE_7
     }
     allowed_tile_condition {
-      required_tile: TILE_8
+      required_tile_type: TILE_8
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -113,13 +113,13 @@ yaku {
   force_fu_ron: 30
   yaku_condition {
     disallowed_tile_condition {
-      required_tile: SANGEN_TILE
+      required_tile_type: SANGEN_TILE
     }
     disallowed_tile_condition {
-      required_variable_tile: VARIABLE_BAKAZE_TILE
+      required_variable_tile_type: VARIABLE_BAKAZE_TILE
     }
     disallowed_tile_condition {
-      required_variable_tile: VARIABLE_JIKAZE_TILE
+      required_variable_tile_type: VARIABLE_JIKAZE_TILE
     }
     required_element_condition {
       allowed_element_type: SHUNTSU  # SHUNTSU, because if AGARI_TYPE is RON, that element type
@@ -148,25 +148,25 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_A
+        required_variable_tile_type: VARIABLE_TILE_A
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_B
+        required_variable_tile_type: VARIABLE_TILE_B
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_C
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_A
+        required_variable_tile_type: VARIABLE_TILE_A
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_B
+        required_variable_tile_type: VARIABLE_TILE_B
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_C
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_agari_condition {
@@ -185,7 +185,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: SANGEN_HAKU
+        required_tile_type: SANGEN_HAKU
       }
     }
     required_agari_condition {
@@ -203,7 +203,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: SANGEN_HATSU
+        required_tile_type: SANGEN_HATSU
       }
     }
     required_agari_condition {
@@ -221,7 +221,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: SANGEN_CHUN
+        required_tile_type: SANGEN_CHUN
       }
     }
     required_agari_condition {
@@ -239,7 +239,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_TON
+        required_tile_type: WIND_TON
       }
     }
     required_agari_condition {
@@ -258,7 +258,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_NAN
+        required_tile_type: WIND_NAN
       }
     }
     required_agari_condition {
@@ -277,7 +277,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_SHA
+        required_tile_type: WIND_SHA
       }
     }
     required_agari_condition {
@@ -296,7 +296,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_PE
+        required_tile_type: WIND_PE
       }
     }
     required_agari_condition {
@@ -315,7 +315,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_TON
+        required_tile_type: WIND_TON
       }
     }
     required_agari_condition {
@@ -334,7 +334,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_NAN
+        required_tile_type: WIND_NAN
       }
     }
     required_agari_condition {
@@ -353,7 +353,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_SHA
+        required_tile_type: WIND_SHA
       }
     }
     required_agari_condition {
@@ -372,7 +372,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WIND_PE
+        required_tile_type: WIND_PE
       }
     }
     required_agari_condition {
@@ -390,46 +390,46 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_tile: WANZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
+        required_tile_type: WANZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
       }
       required_tile_condition {
-        required_tile: WANZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_B
+        required_tile_type: WANZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_B
       }
       required_tile_condition {
-        required_tile: WANZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_C
-      }
-    }
-    required_element_condition {
-      allowed_element_type: SHUNTSU
-      required_tile_condition {
-        required_tile: SOUZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
-      }
-      required_tile_condition {
-        required_tile: SOUZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_B
-      }
-      required_tile_condition {
-        required_tile: SOUZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_C
+        required_tile_type: WANZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_C
       }
     }
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_tile: PINZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
+        required_tile_type: SOUZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
       }
       required_tile_condition {
-        required_tile: PINZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_B
+        required_tile_type: SOUZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_B
       }
       required_tile_condition {
-        required_tile: PINZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_C
+        required_tile_type: SOUZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_tile_type: PINZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
+      }
+      required_tile_condition {
+        required_tile_type: PINZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_B
+      }
+      required_tile_condition {
+        required_tile_type: PINZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_C
       }
     }
     required_agari_condition {
@@ -446,46 +446,46 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_1
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_1
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_2
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_2
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_3
-      }
-    }
-    required_element_condition {
-      allowed_element_type: SHUNTSU
-      required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_4
-      }
-      required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_5
-      }
-      required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_6
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_3
       }
     }
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_7
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_4
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_8
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_5
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_COLOR_A
-        required_tile: TILE_9
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_6
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_7
+      }
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_8
+      }
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_COLOR_A
+        required_tile_type: TILE_9
       }
     }
     required_agari_condition {
@@ -502,61 +502,61 @@ yaku {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       allowed_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
       allowed_tile_condition {
-        required_tile: JIHAI_TILE
+        required_tile_type: JIHAI_TILE
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
       either_tile_condition {
-        required_tile: JIHAI_TILE
-      }
-    }
-    required_element_condition {
-      allowed_element_type: MENTSU
-      either_tile_condition {
-        required_tile: TILE_1
-      }
-      either_tile_condition {
-        required_tile: TILE_9
-      }
-      either_tile_condition {
-        required_tile: JIHAI_TILE
+        required_tile_type: JIHAI_TILE
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
       either_tile_condition {
-        required_tile: JIHAI_TILE
+        required_tile_type: JIHAI_TILE
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
       either_tile_condition {
-        required_tile: JIHAI_TILE
+        required_tile_type: JIHAI_TILE
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile_type: TILE_1
+      }
+      either_tile_condition {
+        required_tile_type: TILE_9
+      }
+      either_tile_condition {
+        required_tile_type: JIHAI_TILE
       }
     }
     required_agari_condition {
@@ -576,43 +576,43 @@ yaku {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_A
+        required_variable_tile_type: VARIABLE_TILE_A
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_B
+        required_variable_tile_type: VARIABLE_TILE_B
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_C
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_D
+        required_variable_tile_type: VARIABLE_TILE_D
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_E
+        required_variable_tile_type: VARIABLE_TILE_E
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_F
+        required_variable_tile_type: VARIABLE_TILE_F
       }
     }
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_variable_tile: VARIABLE_TILE_G
+        required_variable_tile_type: VARIABLE_TILE_G
       }
     }
     required_agari_condition {
@@ -678,13 +678,13 @@ yaku {
   kuisagari_fan: 2
   yaku_condition {
     allowed_tile_condition {
-      required_tile: TILE_1
+      required_tile_type: TILE_1
     }
     allowed_tile_condition {
-      required_tile: TILE_9
+      required_tile_type: TILE_9
     }
     allowed_tile_condition {
-      required_tile: JIHAI_TILE
+      required_tile_type: JIHAI_TILE
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -703,24 +703,24 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: WANZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
+        required_tile_type: WANZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: PINZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
+        required_tile_type: PINZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile: SOUZU_TILE
-        required_variable_tile: VARIABLE_NUMBER_A
+        required_tile_type: SOUZU_TILE
+        required_variable_tile_type: VARIABLE_NUMBER_A
       }
     }
     required_agari_condition {
@@ -758,24 +758,24 @@ yaku {
     required_element_condition {
       allowed_element_type: TOITSU
       required_tile_condition {
-        required_tile: SANGEN_TILE
-        required_variable_tile: VARIABLE_TILE_A
+        required_tile_type: SANGEN_TILE
+        required_variable_tile_type: VARIABLE_TILE_A
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: SANGEN_TILE
-        required_variable_tile: VARIABLE_TILE_B
+        required_tile_type: SANGEN_TILE
+        required_variable_tile_type: VARIABLE_TILE_B
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: SANGEN_TILE
-        required_variable_tile: VARIABLE_TILE_C
+        required_tile_type: SANGEN_TILE
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_agari_condition {
@@ -799,7 +799,7 @@ yaku {
   kuisagari_fan: 2
   yaku_condition {
     allowed_tile_condition {
-      required_variable_tile: VARIABLE_COLOR_A_OR_JIHAI
+      required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -817,46 +817,46 @@ yaku {
     required_element_condition {
       allowed_element_type: TOITSU
       allowed_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       allowed_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
-      }
-    }
-    required_element_condition {
-      allowed_element_type: MENTSU
-      either_tile_condition {
-        required_tile: TILE_1
-      }
-      either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
       }
     }
     required_element_condition {
       allowed_element_type: MENTSU
       either_tile_condition {
-        required_tile: TILE_1
+        required_tile_type: TILE_1
       }
       either_tile_condition {
-        required_tile: TILE_9
+        required_tile_type: TILE_9
+      }
+    }
+    required_element_condition {
+      allowed_element_type: MENTSU
+      either_tile_condition {
+        required_tile_type: TILE_1
+      }
+      either_tile_condition {
+        required_tile_type: TILE_9
       }
     }
     required_agari_condition {
@@ -873,49 +873,49 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_A
+        required_variable_tile_type: VARIABLE_TILE_A
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_B
+        required_variable_tile_type: VARIABLE_TILE_B
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_C
-      }
-    }
-    required_element_condition {
-      allowed_element_type: SHUNTSU
-      required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_A
-      }
-      required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_B
-      }
-      required_tile_condition {
-        required_variable_tile: VARIABLE_TILE_C
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_A
+        required_variable_tile_type: VARIABLE_TILE_A
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_B
+        required_variable_tile_type: VARIABLE_TILE_B
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_C
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_A
+        required_variable_tile_type: VARIABLE_TILE2_A
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_B
+        required_variable_tile_type: VARIABLE_TILE2_B
       }
       required_tile_condition {
-        required_variable_tile: VARIABLE_TILE2_C
+        required_variable_tile_type: VARIABLE_TILE2_C
+      }
+    }
+    required_element_condition {
+      allowed_element_type: SHUNTSU
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_TILE2_A
+      }
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_TILE2_B
+      }
+      required_tile_condition {
+        required_variable_tile_type: VARIABLE_TILE2_C
       }
     }
     required_agari_condition {
@@ -930,7 +930,7 @@ yaku {
   kuisagari_fan: 5
   yaku_condition {
     allowed_tile_condition {
-      required_variable_tile: VARIABLE_COLOR_A
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -944,52 +944,52 @@ yaku {
   yakuman: 1
   yaku_condition {
     required_tile_condition {
-      required_tile: WIND_TON
+      required_tile_type: WIND_TON
     }
     required_tile_condition {
-      required_tile: WIND_NAN
+      required_tile_type: WIND_NAN
     }
     required_tile_condition {
-      required_tile: WIND_SHA
+      required_tile_type: WIND_SHA
     }
     required_tile_condition {
-      required_tile: WIND_PE
+      required_tile_type: WIND_PE
     }
     required_tile_condition {
-      required_tile: SANGEN_HAKU
+      required_tile_type: SANGEN_HAKU
     }
     required_tile_condition {
-      required_tile: SANGEN_HATSU
+      required_tile_type: SANGEN_HATSU
     }
     required_tile_condition {
-      required_tile: SANGEN_CHUN
+      required_tile_type: SANGEN_CHUN
     }
     required_tile_condition {
-      required_tile: WANZU_1
+      required_tile_type: WANZU_1
     }
     required_tile_condition {
-      required_tile: WANZU_9
+      required_tile_type: WANZU_9
     }
     required_tile_condition {
-      required_tile: SOUZU_1
+      required_tile_type: SOUZU_1
     }
     required_tile_condition {
-      required_tile: SOUZU_9
+      required_tile_type: SOUZU_9
     }
     required_tile_condition {
-      required_tile: PINZU_1
+      required_tile_type: PINZU_1
     }
     required_tile_condition {
-      required_tile: PINZU_9
+      required_tile_type: PINZU_9
     }
     allowed_tile_condition {
-      required_tile: JIHAI_TILE
+      required_tile_type: JIHAI_TILE
     }
     allowed_tile_condition {
-      required_tile: TILE_1
+      required_tile_type: TILE_1
     }
     allowed_tile_condition {
-      required_tile: TILE_9
+      required_tile_type: TILE_9
     }
     required_agari_condition {
       allowed_format: IRREGULAR_AGARI
@@ -1033,21 +1033,21 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: SANGEN_HAKU
+        required_tile_type: SANGEN_HAKU
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: SANGEN_HATSU
+        required_tile_type: SANGEN_HATSU
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: SANGEN_CHUN
+        required_tile_type: SANGEN_CHUN
       }
     }
     required_agari_condition {
@@ -1061,7 +1061,7 @@ yaku {
   yakuman: 1
   yaku_condition {
     allowed_tile_condition {
-      required_tile: JIHAI_TILE
+      required_tile_type: JIHAI_TILE
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -1077,32 +1077,32 @@ yaku {
     required_element_condition {
       allowed_element_type: TOITSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_A
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_A
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_B
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_B
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_C
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_D
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_D
       }
     }
     required_agari_condition {
@@ -1117,22 +1117,22 @@ yaku {
   yakuman: 1
   yaku_condition {
     allowed_tile_condition {
-      required_tile: SOUZU_2
+      required_tile_type: SOUZU_2
     }
     allowed_tile_condition {
-      required_tile: SOUZU_3
+      required_tile_type: SOUZU_3
     }
     allowed_tile_condition {
-      required_tile: SOUZU_4
+      required_tile_type: SOUZU_4
     }
     allowed_tile_condition {
-      required_tile: SOUZU_6
+      required_tile_type: SOUZU_6
     }
     allowed_tile_condition {
-      required_tile: SOUZU_8
+      required_tile_type: SOUZU_8
     }
     allowed_tile_condition {
-      required_tile: SANGEN_HATSU
+      required_tile_type: SANGEN_HATSU
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -1145,10 +1145,10 @@ yaku {
   yakuman: 1
   yaku_condition {
     allowed_tile_condition {
-      required_tile: TILE_1
+      required_tile_type: TILE_1
     }
     allowed_tile_condition {
-      required_tile: TILE_9
+      required_tile_type: TILE_9
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -1184,59 +1184,59 @@ yaku {
   yakuman: 1
   yaku_condition {
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_2
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_2
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_3
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_3
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_4
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_4
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_5
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_5
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_6
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_6
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_7
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_7
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_8
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_8
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_tile_condition {
-      required_variable_tile: VARIABLE_COLOR_A
+      required_variable_tile_type: VARIABLE_COLOR_A
     }
     required_agari_condition {
       allowed_format: REGULAR_AGARI
@@ -1285,65 +1285,65 @@ yaku {
   yakuman: 2
   yaku_condition {
     required_tile_condition {
-      required_tile: WIND_TON
+      required_tile_type: WIND_TON
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: WIND_NAN
+      required_tile_type: WIND_NAN
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: WIND_SHA
+      required_tile_type: WIND_SHA
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: WIND_PE
+      required_tile_type: WIND_PE
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: SANGEN_HAKU
+      required_tile_type: SANGEN_HAKU
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: SANGEN_HATSU
+      required_tile_type: SANGEN_HATSU
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: SANGEN_CHUN
+      required_tile_type: SANGEN_CHUN
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: WANZU_1
+      required_tile_type: WANZU_1
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: WANZU_9
+      required_tile_type: WANZU_9
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: SOUZU_1
+      required_tile_type: SOUZU_1
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: SOUZU_9
+      required_tile_type: SOUZU_9
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: PINZU_1
+      required_tile_type: PINZU_1
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: PINZU_9
+      required_tile_type: PINZU_9
       disallowed_state: AGARI_HAI
     }
     allowed_tile_condition {
-      required_tile: JIHAI_TILE
+      required_tile_type: JIHAI_TILE
     }
     allowed_tile_condition {
-      required_tile: TILE_1
+      required_tile_type: TILE_1
     }
     allowed_tile_condition {
-      required_tile: TILE_9
+      required_tile_type: TILE_9
     }
     required_agari_condition {
       allowed_format: IRREGULAR_AGARI
@@ -1386,32 +1386,32 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_A
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_A
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_B
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_B
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_C
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_C
       }
     }
     required_element_condition {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       required_tile_condition {
-        required_tile: WIND_TILE
-        required_variable_tile: VARIABLE_TILE_D
+        required_tile_type: WIND_TILE
+        required_variable_tile_type: VARIABLE_TILE_D
       }
     }
     required_agari_condition {
@@ -1425,72 +1425,72 @@ yaku {
   yakuman: 2
   yaku_condition {
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_1
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_1
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_2
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_2
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_3
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_3
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_4
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_4
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_5
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_5
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_6
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_6
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_7
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_7
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_8
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_8
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile: TILE_9
-      required_variable_tile: VARIABLE_COLOR_A
+      required_tile_type: TILE_9
+      required_variable_tile_type: VARIABLE_COLOR_A
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_variable_tile: VARIABLE_COLOR_A
+      required_variable_tile_type: VARIABLE_COLOR_A
       required_state: AGARI_HAI
     }
     required_agari_condition {

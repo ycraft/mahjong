@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package ydec.mahjong;
 
@@ -9,16 +9,16 @@ message Rule {
 }
 
 message Yaku {
-  optional string name = 1;
-  optional string description = 2;
+  string name = 1;
+  string description = 2;
 
-  optional int32 menzen_fan = 3;
-  optional int32 kuisagari_fan = 4;
-  optional int32 force_fu_tsumo = 5;
-  optional int32 force_fu_ron = 6;
-  optional int32 yakuman = 7;
+  int32 menzen_fan = 3;
+  int32 kuisagari_fan = 4;
+  int32 force_fu_tsumo = 5;
+  int32 force_fu_ron = 6;
+  int32 yakuman = 7;
 
-  optional YakuCondition yaku_condition = 8;
+  YakuCondition yaku_condition = 8;
 
   // Upper version of this yaku.
   // This yaku will not be applied if there is any upper version yaku for the given hand.
@@ -27,6 +27,8 @@ message Yaku {
 
 message TileCondition {
   enum VariableTileType {
+    UNKNOWN_VARIABLE_TILE_TYPE = 0;
+
     MASK_VARIABLE_TYPE = 0xf0;
 
     // VARIABLE_TILE_A to VARIABLE_TILE_G are all distinct each other.
@@ -65,11 +67,12 @@ message TileCondition {
     VARIABLE_CONDITIONAL_YAKUHAI_2 = 0x60;
       VARIABLE_JIKAZE_TILE = 0x61;
   }
-  optional TileType required_tile = 1;
+
+  TileType required_tile_type = 1;
 
   // Only leaf types can be used. Don't use non-leaf types, such as
   // VARIABLE_TILE and VARIABLE_CONDITIONAL_YAKUHAI.
-  optional VariableTileType required_variable_tile = 2;
+  VariableTileType required_variable_tile_type = 2;
 
   repeated TileState required_state = 3;
   repeated TileState disallowed_state = 4;
@@ -89,7 +92,7 @@ message ElementCondition {
 }
 
 message AgariCondition {
-  optional AgariType required_type = 1;
+  AgariType required_type = 1;
   repeated AgariState required_state = 2;
   repeated AgariFormat allowed_format = 3;
 }
@@ -103,9 +106,9 @@ message YakuCondition {
 
   repeated TileCondition required_tile_condition = 3;
   repeated ElementCondition required_element_condition = 4;
-  optional MachiType required_machi_type = 5;
-  optional AgariCondition required_agari_condition = 6;
-  optional RichiType required_richi_type = 7;
-  optional TileType required_field_wind = 8;
-  optional TileType required_player_wind = 9;
+  MachiType required_machi_type = 5;
+  AgariCondition required_agari_condition = 6;
+  RichiType required_richi_type = 7;
+  TileType required_field_wind = 8;
+  TileType required_player_wind = 9;
 }

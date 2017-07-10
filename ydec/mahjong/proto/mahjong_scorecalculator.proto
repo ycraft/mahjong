@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 import "ydec/mahjong/proto/mahjong_common.proto";
 import "ydec/mahjong/proto/mahjong_rule.proto";
@@ -6,12 +6,12 @@ import "ydec/mahjong/proto/mahjong_rule.proto";
 package ydec.mahjong;
 
 message ScoreCalculatorResult {
-  optional int32 fu = 1;
-  optional int32 fan = 2;
-  optional int32 yakuman = 3;
+  int32 fu = 1;
+  int32 fan = 2;
+  int32 yakuman = 3;
   repeated Yaku yaku = 4;
-  optional int32 dora = 5;
-  optional int32 uradora = 6;
+  int32 dora = 5;
+  int32 uradora = 6;
 }
 
 message YakuApplierResult {
@@ -35,7 +35,7 @@ message YakuConditionValidatorResult {
     ERROR_INTERNAL_ERROR = -10;
   }
 
-  optional Type type = 1;
+  Type type = 1;
 }
 
 message HandParserResult {
@@ -44,6 +44,6 @@ message HandParserResult {
 
 message ParsedHand {
   repeated Element element = 1;
-  optional MachiType machi_type = 2;
-  optional Agari agari = 3;
+  MachiType machi_type = 2;
+  Agari agari = 3;
 }
