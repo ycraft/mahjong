@@ -27,13 +27,13 @@
 #include "ydec/mahjong/src/yaku_applier.h"
 #include "ydec/mahjong/tests/common_test_util.h"
 
+using google::protobuf::TextFormat;
 using std::ifstream;
 using std::istream;
 using std::ostream_iterator;
 using std::string;
 using std::stringstream;
 using std::vector;
-using google::protobuf::TextFormat;
 
 namespace ydec {
 namespace mahjong {

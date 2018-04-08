@@ -23,10 +23,10 @@
 #include "ydec/mahjong/src/mahjong_common_util.h"
 #include "ydec/mahjong/tests/common_test_util.h"
 
-using std::endl;
-using std::vector;
-using std::string;
 using google::protobuf::TextFormat;
+using std::endl;
+using std::string;
+using std::vector;
 
 namespace ydec {
 namespace mahjong {
