@@ -42,9 +42,10 @@ new_http_archive(
     build_file = "googletest.BUILD",
 )
 
-new_git_repository(
+new_http_archive(
     name = "styleguide",
-    remote = "https://github.com/google/styleguide.git",
-    commit = "6d3a7d8a229e189f7a5bb7c3923363356625ece5",
+    url = "https://github.com/google/styleguide/archive/5508c2f7dfaba43b30d413c943560476c2e5a46c.zip",
+    strip_prefix = "styleguide-5508c2f7dfaba43b30d413c943560476c2e5a46c",
+    sha256 = "736c63eb436085412acf8308ad2b816c4d2d22b5ef40d0e390c57f4652476401",
     build_file = "styleguide.BUILD",
 )
