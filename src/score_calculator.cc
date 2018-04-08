@@ -25,7 +25,7 @@
 
 using std::unique_ptr;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -211,4 +211,4 @@ int FuCalculator::GetMachiFu(MachiType machi_type) const {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

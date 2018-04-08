@@ -35,7 +35,7 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -1069,4 +1069,4 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

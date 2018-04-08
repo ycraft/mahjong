@@ -3,7 +3,7 @@ syntax = "proto3";
 import "proto/mahjong_common.proto";
 import "proto/mahjong_rule.proto";
 
-package ydec.mahjong;
+package ycraft.mahjong;
 
 message ScoreCalculatorResult {
   int32 fu = 1;

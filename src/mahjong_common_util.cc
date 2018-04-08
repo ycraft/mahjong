@@ -22,7 +22,7 @@
 using std::find_if;
 using std::string;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -186,4 +186,4 @@ string GetDebugString(const HandParserResult& result) {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

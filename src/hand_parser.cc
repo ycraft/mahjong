@@ -21,7 +21,7 @@
 
 #include "src/mahjong_common_util.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -414,4 +414,4 @@ void HandParser::DeduplicateResult() {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

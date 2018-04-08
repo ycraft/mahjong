@@ -30,7 +30,7 @@ using std::ostream;
 using google::protobuf::TextFormat;
 using google::protobuf::io::IstreamInputStream;
 
-using ydec::mahjong::Rule;
+using ycraft::mahjong::Rule;
 
 int main(int argc, char** argv) {
   if (argc != 3) {

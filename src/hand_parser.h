@@ -19,7 +19,7 @@
 
 #include "proto/mahjong_scorecalculator.pb.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 class HandParser {
@@ -52,6 +52,6 @@ class HandParser {
 };
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft
 
 #endif  // SRC_HAND_PARSER_H_

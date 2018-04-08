@@ -14,10 +14,10 @@
 
 #include "src/mahjong_common_value.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 extern const int KAZOE_YAKUMAN_HAN = 13;
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

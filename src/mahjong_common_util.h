@@ -19,7 +19,7 @@
 
 #include "proto/mahjong_scorecalculator.pb.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 // Utilities for TileType.
@@ -57,6 +57,6 @@ bool IsMenzen(const ParsedHand& parsed_hand);
 std::string GetDebugString(const HandParserResult& result);
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft
 
 #endif  // SRC_MAHJONG_COMMON_UTIL_H_

@@ -31,7 +31,7 @@ using std::stringstream;
 using std::unique_ptr;
 using std::vector;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -201,4 +201,4 @@ TEST_F(ScoreCalculatorTest, TestCalculate_3) {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

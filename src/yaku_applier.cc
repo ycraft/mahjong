@@ -32,7 +32,7 @@ using std::vector;
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 /**
@@ -672,4 +672,4 @@ bool YakuConditionValidator::ValidateVariableTile(
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

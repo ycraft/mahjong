@@ -28,7 +28,7 @@ using std::endl;
 using std::string;
 using std::vector;
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 class HandParserTest : public testing::Test {
@@ -950,4 +950,4 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

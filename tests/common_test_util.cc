@@ -14,7 +14,7 @@
 
 #include "tests/common_test_util.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 namespace {
@@ -180,4 +180,4 @@ void CommonTestUtil::CreateMinshuntsu(Element* element,
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

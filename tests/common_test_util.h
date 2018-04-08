@@ -19,7 +19,7 @@
 #include "proto/mahjong_rule.pb.h"
 #include "proto/mahjong_scorecalculator.pb.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 class CommonTestUtil {
@@ -72,6 +72,6 @@ class CommonTestUtil {
 };
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft
 
 #endif  // TESTS_COMMON_TEST_UTIL_H_

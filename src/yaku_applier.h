@@ -25,7 +25,7 @@
 #include "proto/mahjong_rule.pb.h"
 #include "proto/mahjong_scorecalculator.pb.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 class YakuApplier {
@@ -117,6 +117,6 @@ class YakuConditionValidator {
 };
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft
 
 #endif  // SRC_YAKU_APPLIER_H_

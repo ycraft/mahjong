@@ -15,12 +15,12 @@
 #ifndef SRC_MAHJONG_COMMON_VALUE_H_
 #define SRC_MAHJONG_COMMON_VALUE_H_
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 extern const int KAZOE_YAKUMAN_HAN;
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft
 
 #endif  // SRC_MAHJONG_COMMON_VALUE_H_

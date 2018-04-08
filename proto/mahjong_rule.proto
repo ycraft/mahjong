@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ydec.mahjong;
+package ycraft.mahjong;
 
 import "proto/mahjong_common.proto";
 

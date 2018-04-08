@@ -16,7 +16,7 @@
 
 #include "src/mahjong_common_util.h"
 
-namespace ydec {
+namespace ycraft {
 namespace mahjong {
 
 class MahjongCommonUtilsTest : public testing::Test {};
@@ -94,4 +94,4 @@ TEST_F(MahjongCommonUtilsTest, MachiTypeTest) {
 }
 
 }  // namespace mahjong
-}  // namespace ydec
+}  // namespace ycraft

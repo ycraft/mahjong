@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ydec.mahjong;
+package ycraft.mahjong;
 
 enum TileType {
   // 0x00 00 00 00 00 00 00 00
