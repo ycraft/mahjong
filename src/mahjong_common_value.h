@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef YDEC_MAHJONG_SRC_MAHJONG_COMMON_VALUE_H_
-#define YDEC_MAHJONG_SRC_MAHJONG_COMMON_VALUE_H_
+#ifndef SRC_MAHJONG_COMMON_VALUE_H_
+#define SRC_MAHJONG_COMMON_VALUE_H_
 
 namespace ydec {
 namespace mahjong {
@@ -23,4 +23,4 @@ extern const int KAZOE_YAKUMAN_HAN;
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_SRC_MAHJONG_COMMON_VALUE_H_
+#endif  // SRC_MAHJONG_COMMON_VALUE_H_

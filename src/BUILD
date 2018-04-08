@@ -1,4 +1,4 @@
-load("//ydec/mahjong/tools:cc_lint_test.bzl",
+load("//tools:cc_lint_test.bzl",
      "cc_lint_test", "cc_clang_format_test")
 
 cc_library(
@@ -18,7 +18,7 @@ cc_library(
       "yaku_applier.h",
     ],
     deps = [
-      "//ydec/mahjong/proto:mahjong_scorecalculator_cc_proto",
+      "//proto:mahjong_scorecalculator_cc_proto",
     ],
     visibility = ["//visibility:public"],
 )

@@ -4,6 +4,6 @@ genrule(
     name = "rule_pb",
     srcs = ["rule.pb.txt"],
     outs = ["rule.pb"],
-    tools = ["//ydec/mahjong/tools:update_rule"],
-    cmd = "$(location //ydec/mahjong/tools:update_rule) $(SRCS) $(OUTS)",
+    tools = ["//tools:update_rule"],
+    cmd = "$(location //tools:update_rule) $(SRCS) $(OUTS)",
 )

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ydec.mahjong;
 
-import "ydec/mahjong/proto/mahjong_common.proto";
+import "proto/mahjong_common.proto";
 
 message Rule {
   repeated Yaku yaku = 1;

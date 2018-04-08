@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/tests/common_test_util.h"
+#include "tests/common_test_util.h"
 
 namespace ydec {
 namespace mahjong {

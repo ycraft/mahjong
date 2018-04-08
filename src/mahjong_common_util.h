@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
-#define YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
+#ifndef SRC_MAHJONG_COMMON_UTIL_H_
+#define SRC_MAHJONG_COMMON_UTIL_H_
 
 #include <string>
 
-#include "ydec/mahjong/proto/mahjong_scorecalculator.pb.h"
+#include "proto/mahjong_scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -59,4 +59,4 @@ std::string GetDebugString(const HandParserResult& result);
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_SRC_MAHJONG_COMMON_UTIL_H_
+#endif  // SRC_MAHJONG_COMMON_UTIL_H_

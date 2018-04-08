@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/src/hand_parser.h"
+#include "src/hand_parser.h"
 
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <set>
 
-#include "ydec/mahjong/src/mahjong_common_util.h"
+#include "src/mahjong_common_util.h"
 
 namespace ydec {
 namespace mahjong {

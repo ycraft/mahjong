@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/src/mahjong_common_value.h"
+#include "src/mahjong_common_value.h"
 
 namespace ydec {
 namespace mahjong {

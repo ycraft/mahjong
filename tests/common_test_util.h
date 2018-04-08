@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef YDEC_MAHJONG_TESTS_COMMON_TEST_UTIL_H_
-#define YDEC_MAHJONG_TESTS_COMMON_TEST_UTIL_H_
+#ifndef TESTS_COMMON_TEST_UTIL_H_
+#define TESTS_COMMON_TEST_UTIL_H_
 
-#include "ydec/mahjong/proto/mahjong_common.pb.h"
-#include "ydec/mahjong/proto/mahjong_rule.pb.h"
-#include "ydec/mahjong/proto/mahjong_scorecalculator.pb.h"
+#include "proto/mahjong_common.pb.h"
+#include "proto/mahjong_rule.pb.h"
+#include "proto/mahjong_scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -74,4 +74,4 @@ class CommonTestUtil {
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_TESTS_COMMON_TEST_UTIL_H_
+#endif  // TESTS_COMMON_TEST_UTIL_H_

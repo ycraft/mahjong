@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef YDEC_MAHJONG_SRC_HAND_PARSER_H_
-#define YDEC_MAHJONG_SRC_HAND_PARSER_H_
+#ifndef SRC_HAND_PARSER_H_
+#define SRC_HAND_PARSER_H_
 
 #include <string>
 
-#include "ydec/mahjong/proto/mahjong_scorecalculator.pb.h"
+#include "proto/mahjong_scorecalculator.pb.h"
 
 namespace ydec {
 namespace mahjong {
@@ -54,4 +54,4 @@ class HandParser {
 }  // namespace mahjong
 }  // namespace ydec
 
-#endif  // YDEC_MAHJONG_SRC_HAND_PARSER_H_
+#endif  // SRC_HAND_PARSER_H_

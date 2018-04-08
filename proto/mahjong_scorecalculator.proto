@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-import "ydec/mahjong/proto/mahjong_common.proto";
-import "ydec/mahjong/proto/mahjong_rule.proto";
+import "proto/mahjong_common.proto";
+import "proto/mahjong_rule.proto";
 
 package ydec.mahjong;
 

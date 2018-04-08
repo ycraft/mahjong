@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/src/score_calculator.h"
+#include "src/score_calculator.h"
 
 #include <algorithm>
 #include <iostream>
 #include <utility>
 
-#include "ydec/mahjong/src/hand_parser.h"
-#include "ydec/mahjong/src/mahjong_common_util.h"
-#include "ydec/mahjong/src/mahjong_common_value.h"
-#include "ydec/mahjong/src/yaku_applier.h"
+#include "src/hand_parser.h"
+#include "src/mahjong_common_util.h"
+#include "src/mahjong_common_value.h"
+#include "src/yaku_applier.h"
 
 using std::unique_ptr;
 

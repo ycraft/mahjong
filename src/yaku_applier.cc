@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ydec/mahjong/src/yaku_applier.h"
+#include "src/yaku_applier.h"
 
 #include <iostream>
 #include <memory>
@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-#include "ydec/mahjong/src/mahjong_common_util.h"
+#include "src/mahjong_common_util.h"
 
 using std::make_pair;
 using std::move;

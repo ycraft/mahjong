@@ -1,4 +1,4 @@
-load("//ydec/mahjong/tools:cc_lint_test.bzl",
+load("//tools:cc_lint_test.bzl",
      "cc_lint_test", "cc_clang_format_test")
 
 cc_library(
@@ -10,7 +10,7 @@ cc_library(
       "common_test_util.h",
     ],
     deps = [
-      "//ydec/mahjong/proto:mahjong_scorecalculator_cc_proto",
+      "//proto:mahjong_scorecalculator_cc_proto",
     ],
 )
 
@@ -23,11 +23,11 @@ cc_test(
       "yaku_applier_test.cc",
     ],
     data = [
-      "//ydec/mahjong/data:rule_pb",
+      "//data:rule_pb",
     ],
     deps = [
       ":common_test_util_lib",
-      "//ydec/mahjong/src:mahjong_score_calculator_lib",
+      "//src:mahjong_score_calculator_lib",
       "@googletest//:gtest_main",
     ],
 )

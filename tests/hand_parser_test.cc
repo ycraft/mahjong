@@ -19,9 +19,9 @@
 #include "google/protobuf/text_format.h"
 #include "gtest/gtest.h"
 
-#include "ydec/mahjong/src/hand_parser.h"
-#include "ydec/mahjong/src/mahjong_common_util.h"
-#include "ydec/mahjong/tests/common_test_util.h"
+#include "src/hand_parser.h"
+#include "src/mahjong_common_util.h"
+#include "tests/common_test_util.h"
 
 using google::protobuf::TextFormat;
 using std::endl;

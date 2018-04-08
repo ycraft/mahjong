@@ -1,11 +1,11 @@
-load("//ydec/mahjong/tools:cc_lint_test.bzl",
+load("//tools:cc_lint_test.bzl",
      "cc_lint_test", "cc_clang_format_test")
 
 cc_binary(
     name = "update_rule",
     srcs = ["update_rule.cc"],
     deps = [
-      "//ydec/mahjong/proto:mahjong_rule_cc_proto",
+      "//proto:mahjong_rule_cc_proto",
     ],
     visibility = ["//visibility:public"],
 )
