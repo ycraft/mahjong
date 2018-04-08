@@ -3,32 +3,24 @@
 # trusty beta image has jdk8, gcc4.8.4
 dist: trusty
 sudo: required
-# xcode8 has jdk8
-osx_image: xcode8
-# Not technically required but suppresses 'Ruby' in Job status message.
+
+# Bazel installation requires JDK 8
 language: java
 
 os:
   - linux
-  - osx
 
 env:
-  - V=0.5.3
+  - BAZEL_VERSION=0.11.1
 
 before_install:
   - |
-    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      OS=darwin
-    else
-      sysctl kernel.unprivileged_userns_clone=1
-      OS=linux
-    fi
-    if [[ "${V}" == "HEAD" ]]; then
-      URL="http://ci.bazel.io/job/Bazel/JAVA_VERSION=1.8,PLATFORM_NAME=${OS}-x86_64/lastSuccessfulBuild/artifact/output/ci/bazel--installer.sh"
-    else
-      URL="https://github.com/bazelbuild/bazel/releases/download/${V}/bazel-${V}-installer-${OS}-x86_64.sh"
-    fi
-    wget -O install.sh "${URL}"
+    sudo apt-get install clang-format
+    BAZEL_VERSION=0.11.1
+    OS=linux
+    BAZEL_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-${OS}-x86_64.sh"
+    sysctl kernel.unprivileged_userns_clone=1
+    wget -O install.sh "${BAZEL_URL}"
     chmod +x install.sh
     ./install.sh --user
     rm -f install.sh
