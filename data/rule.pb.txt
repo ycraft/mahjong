@@ -109,8 +109,8 @@ yaku {
 yaku {
   name: "平和"
   menzen_han: 1
-  force_fu_tsumo: 20
-  force_fu_ron: 30
+  fu_override_tsumo: 20
+  fu_override_ron: 30
   yaku_condition {
     disallowed_tile_condition {
       required_tile_type: SANGEN_TILE
@@ -570,8 +570,8 @@ yaku {
 yaku {
   name: "七対子"
   menzen_han: 2
-  force_fu_tsumo: 25
-  force_fu_ron: 25
+  fu_override_tsumo: 25
+  fu_override_ron: 25
   yaku_condition {
     required_element_condition {
       allowed_element_type: TOITSU

@@ -14,8 +14,8 @@ message Yaku {
 
   int32 menzen_han = 3;
   int32 kuisagari_han = 4;
-  int32 force_fu_tsumo = 5;
-  int32 force_fu_ron = 6;
+  int32 fu_override_tsumo = 5;
+  int32 fu_override_ron = 6;
   int32 yakuman = 7;
 
   YakuCondition yaku_condition = 8;

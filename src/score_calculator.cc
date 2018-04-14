@@ -147,11 +147,11 @@ int FuCalculator::Calculate(
     const YakuApplierResult& yaku_applier_result) const {
   for (const Yaku& yaku : yaku_applier_result.yaku()) {
     if (parsed_hand.agari().type() == AgariType::TSUMO &&
-        yaku.force_fu_tsumo() > 0) {
-      return yaku.force_fu_tsumo();
+        yaku.fu_override_tsumo() > 0) {
+      return yaku.fu_override_tsumo();
     } else if (parsed_hand.agari().type() == AgariType::RON &&
-               yaku.force_fu_ron() > 0) {
-      return yaku.force_fu_ron();
+               yaku.fu_override_ron() > 0) {
+      return yaku.fu_override_ron();
     }
   }
 
