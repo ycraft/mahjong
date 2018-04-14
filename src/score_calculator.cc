@@ -40,8 +40,8 @@ int Compare(const ScoreCalculatorResult& left,
     return 1;
   }
 
-  bool l_kazoe = left.fan() >= KAZOE_YAKUMAN_HAN;
-  bool r_kazoe = right.fan() >= KAZOE_YAKUMAN_HAN;
+  bool l_kazoe = left.han() >= KAZOE_YAKUMAN_HAN;
+  bool r_kazoe = right.han() >= KAZOE_YAKUMAN_HAN;
 
   if (l_kazoe && !r_kazoe) {
     return -1;
@@ -49,8 +49,8 @@ int Compare(const ScoreCalculatorResult& left,
     return 1;
   }
 
-  int l_score = left.fu() * (1 << left.fan());
-  int r_score = right.fu() * (1 << right.fan());
+  int l_score = left.fu() * (1 << left.han());
+  int r_score = right.fu() * (1 << right.han());
 
   if (l_score > r_score) {
     return -1;
@@ -98,9 +98,9 @@ void ScoreCalculator::Calculate(const Field& field, const Player& player,
   bool is_menzen = IsMenzen(parsed_hand);
   for (const Yaku& yaku : yaku_applier_result.yaku()) {
     if (is_menzen) {
-      han += yaku.menzen_fan();
+      han += yaku.menzen_han();
     } else {
-      han += yaku.kuisagari_fan();
+      han += yaku.kuisagari_han();
     }
     yakuman += yaku.yakuman();
   }
@@ -131,7 +131,7 @@ void ScoreCalculator::Calculate(const Field& field, const Player& player,
 
   result->set_dora(dora);
   result->set_uradora(uradora);
-  result->set_fan(han + dora + uradora);
+  result->set_han(han + dora + uradora);
   result->set_yakuman(yakuman);
   *result->mutable_yaku() = yaku_applier_result.yaku();
 

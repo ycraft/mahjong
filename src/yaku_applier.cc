@@ -80,8 +80,8 @@ void YakuApplier::Apply(const RichiType& richi_type, const TileType& field_wind,
   set<string> applied_yaku_names;
   for (const Yaku& yaku : rule_.yaku()) {
     // Check if hansuu is not zero.
-    bool is_applicable = yaku.kuisagari_fan() > 0 || yaku.yakuman() > 0 ||
-                         (is_menzen && yaku.menzen_fan() > 0);
+    bool is_applicable = yaku.kuisagari_han() > 0 || yaku.yakuman() > 0 ||
+                         (is_menzen && yaku.menzen_han() > 0);
     if (!is_applicable) {
       continue;
     }

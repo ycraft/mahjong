@@ -7,7 +7,7 @@ package ycraft.mahjong;
 
 message ScoreCalculatorResult {
   int32 fu = 1;
-  int32 fan = 2;
+  int32 han = 2;
   int32 yakuman = 3;
   repeated Yaku yaku = 4;
   int32 dora = 5;

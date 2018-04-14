@@ -75,7 +75,7 @@ class ScoreCalculatorTest : public testing::Test {
              << "Actual = {" << ConcatStrings(actual_yaku) << "}";
     }
 
-    ASSERT_EQ(expected_han, actual.fan());
+    ASSERT_EQ(expected_han, actual.han());
     ASSERT_EQ(expected_fu, actual.fu());
     ASSERT_EQ(expected_yakuman, actual.yakuman());
     ASSERT_EQ(expected_dora, actual.dora());

@@ -12,8 +12,8 @@ message Yaku {
   string name = 1;
   string description = 2;
 
-  int32 menzen_fan = 3;
-  int32 kuisagari_fan = 4;
+  int32 menzen_han = 3;
+  int32 kuisagari_han = 4;
   int32 force_fu_tsumo = 5;
   int32 force_fu_ron = 6;
   int32 yakuman = 7;
