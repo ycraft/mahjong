@@ -79,7 +79,7 @@ message TileCondition {
   VariableTileType required_variable_tile_type = 2;
 
   repeated TileState required_state = 3;
-  repeated TileState disallowed_state = 4;
+  repeated TileState deny_state = 4;
 }
 
 message ElementCondition {
@@ -106,7 +106,7 @@ message YakuCondition {
   repeated TileCondition allowed_tile_condition = 1;
 
   // You may *not* use variable_tile except for VARIABLE_CONDITIONAL_YAKUHAI.
-  repeated TileCondition disallowed_tile_condition = 2;
+  repeated TileCondition deny_tile_condition = 2;
 
   repeated TileCondition required_tile_condition = 3;
   repeated ElementCondition required_element_condition = 4;

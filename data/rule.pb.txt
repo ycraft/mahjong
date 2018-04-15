@@ -114,13 +114,13 @@ yaku {
   fu_override_tsumo: 20
   fu_override_ron: 30
   yaku_condition {
-    disallowed_tile_condition {
+    deny_tile_condition {
       required_tile_type: SANGEN_TILE
     }
-    disallowed_tile_condition {
+    deny_tile_condition {
       required_variable_tile_type: VARIABLE_BAKAZE_TILE
     }
-    disallowed_tile_condition {
+    deny_tile_condition {
       required_variable_tile_type: VARIABLE_JIKAZE_TILE
     }
     required_element_condition {
@@ -1288,55 +1288,55 @@ yaku {
   yaku_condition {
     required_tile_condition {
       required_tile_type: WIND_TON
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: WIND_NAN
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: WIND_SHA
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: WIND_PE
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: SANGEN_HAKU
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: SANGEN_HATSU
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: SANGEN_CHUN
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: MANZU_1
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: MANZU_9
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: SOUZU_1
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: SOUZU_9
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: PINZU_1
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: PINZU_9
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     allowed_tile_condition {
       required_tile_type: JIHAI_TILE
@@ -1429,67 +1429,67 @@ yaku {
     required_tile_condition {
       required_tile_type: TILE_1
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_1
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_1
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_2
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_3
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_4
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_5
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_6
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_7
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_8
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_9
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_9
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_tile_type: TILE_9
       required_variable_tile_type: VARIABLE_COLOR_A
-      disallowed_state: AGARI_HAI
+      deny_state: AGARI_HAI
     }
     required_tile_condition {
       required_variable_tile_type: VARIABLE_COLOR_A

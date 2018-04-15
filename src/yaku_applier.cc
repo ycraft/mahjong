@@ -196,9 +196,9 @@ YakuConditionValidatorResult::Type YakuConditionValidator::Validate(
     return result_->type();
   }
 
-  // Validate disallowed tile condition
-  if (condition_.disallowed_tile_condition_size() > 0 &&
-      !ValidateDisallowedTileCondition(condition_.disallowed_tile_condition(),
+  // Validate deny tile condition
+  if (condition_.deny_tile_condition_size() > 0 &&
+      !ValidateDisallowedTileCondition(condition_.deny_tile_condition(),
                                        hand_tiles_)) {
     result_->set_type(
         YakuConditionValidatorResult::NG_DISALLOWED_TILE_CONDITION);
@@ -525,12 +525,12 @@ bool YakuConditionValidator::ValidateTileCondition(
     }
   }
 
-  // Check disallowed tile state.
-  for (const int disallowed_state_int : condition.disallowed_state()) {
-    TileState disallowed_state = static_cast<TileState>(disallowed_state_int);
+  // Check deny tile state.
+  for (const int deny_state_int : condition.deny_state()) {
+    TileState deny_state = static_cast<TileState>(deny_state_int);
     for (const int state_int : tile.state()) {
       TileState state = static_cast<TileState>(state_int);
-      if (IsTileStateMatched(disallowed_state, state)) {
+      if (IsTileStateMatched(deny_state, state)) {
         return false;
       }
     }

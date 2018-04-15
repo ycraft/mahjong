@@ -752,7 +752,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
   YakuCondition condition;
   EXPECT_TRUE(
-      TextFormat::ParseFromString("disallowed_tile_condition {"
+      TextFormat::ParseFromString("deny_tile_condition {"
                                   "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
@@ -764,7 +764,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   YakuCondition condition;
   EXPECT_TRUE(
-      TextFormat::ParseFromString("disallowed_tile_condition {"
+      TextFormat::ParseFromString("deny_tile_condition {"
                                   "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
@@ -778,7 +778,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
 TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   YakuCondition condition;
   EXPECT_TRUE(
-      TextFormat::ParseFromString("disallowed_tile_condition {"
+      TextFormat::ParseFromString("deny_tile_condition {"
                                   "  required_tile_type: PINZU_8"
                                   "}",
                                   &condition));
@@ -875,7 +875,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
-                                  "  disallowed_state: AGARI_HAI"
+                                  "  deny_state: AGARI_HAI"
                                   "}",
                                   &condition));
 
