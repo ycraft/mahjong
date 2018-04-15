@@ -6,6 +6,10 @@ import "proto/mahjong_common.proto";
 
 message Rule {
   repeated Yaku yaku = 1;
+
+  // Specifies required han for kazoe yakuman. If you set zero or negative
+  // number, kazoe yakuman is disabled.
+  int32 kazoe_yakuman_han = 2;
 }
 
 message Yaku {

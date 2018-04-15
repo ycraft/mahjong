@@ -20,48 +20,12 @@
 
 #include "src/hand_parser.h"
 #include "src/mahjong_common_util.h"
-#include "src/mahjong_common_value.h"
 #include "src/yaku_applier.h"
 
 using std::unique_ptr;
 
 namespace ycraft {
 namespace mahjong {
-
-namespace {
-// Returns -1 if left one has better score.
-// Returns 1 if right one has better score.
-// Returns 0 if both ones have the same score.
-int Compare(const ScoreCalculatorResult& left,
-            const ScoreCalculatorResult& right) {
-  if (left.yakuman() > right.yakuman()) {
-    return -1;
-  } else if (left.yakuman() < right.yakuman()) {
-    return 1;
-  }
-
-  bool l_kazoe = left.han() >= KAZOE_YAKUMAN_HAN;
-  bool r_kazoe = right.han() >= KAZOE_YAKUMAN_HAN;
-
-  if (l_kazoe && !r_kazoe) {
-    return -1;
-  } else if (!l_kazoe && r_kazoe) {
-    return 1;
-  }
-
-  int l_score = left.fu() * (1 << left.han());
-  int r_score = right.fu() * (1 << right.han());
-
-  if (l_score > r_score) {
-    return -1;
-  } else if (l_score < r_score) {
-    return 1;
-  }
-
-  return 0;
-}
-
-}  // namespace
 
 ScoreCalculator::ScoreCalculator(unique_ptr<Rule> rule)
     : rule_(move(rule)),
@@ -80,6 +44,46 @@ void ScoreCalculator::Calculate(const Field& field, const Player& player,
       *result = current_result;
     }
   }
+}
+
+int ScoreCalculator::Compare(const ScoreCalculatorResult& left,
+                             const ScoreCalculatorResult& right) {
+  if (left.yakuman() > 0 || right.yakuman() > 0) {
+    if (left.yakuman() > right.yakuman()) {
+      return -1;
+    } else if (left.yakuman() < right.yakuman()) {
+      return 1;
+    } else if (left.han() != right.han()) {
+      return left.han() > right.han() ? -1 : 1;
+    }
+  } else {
+    int kazoe_yakuman_han = rule_->kazoe_yakuman_han();
+    if (kazoe_yakuman_han > 0) {
+      bool l_kazoe = left.han() >= kazoe_yakuman_han;
+      bool r_kazoe = right.han() >= kazoe_yakuman_han;
+
+      if (l_kazoe || r_kazoe) {
+        if (!r_kazoe) {
+          return -1;
+        } else if (!l_kazoe) {
+          return 1;
+        } else if (left.han() != right.han()) {
+          return left.han() > right.han() ? -1 : 1;
+        }
+      }
+    }
+  }
+
+  int l_score = left.fu() * (1 << left.han());
+  int r_score = right.fu() * (1 << right.han());
+
+  if (l_score > r_score) {
+    return -1;
+  } else if (l_score < r_score) {
+    return 1;
+  }
+
+  return 0;
 }
 
 void ScoreCalculator::Calculate(const Field& field, const Player& player,

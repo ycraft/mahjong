@@ -1,3 +1,5 @@
+kazoe_yakuman_han: 13
+
 yaku {
   name: "立直"
   menzen_han: 1

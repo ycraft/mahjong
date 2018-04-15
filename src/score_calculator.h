@@ -36,6 +36,13 @@ class ScoreCalculator {
   void Calculate(const Field& field, const Player& player,
                  const ParsedHand& parsed_hand, ScoreCalculatorResult* result);
 
+  // Compares two results. It returns -1 if the first one has greater points,
+  // 1 if the second one is greater, or 0 if they are the same.
+  // If both results are the same level of yakuman, han is used for comparison.
+  // If han is also the same, the basic points is used.
+  int Compare(const ScoreCalculatorResult& left,
+              const ScoreCalculatorResult& right);
+
   std::unique_ptr<Rule> rule_;
   std::unique_ptr<HandParser> hand_parser_;
   std::unique_ptr<YakuApplier> yaku_applier_;

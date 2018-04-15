@@ -17,8 +17,6 @@
 #include <algorithm>
 #include <string>
 
-#include "src/mahjong_common_value.h"
-
 using std::find_if;
 using std::string;
 
