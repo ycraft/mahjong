@@ -2,15 +2,99 @@ syntax = "proto3";
 
 package ycraft.mahjong;
 
+// Field holds information about field attributes of a round of Mahjong game.
+message Field {
+  // A current field wind.
+  // e.g. WIND_TON for Ton-ba.
+  TileType wind = 1;
+
+  // Current dora tiles.
+  repeated TileType dora = 2;
+
+  // Current ura-dora tiles.
+  repeated TileType uradora = 3;
+
+  // Current honba number.
+  int32 honba = 4;
+}
+
+// Player holds information about a mahjong player of a round of Mahjong game.
+message Player {
+  // Player's wind.
+  TileType wind = 1;
+
+  // Player's holding hand.
+  Hand hand = 2;
+}
+
+// Hand holds information of a player's hand.
+message Hand {
+  // Closed (concealed) tiles. This list doesn't include Agari tile.
+  repeated TileType closed_tile = 1;
+
+  // An Agari tile.
+  TileType agari_tile = 2;
+
+  message Chii {
+    repeated TileType tile = 1;
+  }
+  repeated Chii chiied_tile = 3;
+
+  message Pon {
+    TileType tile = 1;
+  }
+  repeated Pon ponned_tile = 4;
+
+  message Kan {
+    TileType tile = 1;
+    bool is_closed = 2;
+  }
+  repeated Kan Kanned_tile = 5;
+
+  Agari agari = 6;
+  RichiType richi_type = 7;
+}
+
+// Element is an element that composes a winning hand.
+message Element {
+  HandElementType type = 1;
+  repeated Tile tile = 2;
+}
+
+enum HandElementType {
+  UNKNOWN_HAND_ELEMENT_TYPE = 0;
+
+  MENTSU = 0x1;
+    SHUNTSU = 0x11;
+      ANSHUNTSU = 0x111;
+      MINSHUNTSU = 0x112;
+
+    KOUTSU  = 0x12;
+      ANKOUTSU = 0x121;
+      MINKOUTSU = 0x122;
+
+    KANTSU = 0x13;
+      ANKANTSU = 0x131;
+      MINKANTSU = 0x132;
+
+  TOITSU = 0x2;
+    ANTOITSU = 0x21;
+    MINTOITSU = 0x22;
+}
+
+// Tile is a mahjong tile.
+message Tile {
+  TileType type = 1;
+  repeated TileState state = 2;
+}
+
+// 0x 00 00 00 00 00 00 00 00
+//                    C  B  A
+//
+// A: [1, 9] number of a tile. 0 means any.
+// B: [1, 5] tile type. 0 means any.
+// C: [1, 2] sequential or not. 0 means any.
 enum TileType {
-  // 0x00 00 00 00 00 00 00 00
-  //      G  F  E  D  C  B  A
-  //
-  // A: [1, 9] number of a tile. Or 0 means any.
-  //
-  // B: [1, 5] tile type. Or 0 means any.
-  //
-  // C: [1, 2] sequential or not. Or 0 means any.
   UNKNOWN_TILE = 0;
 
   MASK_TILE_NUMBER = 0xff;
@@ -84,35 +168,10 @@ enum TileState {
     AGARI_HAI_RON = 0x12;
 }
 
-message Tile {
-  TileType type = 1;
-  repeated TileState state = 2;
-}
-
-enum HandElementType {
-  UNKNOWN_HAND_ELEMENT_TYPE = 0;
-
-  MENTSU = 0x1;
-    SHUNTSU = 0x11;
-      ANSHUNTSU = 0x111;
-      MINSHUNTSU = 0x112;
-
-    KOUTSU  = 0x12;
-      ANKOUTSU = 0x121;
-      MINKOUTSU = 0x122;
-
-    KANTSU = 0x13;
-      ANKANTSU = 0x131;
-      MINKANTSU = 0x132;
-
-  TOITSU = 0x2;
-    ANTOITSU = 0x21;
-    MINTOITSU = 0x22;
-}
-
-message Element {
-  HandElementType type = 1;
-  repeated Tile tile = 2;
+message Agari {
+  AgariType type = 1;
+  repeated AgariState state = 2;
+  AgariFormat format = 3;
 }
 
 enum AgariType {
@@ -137,12 +196,6 @@ enum AgariFormat {
   IRREGULAR_AGARI = 3;  // e.g. kokushi-musou.
 }
 
-message Agari {
-  AgariType type = 1;
-  repeated AgariState state = 2;
-  AgariFormat format = 3;
-}
-
 enum RichiType {
   UNKNOWN_RICHI_TYPE = 0;
 
@@ -154,13 +207,12 @@ enum RichiType {
     DOUBLE_RICHI = 0x23;
 }
 
+// 0x 00 00 00 00 00 00 00 00
+//                       B  A
+//
+// A: type
+// B: 0: any, 1: 2fu, 2: 0fu
 enum MachiType {
-  // 0x00 00 00 00 00 00 00 00
-  //      G  F  E  D  C  B  A
-  //
-  // A: type
-  // B: 0: any, 1: 2fu, 2: 0fu
-
   UNKNOWN_MACHI_TYPE = 0;
 
   MASK_MACHI_KIND = 0xff;
@@ -174,40 +226,4 @@ enum MachiType {
   MACHI_0FU = 0x0200;
     SHABO    = 0x0204;
     RYANMEN  = 0x0205;
-}
-
-message Hand {
-  repeated TileType closed_tile = 1;  // not includes Agari-tile
-  TileType agari_tile = 2;
-
-  message Chii {
-    repeated TileType tile = 1;
-  }
-  repeated Chii chiied_tile = 3;
-
-  message Pon {
-    TileType tile = 1;
-  }
-  repeated Pon ponned_tile = 4;
-
-  message Kan {
-    TileType tile = 1;
-    bool is_closed = 2;
-  }
-  repeated Kan Kanned_tile = 5;
-
-  Agari agari = 6;
-  RichiType richi_type = 7;
-}
-
-message Player {
-  TileType wind = 1;
-  Hand hand = 2;
-}
-
-message Field {
-  TileType wind = 1; // Ton-ba, Nan-ba
-  repeated TileType dora = 2; // Not dora hyouji hai
-  repeated TileType uradora = 3;
-  int32 honba = 4;
 }
