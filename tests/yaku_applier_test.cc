@@ -480,35 +480,35 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
 }
 
 /**
- * Unit tests for YakuConditionValidator.
+ * Unit tests for HandConditionValidator.
  */
-class YakuConditionValidatorTest : public testing::Test {
+class HandConditionValidatorTest : public testing::Test {
  protected:
-  YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
+  HandConditionValidatorResult::Type Validate(const HandCondition& condition,
                                               const RichiType& richi_type,
                                               const TileType& field_wind,
                                               const TileType& player_wind,
                                               const ParsedHand& parsed_hand) {
-    return YakuConditionValidator(condition, richi_type, field_wind,
+    return HandConditionValidator(condition, richi_type, field_wind,
                                   player_wind, parsed_hand)
         .Validate();
   }
 
-  YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
+  HandConditionValidatorResult::Type Validate(const HandCondition& condition,
                                               const ParsedHand& parsed_hand) {
     return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON,
                     /*player_wind=*/TileType::WIND_NAN, parsed_hand);
   }
 
-  YakuConditionValidatorResult::Type Validate(const YakuCondition& condition) {
+  HandConditionValidatorResult::Type Validate(const HandCondition& condition) {
     return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON,
                     /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
+  HandConditionValidatorResult::Type Validate(const HandCondition& condition,
                                               const Agari& agari) {
     ParsedHand parsed_hand;
     parsed_hand.mutable_agari()->CopyFrom(agari);
@@ -517,7 +517,7 @@ class YakuConditionValidatorTest : public testing::Test {
                     /*player_wind=*/TileType::WIND_NAN, parsed_hand);
   }
 
-  YakuConditionValidatorResult::Type Validate(const YakuCondition& condition,
+  HandConditionValidatorResult::Type Validate(const HandCondition& condition,
                                               const RichiType& richi_type) {
     return Validate(condition, richi_type,
                     /*field_wind=*/TileType::WIND_TON,
@@ -525,15 +525,15 @@ class YakuConditionValidatorTest : public testing::Test {
                     ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type ValidateFieldWind(
-      const YakuCondition& condition, const TileType& field_wind) {
+  HandConditionValidatorResult::Type ValidateFieldWind(
+      const HandCondition& condition, const TileType& field_wind) {
     return Validate(condition, RichiType::NO_RICHI, field_wind,
                     /*player_wind=*/TileType::WIND_NAN,
                     ParsedHand::default_instance());
   }
 
-  YakuConditionValidatorResult::Type ValidatePlayerWind(
-      const YakuCondition& condition, const TileType& player_wind) {
+  HandConditionValidatorResult::Type ValidatePlayerWind(
+      const HandCondition& condition, const TileType& player_wind) {
     return Validate(condition, RichiType::NO_RICHI,
                     /*field_wind=*/TileType::WIND_TON, player_wind,
                     ParsedHand::default_instance());
@@ -543,55 +543,55 @@ class YakuConditionValidatorTest : public testing::Test {
 /**
  * Tests for "Allowed Tile Condition"
  */
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_1) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile_type: PINZU_1"
+                                  "  allowed_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, ParsedHand::default_instance()));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_2) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile_type: PINZU_1"
+                                  "  allowed_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnkoutsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_3) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("allowed_tile_condition {"
-                                  "  required_tile_type: PINZU_1"
+                                  "  allowed_tile_type: PINZU_1"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_tile_type: PINZU_3"
+      "  allowed_tile_type: PINZU_3"
       "}"
       "allowed_tile_condition {"
-      "  required_tile_type: PINZU_2"
+      "  allowed_tile_type: PINZU_2"
       "}"
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_TILE_A"
@@ -601,14 +601,14 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_4) {
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
-      "  required_tile_type: PINZU_3"
+      "  allowed_tile_type: PINZU_3"
       "}"
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_TILE_A"
@@ -618,12 +618,12 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_5) {
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_NUMBER_A"
@@ -635,11 +635,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::MANZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A"
@@ -650,11 +650,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_7) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_2);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A"
@@ -665,12 +665,12 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_8) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A"
@@ -680,12 +680,12 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_9) {
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
@@ -696,11 +696,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_10) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_2);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
@@ -711,11 +711,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_11) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
@@ -726,11 +726,11 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_12) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SANGEN_HAKU);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::WIND_TON);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "allowed_tile_condition {"
       "  required_variable_tile_type: VARIABLE_COLOR_A_OR_JIHAI"
@@ -742,91 +742,91 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_ALLOWED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
 /**
  * Tests for "Deny tile condition"
  */
-TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_1) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_DenyTileCondition_1) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
-                                  "  required_tile_type: PINZU_8"
+                                  "  allowed_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, ParsedHand::default_instance()));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_DenyTileCondition_2) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
-                                  "  required_tile_type: PINZU_8"
+                                  "  allowed_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_3) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_DenyTileCondition_3) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
-                                  "  required_tile_type: PINZU_8"
+                                  "  allowed_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_7);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_DENY_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_DENY_TILE_CONDITION,
             Validate(condition, hand));
 }
 
 /**
  * Tests for "Required tile condition"
  */
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_1) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
-                                  "  required_tile_type: PINZU_8"
+                                  "  allowed_tile_type: PINZU_8"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::SOUZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_2) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
-                                  "  required_tile_type: SOUZU_1"
+                                  "  allowed_tile_type: SOUZU_1"
                                   "}"
                                   "required_tile_condition {"
-                                  "  required_tile_type: SOUZU_3"
+                                  "  allowed_tile_type: SOUZU_3"
                                   "}",
                                   &condition));
 
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::SOUZU_1);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
                                   "  required_state: AGARI_HAI"
@@ -834,20 +834,20 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3) {
                                   &condition));
 
   ParsedHand hand;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
                                   "  required_state: AGARI_HAI_TSUMO"
@@ -855,24 +855,24 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_3_2) {
                                   &condition));
 
   ParsedHand hand;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_TSUMO);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_tile_condition {"
                                   "  deny_state: AGARI_HAI"
@@ -880,23 +880,23 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_4) {
                                   &condition));
 
   ParsedHand hand;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   Element* element = hand.add_element();
   Tile* tile = element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 
   tile->add_state(TileState::AGARI_HAI_RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   element->add_tile();
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString(
       "required_tile_condition {"
       "  required_variable_tile_type: VARIABLE_TILE_A"
@@ -907,42 +907,42 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredTileCondition_5) {
       &condition));
 
   ParsedHand hand;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_1);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_TILE_CONDITION,
             Validate(condition, hand));
 
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_2);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredMachiType_1) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString("required_machi_type: MACHI_2FU ",
                                           &condition));
 
   ParsedHand hand;
   hand.set_machi_type(MachiType::KANCHAN);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredMachiType_2) {
+  HandCondition condition;
   EXPECT_TRUE(TextFormat::ParseFromString("required_machi_type: MACHI_2FU ",
                                           &condition));
 
   ParsedHand hand;
   hand.set_machi_type(MachiType::RYANMEN);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_MACHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_MACHI_TYPE,
             Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_agari_condition {"
                                   "  required_type: RON"
@@ -951,15 +951,15 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_1) {
 
   Agari agari;
   agari.set_type(AgariType::RON);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.set_type(AgariType::TSUMO);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
             Validate(condition, agari));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_agari_condition {"
                                   "  required_state: SOKU"
@@ -968,22 +968,22 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_2) {
                                   &condition));
 
   Agari agari;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
             Validate(condition, agari));
 
   agari.add_state(AgariState::SOKU);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
             Validate(condition, agari));
 
   agari.add_state(AgariState::HAITEI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.add_state(AgariState::RINSHAN);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, agari));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
-  YakuCondition condition;
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
+  HandCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("required_agari_condition {"
                                   "  allowed_format: REGULAR_AGARI"
@@ -992,79 +992,79 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredAgariCondition_3) {
                                   &condition));
 
   Agari agari;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
             Validate(condition, agari));
 
   agari.set_format(AgariFormat::IRREGULAR_AGARI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_AGARI_CONDITION,
             Validate(condition, agari));
 
   agari.set_format(AgariFormat::REGULAR_AGARI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, agari));
 
   agari.set_format(AgariFormat::CHITOITSU_AGARI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, agari));
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK, Validate(condition, agari));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
-  YakuCondition condition;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
+  HandCondition condition;
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::NO_RICHI));
 
   condition.set_required_richi_type(RichiType::RICHI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             Validate(condition, RichiType::NO_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::NORMAL_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::DOUBLE_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::OPEN_RICHI));
 
   condition.set_required_richi_type(RichiType::DOUBLE_RICHI);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             Validate(condition, RichiType::NO_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             Validate(condition, RichiType::RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             Validate(condition, RichiType::NORMAL_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::DOUBLE_RICHI));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
             Validate(condition, RichiType::OPEN_RICHI));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredFieldWind) {
-  YakuCondition condition;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredFieldWind) {
+  HandCondition condition;
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             ValidateFieldWind(condition, TileType::WIND_TON));
 
   condition.set_required_field_wind(TileType::WIND_NAN);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
             ValidateFieldWind(condition, TileType::WIND_TON));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             ValidateFieldWind(condition, TileType::WIND_NAN));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
             ValidateFieldWind(condition, TileType::WIND_SHA));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_FIELD_WIND,
             ValidateFieldWind(condition, TileType::WIND_PE));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
-  YakuCondition condition;
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+TEST_F(HandConditionValidatorTest, ValidateTest_RequiredPlayerWind) {
+  HandCondition condition;
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             ValidatePlayerWind(condition, TileType::WIND_TON));
 
   condition.set_required_player_wind(TileType::WIND_SHA);
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
             ValidatePlayerWind(condition, TileType::WIND_TON));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
             ValidatePlayerWind(condition, TileType::WIND_NAN));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
+  EXPECT_EQ(HandConditionValidatorResult_Type_OK,
             ValidatePlayerWind(condition, TileType::WIND_SHA));
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
+  EXPECT_EQ(HandConditionValidatorResult_Type_NG_REQUIRED_PLAYER_WIND,
             ValidatePlayerWind(condition, TileType::WIND_PE));
 }
 

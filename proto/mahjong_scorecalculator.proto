@@ -18,7 +18,7 @@ message YakuApplierResult {
   repeated Yaku yaku = 1;
 }
 
-message YakuConditionValidatorResult {
+message HandConditionValidatorResult {
   enum Type {
     OK = 0;
 

@@ -43,17 +43,17 @@ class YakuApplier {
   std::map<std::string, std::vector<std::string>> upper_yaku_lookup_table_;
 };
 
-class YakuConditionValidator {
+class HandConditionValidator {
  public:
-  YakuConditionValidator(const YakuCondition& condition,
+  HandConditionValidator(const HandCondition& condition,
                          const RichiType& richi_type,
                          const TileType& field_wind,
                          const TileType& player_wind,
                          const ParsedHand& parsed_hand);
 
-  YakuConditionValidatorResult::Type Validate();
-  YakuConditionValidatorResult::Type Validate(
-      YakuConditionValidatorResult* result);
+  HandConditionValidatorResult::Type Validate();
+  HandConditionValidatorResult::Type Validate(
+      HandConditionValidatorResult* result);
 
  private:
   // Agari conditions.
@@ -90,10 +90,6 @@ class YakuConditionValidator {
       const google::protobuf::RepeatedPtrField<Tile>& tiles,
       bool allow_defining_new_variable);
 
-  bool ValidateEitherTileCondition(
-      const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
-      const google::protobuf::RepeatedPtrField<Tile>& tiles);
-
   bool ValidateTileCondition(const TileCondition& condition, const Tile& tile,
                              bool allow_defining_new_variable);
 
@@ -103,13 +99,13 @@ class YakuConditionValidator {
   bool ValidateVariableTile(const TileCondition::VariableTileType& type,
                             const TileType& required, const TileType& tile);
 
-  const YakuCondition& condition_;
+  const HandCondition& condition_;
   const RichiType& richi_type_;
   const TileType& field_wind_;
   const TileType& player_wind_;
   const ParsedHand& parsed_hand_;
 
-  YakuConditionValidatorResult* result_;
+  HandConditionValidatorResult* result_;
 
   google::protobuf::RepeatedPtrField<Tile> hand_tiles_;
   std::map<TileCondition::VariableTileType, TileType> variable_tiles_;

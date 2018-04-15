@@ -4,7 +4,9 @@ package ycraft.mahjong;
 
 import "proto/mahjong_common.proto";
 
+// Rule specifies details of this mahjong game rule.
 message Rule {
+  // A list of Yakus that can be applied in this rule.
   repeated Yaku yaku = 1;
 
   // Specifies required han for kazoe yakuman. If you set zero or negative
@@ -12,30 +14,107 @@ message Rule {
   int32 kazoe_yakuman_han = 2;
 }
 
+// Yaku represents Yaku in a mahjong winning hand. It has meta data of a Yaku
+// such as name and description, and it also defines a winning hand condition
+// to be met for this Yaku to be applied.
 message Yaku {
+  // A name of this Yaku. This name has to be unique among all Yakus.
   string name = 1;
+
+  // A description of this Yaku. This field is completely optional and it isn't
+  // referred by the score calculator library at all. You can use this field to
+  // write displayable explanation of this Yaku and display it to users.
   string description = 2;
 
+  // menzen_han is added to han when you win a hand with this Yaku in menzen
+  // condition.
   int32 menzen_han = 3;
+
+  // kuisagari_han is added to han when you win a hand with this Yaku in
+  // kuisagari (naki) condition.
   int32 kuisagari_han = 4;
+
+  // If you set this value to non-zero value, your winning hand's fu is
+  // overridden by this number. Example use cases are Pinfu yaku or Chitoitsu.
   int32 fu_override_tsumo = 5;
   int32 fu_override_ron = 6;
+
+  // This specifies yakuman value. For instance, you set one for a typical
+  // single yakuman Yaku. Set two for double Yakuman.
   int32 yakuman = 7;
 
-  YakuCondition yaku_condition = 8;
+  // This specifies the conditions for your winning hand to be satisfied in
+  // order to claim this Yaku.
+  HandCondition required_hand_condition = 8;
 
-  // Upper version of this yaku.
-  // This yaku will not be applied if there is any upper version yaku for the given hand.
+  // Upper versions of this Yaku. If any of Yakus in this list are claimed to
+  // your winning hand, this Yaku cannot be claimed together. For instance,
+  // Flush is an upper version yaku to Half-flush.
   repeated string upper_version_yaku_name = 9;
 }
 
+// HandCondition specifies a variety of conditions that a hand needs to be
+// satisfied.
+message HandCondition {
+  // All tile conditions in this list have to be satisfied.
+  repeated TileCondition required_tile_condition = 1;
+
+  // A white-list of tile conditions. All your tiles have to be white-listed by
+  // this list, otherwise your hand will be disqualified by this check. If this
+  // list is empty, it is translated as any tiles are allowed.
+  // NOTE: You may use only one required_variable_tile_type in the
+  // TileCondition except for VARIABLE_CONDITIONAL_YAKUHAI due to technical
+  // restrictions.
+  repeated TileCondition allowed_tile_condition = 2;
+
+  // A black-list of tile conditions. If any of tile conditions in the list are
+  // met, your hand will be disqualified by this check.
+  // NOTE: You may use only one required_variable_tile_type in the
+  // TileCondition except for VARIABLE_CONDITIONAL_YAKUHAI due to technical
+  // restrictions.
+  repeated TileCondition deny_tile_condition = 3;
+
+  // All element conditions in this list have to be satisfied.
+  repeated ElementCondition required_element_condition = 4;
+
+  // A machi-type that your winning hand has to be satisfied.
+  MachiType required_machi_type = 5;
+
+  // A agari-condition that your winning hand has to be satisfied.
+  AgariCondition required_agari_condition = 6;
+
+  // A richi-type that your winning hand has to be satisfied.
+  RichiType required_richi_type = 7;
+
+  // A field-wind of which when you win your hand has to be satisfied this
+  // value.
+  TileType required_field_wind = 8;
+
+  // A player-wind of which when you win your hand has to be satisfied this
+  // value.
+  TileType required_player_wind = 9;
+}
+
+// TileCondition specifies a variety of conditions that a tile needs to be
+// satisfied.
 message TileCondition {
+  // A tile has to be one of the type specified in this list. If the list is
+  // empty, it is translated as any tile types are allowed.
+  repeated TileType allowed_tile_type = 1;
+
+  // VariableTileType is a special type of tile that can be used to define a
+  // tile condition.
   enum VariableTileType {
+    // Unknown variable tile type matches to any tiles.
     UNKNOWN_VARIABLE_TILE_TYPE = 0;
 
+    // This is a bit mask to retrieve the type of variable tile type.
+    // This is for internal use only.
     MASK_VARIABLE_TYPE = 0xf0;
 
+    // VARIABLE_TILE is a tile that is determined at the runtime.
     // VARIABLE_TILE_A to VARIABLE_TILE_G are all distinct each other.
+    // For instance, you can use this to define Ipeko.
     VARIABLE_TILE = 0x10;
       VARIABLE_TILE_A = 0x11;
       VARIABLE_TILE_B = 0x12;
@@ -45,74 +124,91 @@ message TileCondition {
       VARIABLE_TILE_F = 0x16;
       VARIABLE_TILE_G = 0x17;
 
-    // VARIABLE_TILE2_A to VARIABLE_TILE2_C are all distinct each other.
+    // Same but other group of VARIABLE_TILE.
+    // VARIABLE_TILE2_A to VARIABLE_TILE2_C are all distinct each other, but
+    // VARIABLE_TILE_A and VARIABLE_TILE2_A can be identical.
+    // For instance, you can use this to define Ryanpeko.
     VARIABLE_TILE2 = 0x20;
       VARIABLE_TILE2_A = 0x21;
       VARIABLE_TILE2_B = 0x22;
       VARIABLE_TILE2_C = 0x23;
 
+    // Similar to the other type of variable type but this only cares about the
+    // number. For instance, MANZU_1 and SOUZU_1 are evaluated identical. Non
+    // sequential tiles (such as WIND_TON) are not qualified to be
+    // VARIABLE_NUMBER.
     // VARIABLE_NUMBER_A to VARIABLE_NUMBER_C are all distinct each other.
     VARIABLE_NUMBER = 0x30;
       VARIABLE_NUMBER_A = 0x31;
       VARIABLE_NUMBER_B = 0x32;
       VARIABLE_NUMBER_C = 0x33;
 
+    // Similar to the other type of variable type but this only cares about the
+    // color. For instance, MANZU_1 and MANZU_2 are evaluated identical. Jihai
+    // tiles are considered no color, thus they are not qualified to be
+    // VARIABLE_COLOR. However, you can use VARIABLE_COLOR_A_OR_JIHAI to allow
+    // Jihai tiles in your condition.
     VARIABLE_COLOR = 0x40;
-      // Doesn't include Jihai. (Jihai-tile doesn't have any color.)
       VARIABLE_COLOR_A = 0x41;
       VARIABLE_COLOR_A_OR_JIHAI = 0x42;
 
+    // Similar to the other type of variable type but this value is set by
+    // a game routine.
     VARIABLE_CONDITIONAL_YAKUHAI = 0x50;
       VARIABLE_BAKAZE_TILE = 0x51;
 
-    // We cannot put bakaze tile and jikaze tile in the same group because
-    // bakaze and jikaze tile can be the same tile. All tiles in the same
-    // group have to unique.
+    // Same to the VARIABLE_CONDITIONAL_YAKUHAI.
+    // NOTE: The reason why we have two conditional yakuhai groups is to allow
+    // a same tile to be both VARIABLE_BAKAZE_TILE and VARIABLE_JIKAZE_TILE.
+    // Due to implementation details, all tiles in a same group have to be
+    // unique.
     VARIABLE_CONDITIONAL_YAKUHAI_2 = 0x60;
       VARIABLE_JIKAZE_TILE = 0x61;
   }
 
-  TileType required_tile_type = 1;
-
-  // Only leaf types can be used. Don't use non-leaf types, such as
-  // VARIABLE_TILE and VARIABLE_CONDITIONAL_YAKUHAI.
+  // A variable tile type that your tile has to satisfy. You can use this field
+  // combined with other conditions such as requried_tile_type. In that case,
+  // both (all of those) conditions have to be satisfied.
+  // NOTE: Only the leaf types can be specified. Do not use non-leaf types such
+  // as VARIABLE_TILE and VARIABLE_CONDITIONAL_YAKUHAI. Use VARIABLE_TILE_A and
+  // so forth.
   VariableTileType required_variable_tile_type = 2;
 
+  // All the tile state specified here have to be satisfied.
   repeated TileState required_state = 3;
+
+  // If any of the tile state are met, your tile will be disqualified.
   repeated TileState deny_state = 4;
 }
 
+// ElementCondition specifies a variety of conditions that an element needs to
+// be satisfied.
 message ElementCondition {
+  // An element has to be one of the type specified in this list. If the list is
+  // empty, it is translated as any types are allowed.
   repeated HandElementType allowed_element_type = 1;
 
-  // You may *not* use two or more variable_tiles.
-  repeated TileCondition allowed_tile_condition = 2;
+  // All the tile conditions specified in this list have to be satisfied.
+  repeated TileCondition required_tile_condition = 2;
 
-  repeated TileCondition required_tile_condition = 3;
-
-  // At least one of the given conditions must be satisfied.
-  // You may *not* use variable_tile except for VARIABLE_CONDITIONAL_YAKUHAI.
-  repeated TileCondition either_tile_condition = 4;
+  // All tiles in this element have to be any of the type specified in this
+  // list. If the list is empty, it is translated as any types are allowed.
+  // NOTE: You may use only one required_variable_tile_type in the
+  // TileCondition except for VARIABLE_CONDITIONAL_YAKUHAI due to technical
+  // restrictions.
+  repeated TileCondition allowed_tile_condition = 3;
 }
 
+// AgariCondition specifies a variety of conditions that your winning hand needs
+// to be satisfied.
 message AgariCondition {
+  // Agari type of this winning hand has to be this specified type.
   AgariType required_type = 1;
+
+  // All the Agari states specified in this list have to be satisfied.
   repeated AgariState required_state = 2;
+
+  // An Agari-format has to be one of the type specified in this list. If the
+  // list is empty, it is translated as any formats are allowed.
   repeated AgariFormat allowed_format = 3;
-}
-
-message YakuCondition {
-  // You may *not* use two or more variable_tiles.
-  repeated TileCondition allowed_tile_condition = 1;
-
-  // You may *not* use variable_tile except for VARIABLE_CONDITIONAL_YAKUHAI.
-  repeated TileCondition deny_tile_condition = 2;
-
-  repeated TileCondition required_tile_condition = 3;
-  repeated ElementCondition required_element_condition = 4;
-  MachiType required_machi_type = 5;
-  AgariCondition required_agari_condition = 6;
-  RichiType required_richi_type = 7;
-  TileType required_field_wind = 8;
-  TileType required_player_wind = 9;
 }
