@@ -165,7 +165,7 @@ TEST_F(ScoreCalculatorTest, TestCalculate_3) {
   Field field;
   field.set_wind(TileType::WIND_TON);
   field.add_dora(TileType::SOUZU_3);
-  field.add_dora(TileType::WANZU_8);
+  field.add_dora(TileType::MANZU_8);
   field.set_honba(0);
 
   Player player;
@@ -181,9 +181,9 @@ TEST_F(ScoreCalculatorTest, TestCalculate_3) {
   hand->add_closed_tile(TileType::PINZU_8);
 
   Hand::Chii* chii = hand->add_chiied_tile();
-  chii->add_tile(TileType::WANZU_7);
-  chii->add_tile(TileType::WANZU_8);
-  chii->add_tile(TileType::WANZU_9);
+  chii->add_tile(TileType::MANZU_7);
+  chii->add_tile(TileType::MANZU_8);
+  chii->add_tile(TileType::MANZU_9);
 
   Hand::Kan* kan = hand->add_kanned_tile();
   kan->set_tile(TileType::SANGEN_CHUN);

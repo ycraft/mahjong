@@ -351,7 +351,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_1) {
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
-  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::MANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
@@ -370,7 +370,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Pinhu_2) {
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_4);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_7);
-  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::MANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::KANCHAN);
@@ -446,7 +446,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko) {
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_2);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
-  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::MANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
@@ -467,7 +467,7 @@ TEST_F(YakuApplierTest, ApplyTest_Regular_Ipeko_2) {
   CommonTestUtil::CreateMinshuntsu(parsed_hand.add_element(),
                                    TileType::SOUZU_2);
   CommonTestUtil::CreateAnshuntsu(parsed_hand.add_element(), TileType::SOUZU_5);
-  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::WANZU_3);
+  CommonTestUtil::CreateAntoitsu(parsed_hand.add_element(), TileType::MANZU_3);
   parsed_hand.mutable_agari()->set_format(AgariFormat::REGULAR_AGARI);
   parsed_hand.mutable_agari()->set_type(AgariType::TSUMO);
   parsed_hand.set_machi_type(MachiType::RYANMEN);
@@ -633,7 +633,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_6) {
   ParsedHand hand;
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::PINZU_1);
   CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::SOUZU_1);
-  CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::WANZU_1);
+  CommonTestUtil::CreateAntoitsu(hand.add_element(), TileType::MANZU_1);
 
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }

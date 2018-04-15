@@ -282,11 +282,11 @@ TEST_F(HandParserTest, ParseTest_3) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
-  hand.add_closed_tile(TileType::WANZU_1);
-  hand.add_closed_tile(TileType::WANZU_2);
-  hand.add_closed_tile(TileType::WANZU_3);
-  hand.add_closed_tile(TileType::WANZU_9);
-  hand.set_agari_tile(TileType::WANZU_9);
+  hand.add_closed_tile(TileType::MANZU_1);
+  hand.add_closed_tile(TileType::MANZU_2);
+  hand.add_closed_tile(TileType::MANZU_3);
+  hand.add_closed_tile(TileType::MANZU_9);
+  hand.set_agari_tile(TileType::MANZU_9);
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
@@ -299,8 +299,8 @@ TEST_F(HandParserTest, ParseTest_3) {
       {CommonTestUtil::CreateAnshuntsu(TileType::PINZU_1),
        CommonTestUtil::CreateAnshuntsu(TileType::PINZU_5),
        CommonTestUtil::CreateAnshuntsu(TileType::SOUZU_1),
-       CommonTestUtil::CreateAnshuntsu(TileType::WANZU_1),
-       CommonTestUtil::CreateAntoitsu(TileType::WANZU_9, true)},
+       CommonTestUtil::CreateAnshuntsu(TileType::MANZU_1),
+       CommonTestUtil::CreateAntoitsu(TileType::MANZU_9, true)},
       MachiType::TANKI, AgariType::TSUMO, AgariFormat::REGULAR_AGARI,
       {} /* expected_agari_state */, result.parsed_hand(0)));
   ASSERT_NO_FATAL_FAILURE(VerifyParsedHandForIrregularAgariFormat(
@@ -318,11 +318,11 @@ TEST_F(HandParserTest, ParseTest_4) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
-  hand.add_closed_tile(TileType::WANZU_1);
-  hand.add_closed_tile(TileType::WANZU_2);
-  hand.add_closed_tile(TileType::WANZU_3);
-  hand.add_closed_tile(TileType::WANZU_9);
-  hand.set_agari_tile(TileType::WANZU_9);
+  hand.add_closed_tile(TileType::MANZU_1);
+  hand.add_closed_tile(TileType::MANZU_2);
+  hand.add_closed_tile(TileType::MANZU_3);
+  hand.add_closed_tile(TileType::MANZU_9);
+  hand.set_agari_tile(TileType::MANZU_9);
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
@@ -346,11 +346,11 @@ TEST_F(HandParserTest, ParseTest_5) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
-  hand.add_closed_tile(TileType::WANZU_1);
-  hand.add_closed_tile(TileType::WANZU_2);
-  hand.add_closed_tile(TileType::WANZU_3);
-  hand.add_closed_tile(TileType::WANZU_9);
-  hand.set_agari_tile(TileType::WANZU_9);
+  hand.add_closed_tile(TileType::MANZU_1);
+  hand.add_closed_tile(TileType::MANZU_2);
+  hand.add_closed_tile(TileType::MANZU_3);
+  hand.add_closed_tile(TileType::MANZU_9);
+  hand.set_agari_tile(TileType::MANZU_9);
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
@@ -374,11 +374,11 @@ TEST_F(HandParserTest, ParseTest_6) {
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_2);
   hand.add_closed_tile(TileType::SOUZU_3);
-  hand.add_closed_tile(TileType::WANZU_1);
-  hand.add_closed_tile(TileType::WANZU_2);
-  hand.add_closed_tile(TileType::WANZU_3);
-  hand.add_closed_tile(TileType::WANZU_9);
-  hand.set_agari_tile(TileType::WANZU_9);
+  hand.add_closed_tile(TileType::MANZU_1);
+  hand.add_closed_tile(TileType::MANZU_2);
+  hand.add_closed_tile(TileType::MANZU_3);
+  hand.add_closed_tile(TileType::MANZU_9);
+  hand.set_agari_tile(TileType::MANZU_9);
   hand.mutable_agari()->set_type(AgariType::TSUMO);
 
   HandParserResult result;
@@ -853,8 +853,8 @@ TEST_F(HandParserTest, ParseTest_Tanki_2_Chitoitsu) {
 
 TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   Hand hand;
-  hand.add_closed_tile(TileType::WANZU_1);
-  hand.add_closed_tile(TileType::WANZU_9);
+  hand.add_closed_tile(TileType::MANZU_1);
+  hand.add_closed_tile(TileType::MANZU_9);
   hand.add_closed_tile(TileType::SOUZU_1);
   hand.add_closed_tile(TileType::SOUZU_9);
   hand.add_closed_tile(TileType::PINZU_1);
@@ -866,7 +866,7 @@ TEST_F(HandParserTest, ParseTest_Kokushimusou) {
   hand.add_closed_tile(TileType::SANGEN_HAKU);
   hand.add_closed_tile(TileType::SANGEN_HATSU);
   hand.add_closed_tile(TileType::SANGEN_CHUN);
-  hand.set_agari_tile(TileType::WANZU_1);
+  hand.set_agari_tile(TileType::MANZU_1);
   hand.mutable_agari()->set_type(AgariType::RON);
 
   HandParserResult result;
@@ -922,8 +922,8 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
   {
     // Parse second hand.
     Hand hand2;
-    hand2.add_closed_tile(TileType::WANZU_1);
-    hand2.add_closed_tile(TileType::WANZU_9);
+    hand2.add_closed_tile(TileType::MANZU_1);
+    hand2.add_closed_tile(TileType::MANZU_9);
     hand2.add_closed_tile(TileType::SOUZU_1);
     hand2.add_closed_tile(TileType::SOUZU_9);
     hand2.add_closed_tile(TileType::PINZU_1);
@@ -935,7 +935,7 @@ TEST_F(HandParserTest, ParseTest_parseTwoHandsWithSingleInstance) {
     hand2.add_closed_tile(TileType::SANGEN_HAKU);
     hand2.add_closed_tile(TileType::SANGEN_HATSU);
     hand2.add_closed_tile(TileType::SANGEN_CHUN);
-    hand2.set_agari_tile(TileType::WANZU_1);
+    hand2.set_agari_tile(TileType::MANZU_1);
     hand2.mutable_agari()->set_type(AgariType::RON);
 
     HandParserResult result2;

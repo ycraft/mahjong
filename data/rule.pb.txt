@@ -392,15 +392,15 @@ yaku {
     required_element_condition {
       allowed_element_type: SHUNTSU
       required_tile_condition {
-        required_tile_type: WANZU_TILE
+        required_tile_type: MANZU_TILE
         required_variable_tile_type: VARIABLE_NUMBER_A
       }
       required_tile_condition {
-        required_tile_type: WANZU_TILE
+        required_tile_type: MANZU_TILE
         required_variable_tile_type: VARIABLE_NUMBER_B
       }
       required_tile_condition {
-        required_tile_type: WANZU_TILE
+        required_tile_type: MANZU_TILE
         required_variable_tile_type: VARIABLE_NUMBER_C
       }
     }
@@ -705,7 +705,7 @@ yaku {
       allowed_element_type: KOUTSU
       allowed_element_type: KANTSU
       allowed_tile_condition {
-        required_tile_type: WANZU_TILE
+        required_tile_type: MANZU_TILE
         required_variable_tile_type: VARIABLE_NUMBER_A
       }
     }
@@ -967,10 +967,10 @@ yaku {
       required_tile_type: SANGEN_CHUN
     }
     required_tile_condition {
-      required_tile_type: WANZU_1
+      required_tile_type: MANZU_1
     }
     required_tile_condition {
-      required_tile_type: WANZU_9
+      required_tile_type: MANZU_9
     }
     required_tile_condition {
       required_tile_type: SOUZU_1
@@ -1315,11 +1315,11 @@ yaku {
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile_type: WANZU_1
+      required_tile_type: MANZU_1
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
-      required_tile_type: WANZU_9
+      required_tile_type: MANZU_9
       disallowed_state: AGARI_HAI
     }
     required_tile_condition {
