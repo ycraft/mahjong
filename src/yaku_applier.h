@@ -81,7 +81,7 @@ class YakuConditionValidator {
       const google::protobuf::RepeatedPtrField<Tile>& tiles,
       bool allow_defining_new_variable);
 
-  bool ValidateDisallowedTileCondition(
+  bool ValidateDenyTileCondition(
       const google::protobuf::RepeatedPtrField<TileCondition>& conditions,
       const google::protobuf::RepeatedPtrField<Tile>& tiles);
 

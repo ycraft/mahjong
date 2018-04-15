@@ -747,9 +747,9 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_AllowedTileCondition_13) {
 }
 
 /**
- * Tests for "Disallowed tile condition"
+ * Tests for "Deny tile condition"
  */
-TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
+TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_1) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
@@ -761,7 +761,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_1) {
             Validate(condition, ParsedHand::default_instance()));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
+TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_2) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
@@ -775,7 +775,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_2) {
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK, Validate(condition, hand));
 }
 
-TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
+TEST_F(YakuConditionValidatorTest, ValidateTest_DenyTileCondition_3) {
   YakuCondition condition;
   EXPECT_TRUE(
       TextFormat::ParseFromString("deny_tile_condition {"
@@ -786,7 +786,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_DisallowedTileCondition_3) {
   ParsedHand hand;
   CommonTestUtil::CreateAnshuntsu(hand.add_element(), TileType::PINZU_7);
 
-  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_DISALLOWED_TILE_CONDITION,
+  EXPECT_EQ(YakuConditionValidatorResult_Type_NG_DENY_TILE_CONDITION,
             Validate(condition, hand));
 }
 

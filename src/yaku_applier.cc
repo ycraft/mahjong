@@ -198,10 +198,10 @@ YakuConditionValidatorResult::Type YakuConditionValidator::Validate(
 
   // Validate deny tile condition
   if (condition_.deny_tile_condition_size() > 0 &&
-      !ValidateDisallowedTileCondition(condition_.deny_tile_condition(),
+      !ValidateDenyTileCondition(condition_.deny_tile_condition(),
                                        hand_tiles_)) {
     result_->set_type(
-        YakuConditionValidatorResult::NG_DISALLOWED_TILE_CONDITION);
+        YakuConditionValidatorResult::NG_DENY_TILE_CONDITION);
     return result_->type();
   }
 
@@ -412,7 +412,7 @@ bool YakuConditionValidator::ValidateAllowedTileCondition(
   return true;
 }
 
-bool YakuConditionValidator::ValidateDisallowedTileCondition(
+bool YakuConditionValidator::ValidateDenyTileCondition(
     const RepeatedPtrField<TileCondition>& conditions,
     const RepeatedPtrField<Tile>& tiles) {
   // If the number of the given conditions is zero, this method construes as
