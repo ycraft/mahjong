@@ -1021,7 +1021,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::DOUBLE_RICHI));
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
-            Validate(condition, RichiType::OPENED_RICHI));
+            Validate(condition, RichiType::OPEN_RICHI));
 
   condition.set_required_richi_type(RichiType::DOUBLE_RICHI);
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
@@ -1033,7 +1033,7 @@ TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredRichiType_1) {
   EXPECT_EQ(YakuConditionValidatorResult_Type_OK,
             Validate(condition, RichiType::DOUBLE_RICHI));
   EXPECT_EQ(YakuConditionValidatorResult_Type_NG_REQUIRED_RICHI_TYPE,
-            Validate(condition, RichiType::OPENED_RICHI));
+            Validate(condition, RichiType::OPEN_RICHI));
 }
 
 TEST_F(YakuConditionValidatorTest, ValidateTest_RequiredFieldWind) {

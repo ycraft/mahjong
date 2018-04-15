@@ -150,7 +150,7 @@ enum RichiType {
 
   RICHI = 0x2;
     NORMAL_RICHI = 0x21;
-    OPENED_RICHI = 0x22;
+    OPEN_RICHI = 0x22;
     DOUBLE_RICHI = 0x23;
 }
 
